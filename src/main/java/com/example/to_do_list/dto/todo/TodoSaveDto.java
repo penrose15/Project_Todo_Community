@@ -25,7 +25,7 @@ public class TodoSaveDto {
         return Todo.builder()
                 .title(title)
                 .content(content)
-                .done(false)
+                .status(false)
                 .expose(expose)
                 .endDate(endDate)
                 .build();

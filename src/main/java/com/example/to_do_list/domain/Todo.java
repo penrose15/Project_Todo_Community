@@ -16,7 +16,7 @@ public class Todo extends BaseEntity {
 
     @PrePersist
     private void prePersist() {
-        this.done = false;
+        this.status = false;
         this.date = LocalDate.now();
     }
 
@@ -33,7 +33,7 @@ public class Todo extends BaseEntity {
     private String content;
 
     @Column
-    private boolean done;
+    private boolean status;
 
     @Column
     private boolean expose;
@@ -45,10 +45,10 @@ public class Todo extends BaseEntity {
     private LocalDate endDate;
 
     @Builder
-    public Todo(String title, String content, boolean done, boolean expose,  LocalDate endDate) {
+    public Todo(String title, String content, boolean status, boolean expose, LocalDate endDate) {
         this.title = title;
         this.content = content;
-        this.done = done;
+        this.status = status;
         this.expose = expose;
         this.endDate = endDate;
     }
@@ -63,6 +63,11 @@ public class Todo extends BaseEntity {
         if(updateDto.getContent() != null) {
             this.content = updateDto.getContent();
         }
+    }
+
+    public boolean updateStatus() {
+        this.status = !this.status;
+        return this.status;
     }
 
 }

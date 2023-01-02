@@ -12,15 +12,15 @@ import java.time.LocalDate;
 public class TodoUpdateDto {
     private String title;
     private String content;
-    private boolean done;
+    private boolean status;
     private boolean expose;
     private LocalDate endDate;
 
     @Builder
-    public TodoUpdateDto(String title, String content, boolean done, boolean expose, LocalDate endDate) {
+    public TodoUpdateDto(String title, String content, boolean status, boolean expose, LocalDate endDate) {
         this.title = title;
         this.content = content;
-        this.done = done;
+        this.status = status;
         this.expose = expose;
         this.endDate = endDate;
     }
@@ -29,7 +29,7 @@ public class TodoUpdateDto {
         return Todo.builder()
                 .title(title)
                 .content(content)
-                .done(done)
+                .status(status)
                 .expose(expose)
                 .endDate(endDate)
                 .build();

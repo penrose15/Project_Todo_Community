@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -37,28 +39,28 @@ public class TodoRepositoryTest {
         Todo todo1 = Todo.builder()
                 .title(title)
                 .content(content)
-                .done(done)
+                .status(done)
                 .expose(expose)
                 .endDate(endDate)
                 .build();
         Todo todo2 = Todo.builder()
                 .title(title + "1")
                 .content(content)
-                .done(done)
+                .status(done)
                 .expose(expose)
                 .endDate(endDate.plusDays(1L))
                 .build();
         Todo todo3 = Todo.builder()
                 .title(title+"2")
                 .content(content)
-                .done(done)
+                .status(done)
                 .expose(expose)
                 .endDate(endDate.plusDays(2L))
                 .build();
         Todo todo4 = Todo.builder()
                 .title(title+"3")
                 .content(content)
-                .done(done)
+                .status(done)
                 .expose(expose)
                 .endDate(endDate.plusDays(3L))
                 .build();
@@ -76,7 +78,8 @@ public class TodoRepositoryTest {
 
     @Test
     void TODOLIST_오늘치_불러오기() {
-        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(LocalDate.now());
+        PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.ASC, "id");
+        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now());
         List<TodoResponsesDto> list = slice.getContent();
 
         assertThat(list.size()).isEqualTo(4);

@@ -5,11 +5,11 @@ import lombok.Getter;
 @Getter
 public class TodoResponsesDto {
     private String title;
-    private boolean done;
+    private boolean status;
 
 
-    public TodoResponsesDto(String title, boolean done) {
+    public TodoResponsesDto(String title, boolean status) {
         this.title = title;
-        this.done = done;
+        this.status = status;
     }
 }
