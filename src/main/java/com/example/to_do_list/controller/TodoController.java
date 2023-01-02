@@ -1,5 +1,6 @@
 package com.example.to_do_list.controller;
 
+import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.dto.todo.TodoResponseDto;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
 import com.example.to_do_list.dto.todo.TodoSaveDto;
@@ -35,6 +36,10 @@ public class TodoController {
     @GetMapping("/posts/{id}")
     public TodoResponseDto findById(@PathVariable Long id) {
         return todoService.findById(id);
+    }
+    @GetMapping("/posts/done/{id}")
+    public boolean todoDone(@PathVariable Long id) {
+        return todoService.changeStatus(id);
     }
 
     @GetMapping("/posts")

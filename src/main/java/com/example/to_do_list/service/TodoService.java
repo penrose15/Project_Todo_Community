@@ -41,15 +41,19 @@ public class TodoService {
         return TodoResponseDto.builder()
                 .title(todo.getTitle())
                 .content(todo.getContent())
-                .done(todo.isDone())
+                .status(todo.isStatus())
                 .expose(todo.isExpose())
                 .endDate(todo.getEndDate())
                 .build();
     }
-
+    public boolean changeStatus(Long id) {
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("todo not found"));
+        return todo.updateStatus();
+    }
     public Slice<TodoResponsesDto> findByDate(int page, int size, LocalDate date) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Slice<TodoResponsesDto> todos = todoRepository.findByDateNow(date);
+        Slice<TodoResponsesDto> todos = todoRepository.findByDateNow(pageRequest,date);
         return todos;
     }
 
@@ -60,10 +64,5 @@ public class TodoService {
     public void deleteTodos(List<Long> ids) {
         todoRepository.deleteAllById(ids);
     }
-
-
-
-
-
 
 }
