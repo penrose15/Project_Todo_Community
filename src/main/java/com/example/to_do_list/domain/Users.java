@@ -29,9 +29,6 @@ public class Users extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
-    @OneToMany(mappedBy = "users")
-    private List<TodoList> todoLists = new ArrayList<>();
-
     @Builder
     public Users(String username, String email, String profile, Role role) {
         this.username = username;

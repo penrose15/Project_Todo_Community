@@ -1,22 +1,23 @@
 package com.example.to_do_list.domain;
 
 import com.example.to_do_list.commons.baseentity.BaseEntity;
-import com.example.to_do_list.dto.columns.ColumnsResponseDto;
-import com.example.to_do_list.dto.columns.ColumnsUpdateDto;
+import com.example.to_do_list.dto.todo.TodoUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Getter
 @Entity
-public class Columns extends BaseEntity {
+public class Todo extends BaseEntity {
 
     @PrePersist
     private void prePersist() {
         this.done = false;
+        this.date = LocalDate.now();
     }
 
     @Id
@@ -37,19 +38,25 @@ public class Columns extends BaseEntity {
     @Column
     private boolean expose;
 
-    @ManyToOne
-    @JoinColumn(name = "todoList_id")
-    private TodoList todoList;
+    @Column
+    private LocalDate date;
+
+    @Column
+    private LocalDate endDate;
 
     @Builder
-    public Columns(String title, String content, boolean done, boolean expose) {
+    public Todo(String title, String content, boolean done, boolean expose,  LocalDate endDate) {
         this.title = title;
         this.content = content;
         this.done = done;
         this.expose = expose;
+        this.endDate = endDate;
     }
 
-    public void updateColumns(ColumnsUpdateDto updateDto) {
+
+
+
+    public void updateColumns(TodoUpdateDto updateDto) {
         if(updateDto.getTitle() != null) {
             this.title = updateDto.getTitle();
         }

@@ -1,32 +1,37 @@
-package com.example.to_do_list.dto.columns;
+package com.example.to_do_list.dto.todo;
 
-import com.example.to_do_list.domain.Columns;
+import com.example.to_do_list.domain.Todo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Getter
 @NoArgsConstructor
-public class ColumnsUpdateDto {
+public class TodoUpdateDto {
     private String title;
     private String content;
     private boolean done;
     private boolean expose;
+    private LocalDate endDate;
 
     @Builder
-    public ColumnsUpdateDto(String title, String content, boolean done, boolean expose) {
+    public TodoUpdateDto(String title, String content, boolean done, boolean expose, LocalDate endDate) {
         this.title = title;
         this.content = content;
         this.done = done;
         this.expose = expose;
+        this.endDate = endDate;
     }
 
-    public Columns toEntity() {
-        return Columns.builder()
+    public Todo toEntity() {
+        return Todo.builder()
                 .title(title)
                 .content(content)
                 .done(done)
                 .expose(expose)
+                .endDate(endDate)
                 .build();
     }
 }
