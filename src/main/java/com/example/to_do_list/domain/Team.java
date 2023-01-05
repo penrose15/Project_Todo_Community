@@ -41,20 +41,16 @@ public class Team extends BaseEntity {
     @OneToMany(mappedBy = "team")
     private List<Attendance> attendance;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    private List<Long> usersIdList;
-
     @OneToMany(mappedBy = "team")
     private List<Users> usersList;
 
     @Builder
-    public Team(long hostUserId, String title, String explanation, int limit, List<Attendance> attendance, List<Long> usersIdList, List<Users> usersList) {
+    public Team(long hostUserId, String title, String explanation, int limit, List<Attendance> attendance, List<Users> usersList) {
         this.hostUserId = hostUserId;
         this.title = title;
         this.explanation = explanation;
         this.attendance = attendance;
         this.limit = limit;
-        this.usersIdList = usersIdList;
         this.usersList = usersList;
     }
 
@@ -66,12 +62,10 @@ public class Team extends BaseEntity {
         this.attendance = attendance;
     }
 
-    public void setUsersIdList(List<Long> usersIdList) {
-        this.usersIdList = usersIdList;
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
-    public void addUsersId(Long usersId) {
-        this.usersIdList.add(usersId);
-    }
+
     public void addUsers(Users users) {
         this.usersList.add(users);
     }
