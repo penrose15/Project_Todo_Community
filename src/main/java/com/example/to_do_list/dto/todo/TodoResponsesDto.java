@@ -4,11 +4,13 @@ import lombok.Getter;
 
 @Getter
 public class TodoResponsesDto {
+    private long id;
     private String title;
     private boolean status;
 
 
-    public TodoResponsesDto(String title, boolean status) {
+    public TodoResponsesDto(long id,String title, boolean status) {
+        this.id = id;
         this.title = title;
         this.status = status;
     }

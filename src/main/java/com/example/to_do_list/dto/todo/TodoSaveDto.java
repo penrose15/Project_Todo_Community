@@ -12,10 +12,10 @@ import java.time.LocalDate;
 public class TodoSaveDto {
     private String title;
     private String content;
-    private boolean expose;
+    private String expose;
     private LocalDate endDate;
     @Builder
-    public TodoSaveDto(String title, String content, boolean expose, LocalDate endDate) {
+    public TodoSaveDto(String title, String content, String expose, LocalDate endDate) {
         this.title = title;
         this.content = content;
         this.expose = expose;

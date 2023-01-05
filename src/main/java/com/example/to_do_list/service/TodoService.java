@@ -1,6 +1,7 @@
 package com.example.to_do_list.service;
 
 import com.example.to_do_list.domain.Todo;
+import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.todo.TodoResponseDto;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
 import com.example.to_do_list.dto.todo.TodoSaveDto;
@@ -21,8 +22,10 @@ import java.util.NoSuchElementException;
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    public Long save(TodoSaveDto todoSaveDto) {
+    public Long save(TodoSaveDto todoSaveDto, Users users) {
         Todo todo = todoSaveDto.toEntity();
+        todo.setUsers(users);
+        users.addTodoList(todo);
         Todo saveTodo = todoRepository.save(todo);
 
         return saveTodo.getId();
@@ -42,7 +45,7 @@ public class TodoService {
                 .title(todo.getTitle())
                 .content(todo.getContent())
                 .status(todo.isStatus())
-                .expose(todo.isExpose())
+                .expose(todo.getExpose())
                 .endDate(todo.getEndDate())
                 .build();
     }

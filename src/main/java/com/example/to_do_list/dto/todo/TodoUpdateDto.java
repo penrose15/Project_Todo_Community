@@ -13,11 +13,11 @@ public class TodoUpdateDto {
     private String title;
     private String content;
     private boolean status;
-    private boolean expose;
+    private String expose;
     private LocalDate endDate;
 
     @Builder
-    public TodoUpdateDto(String title, String content, boolean status, boolean expose, LocalDate endDate) {
+    public TodoUpdateDto(String title, String content, boolean status, String expose, LocalDate endDate) {
         this.title = title;
         this.content = content;
         this.status = status;
