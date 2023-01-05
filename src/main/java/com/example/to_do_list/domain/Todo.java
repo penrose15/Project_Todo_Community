@@ -36,7 +36,7 @@ public class Todo extends BaseEntity {
     private boolean status;
 
     @Column
-    private boolean expose;
+    private String expose;
 
     @Column
     private LocalDate date;
@@ -44,8 +44,12 @@ public class Todo extends BaseEntity {
     @Column
     private LocalDate endDate;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "users_id")
+    private Users users;
+
     @Builder
-    public Todo(String title, String content, boolean status, boolean expose, LocalDate endDate) {
+    public Todo(String title, String content, boolean status, String expose, LocalDate endDate) {
         this.title = title;
         this.content = content;
         this.status = status;
@@ -53,8 +57,9 @@ public class Todo extends BaseEntity {
         this.endDate = endDate;
     }
 
-
-
+    public void setUsers(Users users) {
+        this.users = users;
+    }
 
     public void updateColumns(TodoUpdateDto updateDto) {
         if(updateDto.getTitle() != null) {
@@ -62,6 +67,12 @@ public class Todo extends BaseEntity {
         }
         if(updateDto.getContent() != null) {
             this.content = updateDto.getContent();
+        }
+        if(updateDto.getExpose() != null) {
+            this.expose = updateDto.getExpose();
+        }
+        if(updateDto.getEndDate() != null) {
+            this.endDate = updateDto.getEndDate();
         }
     }
 
