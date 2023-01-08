@@ -31,18 +31,23 @@ public class TeamService {
         Users users1 = users.orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
 
         Team team = teamSaveDto.toEntity();
-        team.setHostUserId(users1.getId());
+        team.setHostUserId(users1.getUsersId());
 
         Team team1 = teamRepository.save(team);
-        return team1.getId();
+        return team1.getTeamId();
     }
 
-    public Long update(TeamUpdateDto teamUpdateDto, Long teamId) {
+    public Long update(TeamUpdateDto teamUpdateDto, Long teamId, Long usersId) {
+        Users users = usersRepository.findById(usersId)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+
+        verifyingHosts(team.getHostUserId(), users.getUsersId());
+
         team.updateTeam(teamUpdateDto);
 
-        return team.getId();
+        return team.getTeamId();
     }
 
     public void deleteUser(Long teamId,Long hostsId, Long usersId) {
@@ -55,7 +60,9 @@ public class TeamService {
         Users users = usersRepository.findById(usersId)
                         .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
         verifyingUsers(usersList, usersId);
+
         usersList.remove(users);
+        team.setUsersList(usersList);
     }
 
     public Long mandateHost(Long teamId, Long hostsId, Long usersid) {
@@ -78,7 +85,7 @@ public class TeamService {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
         return TeamResponseDto.builder()
-                .id(teamId)
+                .teamId(teamId)
                 .title(team.getTitle())
                 .explanation(team.getExplanation())
                 .build();
@@ -92,9 +99,9 @@ public class TeamService {
         List<Users> usersList = team.getUsersList();
         for (Users users : usersList) {
             List<TodoTitleResponsesDto> todoTitleResponsesDto =
-                    todoRepository.findByUsersIdAndIsExposeAndDate(users.getId(), date);
+                    todoRepository.findByUsersIdAndIsExposeAndDate(users.getUsersId(), date);
             UsersTodoDto usersTodoDto = UsersTodoDto.builder()
-                    .usersId(users.getId())
+                    .usersId(users.getUsersId())
                     .username(users.getUsername())
                     .profile(users.getProfile())
                     .todoList(todoTitleResponsesDto)
@@ -103,7 +110,7 @@ public class TeamService {
         }
 
         return TeamDetailResponseDto.builder()
-                .id(team.getId())
+                .teamId(team.getTeamId())
                 .title(team.getTitle())
                 .explanation(team.getExplanation())
                 .usersTodoDtos(list)

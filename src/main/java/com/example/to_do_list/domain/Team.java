@@ -1,6 +1,6 @@
 package com.example.to_do_list.domain;
 
-import com.example.to_do_list.commons.baseentity.BaseEntity;
+import com.example.to_do_list.baseentity.BaseEntity;
 import com.example.to_do_list.dto.team.TeamUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,20 +11,18 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "teams")
 public class Team extends BaseEntity {
 
-    @PrePersist
-    void prePersist() {
-        if(this.attendance == null) {
-            attendance = new ArrayList<>();
-        }
-        if(this.usersList == null) {
-            usersList = new ArrayList<>();
-        }
-    }
+//    @PrePersist
+//    void prePersist() {
+//        if(this.usersList == null) {
+//            usersList = new ArrayList<>();
+//        }
+//    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long teamId;
 
     @Column
     private long hostUserId;
@@ -36,30 +34,21 @@ public class Team extends BaseEntity {
     private String explanation;
 
     @Column
-    private int limit;
+    private int limits;
 
     @OneToMany(mappedBy = "team")
-    private List<Attendance> attendance;
-
-    @OneToMany(mappedBy = "team")
-    private List<Users> usersList;
+    private List<Users> usersList = new ArrayList<>();
 
     @Builder
-    public Team(long hostUserId, String title, String explanation, int limit, List<Attendance> attendance, List<Users> usersList) {
+    public Team(long hostUserId, String title, String explanation, int limits) {
         this.hostUserId = hostUserId;
         this.title = title;
         this.explanation = explanation;
-        this.attendance = attendance;
-        this.limit = limit;
-        this.usersList = usersList;
+        this.limits = limits;
     }
 
     public void setHostUserId(long hostUserId) {
         this.hostUserId = hostUserId;
-    }
-
-    public void setAttendance(List<Attendance> attendance) {
-        this.attendance = attendance;
     }
 
     public void setUsersList(List<Users> usersList) {

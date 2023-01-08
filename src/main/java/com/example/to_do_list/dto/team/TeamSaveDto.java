@@ -26,8 +26,7 @@ public class TeamSaveDto {
         return Team.builder()
                 .title(title)
                 .explanation(explanation)
-                .limit(limit)
-                .usersIdList(new ArrayList<>())
+                .limits(limit)
                 .build();
     }
 }

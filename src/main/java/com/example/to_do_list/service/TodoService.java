@@ -22,10 +22,10 @@ import java.util.NoSuchElementException;
 public class TodoService {
     private final TodoRepository todoRepository;
 
-    public Long save(TodoSaveDto todoSaveDto, Users users) {
+    public Long save(TodoSaveDto todoSaveDto) {
         Todo todo = todoSaveDto.toEntity();
-        todo.setUsers(users);
-        users.addTodoList(todo);
+//        todo.setUsers(users);
+//        users.addTodoList(todo);
         Todo saveTodo = todoRepository.save(todo);
 
         return saveTodo.getId();

@@ -5,12 +5,11 @@ import lombok.Getter;
 
 @Getter
 public class TodoTitleResponsesDto {
-    private Long todoId;
+    private Long id;
     private String title;
 
-    @Builder
-    public TodoTitleResponsesDto(Long todoId, String title) {
-        this.todoId = todoId;
+    public TodoTitleResponsesDto(Long id, String title) {
+        this.id = id;
         this.title = title;
     }
 }

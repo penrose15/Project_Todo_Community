@@ -1,6 +1,6 @@
 package com.example.to_do_list.domain;
 
-import com.example.to_do_list.commons.baseentity.BaseEntity;
+import com.example.to_do_list.baseentity.BaseEntity;
 import com.example.to_do_list.dto.todo.TodoUpdateDto;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,7 +44,7 @@ public class Todo extends BaseEntity {
     @Column
     private LocalDate endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "users_id")
     private Users users;
 

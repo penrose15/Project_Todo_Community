@@ -9,14 +9,14 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class TeamDetailResponseDto {
-    private long id;
+    private long teamId;
     private String title;
     private String explanation;
     private List<UsersTodoDto> usersTodoDtos;
 
     @Builder
-    public TeamDetailResponseDto(long id, String title, String explanation, List<UsersTodoDto> usersTodoDtos) {
-        this.id = id;
+    public TeamDetailResponseDto(long teamId, String title, String explanation, List<UsersTodoDto> usersTodoDtos) {
+        this.teamId = teamId;
         this.title = title;
         this.explanation = explanation;
         this.usersTodoDtos = usersTodoDtos;

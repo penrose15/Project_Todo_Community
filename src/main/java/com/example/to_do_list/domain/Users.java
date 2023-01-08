@@ -1,19 +1,15 @@
 package com.example.to_do_list.domain;
 
-import com.example.to_do_list.commons.baseentity.BaseEntity;
+import com.example.to_do_list.baseentity.BaseEntity;
 import com.example.to_do_list.domain.role.Role;
 import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Entity
-@Table(name = "users",
-        indexes = @Index(name = "users_todoList",
-                columnList = "id, nickname,todoList"))
 public class Users extends BaseEntity {
     @PrePersist
     void prePersist() {
@@ -24,7 +20,7 @@ public class Users extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long usersId;
 
     @Column
     private String username;
@@ -37,11 +33,11 @@ public class Users extends BaseEntity {
 
     private String profile;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
     private List<Todo> todoList;
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", nullable = true)
     private Team team;
 
     @Column(name = "roles")
@@ -57,6 +53,13 @@ public class Users extends BaseEntity {
 
     public void joinTeam(Team team) {
         this.team = team;
+    }
+
+    public Users update(String username, String picture) {
+        this.username = username;
+        this.profile = profile;
+
+        return this;
     }
 
     @Builder

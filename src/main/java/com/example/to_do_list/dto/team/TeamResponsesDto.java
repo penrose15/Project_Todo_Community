@@ -4,15 +4,15 @@ import lombok.Getter;
 
 @Getter
 public class TeamResponsesDto {
-    private long id;
+    private long teamId;
     private String title;
     private String explanation;
-    private int limit;
+    private int limits;
 
-    public TeamResponsesDto(long id, String title, String explanation, int limit) {
-        this.id = id;
+    public TeamResponsesDto(long teamId, String title, String explanation, int limits) {
+        this.teamId = teamId;
         this.title = title;
         this.explanation = explanation;
-        this.limit = limit;
+        this.limits = limits;
     }
 }

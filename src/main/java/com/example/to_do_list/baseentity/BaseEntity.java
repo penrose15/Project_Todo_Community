@@ -1,4 +1,4 @@
-package com.example.to_do_list.commons.baseentity;
+package com.example.to_do_list.baseentity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

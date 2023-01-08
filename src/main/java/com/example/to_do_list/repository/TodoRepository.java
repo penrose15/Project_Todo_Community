@@ -13,12 +13,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    @Query("select new com.example.to_do_list.dto.todo.TodoResponsesDto(t.id ,t.title, t.done) " +
+    @Query("select new com.example.to_do_list.dto.todo.TodoResponsesDto(t.id ,t.title, t.status) " +
             " from Todo t where :date >= t.date and :date <= t.endDate")
     Slice<TodoResponsesDto> findByDateNow(Pageable pageable, LocalDate date);
 
-    @Query("SELECT new com.example.to_do_list.dto.todo.TodoTitleResponsesDto(t.id, t.title " +
-            " FROM Todo t JOIN Users u ON t.usersList.id = u.id " +
-            " WHERE (:date >= t.date AND :date <= t.endDate) AND t.expose = 'PUBLIC' GROUP BY u.id )")
+    @Query("SELECT new com.example.to_do_list.dto.todo.TodoTitleResponsesDto(t.id, t.title) " +
+            " FROM Todo t JOIN Users u ON t.users.id = u.id " +
+            " WHERE u.id = :usersId AND (:date >= t.date AND :date <= t.endDate) AND t.expose = 'PUBLIC' GROUP BY u.id")
     List<TodoTitleResponsesDto> findByUsersIdAndIsExposeAndDate(@Param("usersId") Long usersId, LocalDate date);
 }
