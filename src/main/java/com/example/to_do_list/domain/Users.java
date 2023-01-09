@@ -6,10 +6,15 @@ import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import java.security.AuthProvider;
 import java.util.List;
 
 @Getter
 @Entity
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "email")
+})
 public class Users extends BaseEntity {
     @PrePersist
     void prePersist() {
@@ -28,7 +33,8 @@ public class Users extends BaseEntity {
     @Column
     private String nickname;
 
-    @Column(unique = true)
+    @Email
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String profile;
@@ -43,6 +49,8 @@ public class Users extends BaseEntity {
     @Column(name = "roles")
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
+
+    private String refreshToken;
 
     public void addTodoList(Todo todo) {
         this.todoList.add(todo);

@@ -16,6 +16,12 @@ public class UsersService {
     private final UsersRepository usersRepository;
     private final TeamRepository teamRepository;
 
+    public Long findById(Long userId) {
+        Users users = usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        return users.getUsersId();
+    }
+
     public Long joinTeam(Long teamId, Long usersId) {
         Users users = usersRepository.findById(usersId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원"));

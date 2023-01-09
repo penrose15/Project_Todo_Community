@@ -1,15 +1,18 @@
 package com.example.to_do_list.controller;
 
+import com.example.to_do_list.config.CustomUserDetails;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.dto.todo.TodoResponseDto;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
 import com.example.to_do_list.dto.todo.TodoSaveDto;
 import com.example.to_do_list.dto.todo.TodoUpdateDto;
 import com.example.to_do_list.service.TodoService;
+import com.example.to_do_list.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,16 +24,21 @@ import java.util.List;
 public class TodoController {
 
     private final TodoService todoService;
+    private final UsersService usersService;
 
     @PostMapping("/posts")
-    public Long save(@RequestBody TodoSaveDto request) {
-        return todoService.save(request);
+    public Long save(@RequestBody TodoSaveDto request,
+                     @AuthenticationPrincipal CustomUserDetails user) {
+        Long usersId = usersService.findById(user.getId());
+        return todoService.save(request,usersId);
     }
 
     @PatchMapping("/posts/{id}")
     public Long update(@PathVariable Long id,
-                       @RequestBody TodoUpdateDto request) {
-        return todoService.update(id, request);
+                       @RequestBody TodoUpdateDto request,
+                       @AuthenticationPrincipal CustomUserDetails user) {
+        Long usersId = user.getId();
+        return todoService.update(id, request, usersId);
     }
 
     @GetMapping("/posts/{id}")
@@ -38,8 +46,10 @@ public class TodoController {
         return todoService.findById(id);
     }
     @GetMapping("/posts/done/{id}")
-    public boolean todoDone(@PathVariable Long id) {
-        return todoService.changeStatus(id);
+    public boolean todoDone(@PathVariable Long id,
+                            @AuthenticationPrincipal CustomUserDetails user) {
+        Long usersId = user.getId();
+        return todoService.changeStatus(id, usersId);
     }
 
     @GetMapping("/posts")
@@ -63,15 +73,19 @@ public class TodoController {
     }
 
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
-        todoService.deleteTodo(id);
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long id,
+                                           @AuthenticationPrincipal CustomUserDetails user) {
+        Long usersId = usersService.findById(user.getId());
+        todoService.deleteTodo(id, usersId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/posts")
-    public ResponseEntity<Void> deleteTodos(@RequestBody List<Long> ids) {
-        todoService.deleteTodos(ids);
+    public ResponseEntity<Void> deleteTodos(@RequestBody List<Long> ids,
+                                            @AuthenticationPrincipal CustomUserDetails user) {
+        Long usersId = usersService.findById(user.getId());
+        todoService.deleteTodos(ids, usersId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
