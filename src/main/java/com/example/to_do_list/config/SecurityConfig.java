@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .and()
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(auth2AuthenticationFailureHandler)
-                        .defaultSuccessUrl("/", true);
+                        .defaultSuccessUrl("/api/team/list/?page=1&size=10", true);
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
