@@ -30,8 +30,10 @@ public class TodoService {
 
         Users users = findUsersById(usersId);
         todo.setUsers(users);
-        users.addTodoList(todo);
+
         Todo saveTodo = todoRepository.save(todo);
+        users.addTodoList(todo);
+        usersRepository.save(users);
 
         return saveTodo.getId();
     }
@@ -42,6 +44,7 @@ public class TodoService {
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 할일입니다."));
 
         todo.updateColumns(todoUpdateDto);
+        todoRepository.save(todo);
         return id;
     }
 
@@ -99,7 +102,7 @@ public class TodoService {
         todoRepository.deleteAllById(ids);
     }
 
-    private Users findUsersById(Long usersId) {
+    public Users findUsersById(Long usersId) {
         return usersRepository.findById(usersId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
     }

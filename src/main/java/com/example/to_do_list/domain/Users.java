@@ -8,6 +8,7 @@ import lombok.Getter;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.security.AuthProvider;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -40,7 +41,7 @@ public class Users extends BaseEntity {
     private String profile;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
-    private List<Todo> todoList;
+    private List<Todo> todoList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "team_id", nullable = true)

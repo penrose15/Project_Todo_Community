@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/css/**","/images/**","/js/**","/h2/**").permitAll()
-                .antMatchers("/api/team/list/**").permitAll()
+                .antMatchers("/api/team/list/**", "/api/login").permitAll()
                 .antMatchers("/api/**").hasRole(Role.USER.name())
                 .anyRequest().authenticated()
                 .and().logout()
@@ -44,6 +44,7 @@ public class SecurityConfig {
                 ;
         http.formLogin().disable()
                 .oauth2Login()
+                .loginPage("/api/login")
                 .authorizationEndpoint()
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository)
                 .and()

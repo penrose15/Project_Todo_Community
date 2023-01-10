@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +22,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Log4j2
-@ComponentScan
+@Component
 public class JwtTokenProvider {
     private static SecretKey SECRET_KEY;
     private static String COOKIE_REFRESH_TOKEN_KEY;

@@ -23,7 +23,7 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String targetUrl = CookieUtil.getCookie(request, REDIRECT_URL_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue)
-                .orElse("/");
+                .orElse("/api/team/list?page=1&size=10");
         targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("error", exception.getLocalizedMessage())
                 .build().toUriString();
