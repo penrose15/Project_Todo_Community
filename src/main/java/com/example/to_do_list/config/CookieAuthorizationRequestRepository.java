@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-public class CookieAuthorizationRequestRepository implements AuthorizationRequestRepository {
+public class CookieAuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
     public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
     public static final String REDIRECT_URL_PARAM_COOKIE_NAME = "redirect_url";
     private static final int COOKIE_EXPIRE_SECONDS=180;

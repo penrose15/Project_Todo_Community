@@ -1,5 +1,6 @@
 package com.example.to_do_list.controller;
 
+import com.example.to_do_list.config.CustomUserDetails;
 import com.example.to_do_list.domain.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ResolvableType;
@@ -17,8 +18,12 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    @GetMapping("/api/login")
-    public String getLoginPage(Model model) {
+    @GetMapping("/login")
+    public String getLoginPage(@AuthenticationPrincipal CustomUserDetails user,
+                               Model model) {
+        if(user != null) {
+            model.addAttribute("username",user.getName());
+        }
 
         return "auth/oauth-login";
     }
