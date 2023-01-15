@@ -2,6 +2,7 @@ package com.example.to_do_list.service;
 
 import com.example.to_do_list.domain.Team;
 import com.example.to_do_list.domain.Users;
+import com.example.to_do_list.domain.role.Role;
 import com.example.to_do_list.repository.TeamRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,26 @@ public class UsersService {
     public Long findById(Long userId) {
         Users users = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        return users.getUsersId();
+    }
+
+    //임시
+    public Long save() {
+        Users users = Users.builder()
+                .username("users")
+                .profile("dog.jpg")
+                .role(Role.USER)
+                .email("abc@gmail.com")
+                .build();
+        Users users1 = Users.builder()
+                .username("users1")
+                .profile("dog1.jpg")
+                .role(Role.USER)
+                .email("bcd@gmail.com")
+                .build();
+        users = usersRepository.save(users);
+        usersRepository.save(users1);
+
         return users.getUsersId();
     }
 

@@ -13,9 +13,9 @@ public class TodoSaveDto {
     private String title;
     private String content;
     private String expose;
-    private LocalDate endDate;
+    private String endDate;
     @Builder
-    public TodoSaveDto(String title, String content, String expose, LocalDate endDate) {
+    public TodoSaveDto(String title, String content, String expose, String endDate) {
         this.title = title;
         this.content = content;
         this.expose = expose;
@@ -27,7 +27,7 @@ public class TodoSaveDto {
                 .content(content)
                 .status(false)
                 .expose(expose)
-                .endDate(endDate)
+                .endDate(LocalDate.parse(endDate))
                 .build();
     }
 }

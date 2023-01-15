@@ -39,6 +39,10 @@ public class Team extends BaseEntity {
     @OneToMany(mappedBy = "team")
     private List<Users> usersList = new ArrayList<>();
 
+    @OneToOne
+    @JoinColumn(name = "attend_id")
+    private Attend attend;
+
     @Builder
     public Team(long hostUserId, String title, String explanation, int limits) {
         this.hostUserId = hostUserId;

@@ -32,6 +32,7 @@ public class TeamService {
 
         Team team = teamSaveDto.toEntity();
         team.setHostUserId(users1.getUsersId());
+        team.addUsers(users1);
 
         Team team1 = teamRepository.save(team);
         return team1.getTeamId();

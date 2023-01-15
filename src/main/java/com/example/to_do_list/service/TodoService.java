@@ -2,10 +2,7 @@ package com.example.to_do_list.service;
 
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
-import com.example.to_do_list.dto.todo.TodoResponseDto;
-import com.example.to_do_list.dto.todo.TodoResponsesDto;
-import com.example.to_do_list.dto.todo.TodoSaveDto;
-import com.example.to_do_list.dto.todo.TodoUpdateDto;
+import com.example.to_do_list.dto.todo.*;
 import com.example.to_do_list.repository.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -73,7 +71,24 @@ public class TodoService {
     public Slice<TodoResponsesDto> findByDate(int page, int size, LocalDate date) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
         Slice<TodoResponsesDto> todos = todoRepository.findByDateNow(pageRequest,date);
+
         return todos;
+    }
+
+    public TodoMainPageDto mainPageDto(List<TodoResponsesDto> list, LocalDate date) {
+        int done = 0;
+        for(int i = 0; i<list.size(); i++) {
+            if(list.get(i).isStatus()) {
+                done++;
+            }
+        }
+        int percentage = (int) (Math.round((double)done / (double) list.size() ) * 100);
+
+        return TodoMainPageDto.builder()
+                .todoResponsesDto(list)
+                .date(date.format(DateTimeFormatter.ISO_LOCAL_DATE))
+                .percentage(percentage)
+                .build();
     }
 
     public void deleteTodo(Long id, Long usersId) {

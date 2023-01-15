@@ -1,7 +1,7 @@
 package com.example.to_do_list.controller;
-
-import com.example.to_do_list.config.CustomUserDetails;
-import com.example.to_do_list.domain.Todo;
+//
+//import com.example.to_do_list.config.CustomUserDetails;
+//import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.dto.todo.TodoResponseDto;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
 import com.example.to_do_list.dto.todo.TodoSaveDto;
@@ -12,10 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+//import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -27,17 +28,20 @@ public class TodoController {
     private final UsersService usersService;
 
     @PostMapping("/posts")
-    public Long save(@RequestBody TodoSaveDto request,
-                     @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = usersService.findById(user.getId());
+    public Long save(@RequestBody TodoSaveDto request
+//                     @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long usersId = usersService.findById(1L);
         return todoService.save(request,usersId);
     }
 
     @PatchMapping("/posts/{id}")
     public Long update(@PathVariable Long id,
-                       @RequestBody TodoUpdateDto request,
-                       @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = user.getId();
+                       @RequestBody TodoUpdateDto request
+//                       @AuthenticationPrincipal CustomUserDetails user
+    ) {
+//        Long usersId = user.getId();
+        Long usersId = 1L;
         return todoService.update(id, request, usersId);
     }
 
@@ -46,9 +50,11 @@ public class TodoController {
         return todoService.findById(id);
     }
     @GetMapping("/posts/done/{id}")
-    public boolean todoDone(@PathVariable Long id,
-                            @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = user.getId();
+    public boolean todoDone(@PathVariable Long id
+//                            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+//        Long usersId = user.getId();
+        Long usersId = 1L;
         return todoService.changeStatus(id, usersId);
     }
 
@@ -64,27 +70,30 @@ public class TodoController {
     @GetMapping("/posts/days")
     public ResponseEntity findNextDay(@RequestParam int page,
                                       @RequestParam int size,
-                                      @RequestBody String date) {
-        LocalDate localDate = LocalDate.parse(date);
+                                      @RequestParam String date) {
+        LocalDate localDate = LocalDate.parse(date, DateTimeFormatter.ISO_DATE);
         Slice<TodoResponsesDto> request = todoService.findByDate(page, size, localDate);
         List<TodoResponsesDto> list = request.getContent();
+        System.out.println(list.size());
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id,
-                                           @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = usersService.findById(user.getId());
+    public ResponseEntity<Void> deleteTodo(@PathVariable Long id
+//                                           @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long usersId = usersService.findById(1L);
         todoService.deleteTodo(id, usersId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/posts")
-    public ResponseEntity<Void> deleteTodos(@RequestBody List<Long> ids,
-                                            @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = usersService.findById(user.getId());
+    public ResponseEntity<Void> deleteTodos(@RequestBody List<Long> ids
+//                                            @AuthenticationPrincipal CustomUserDetails user
+    ) {
+        Long usersId = usersService.findById(1L);
         todoService.deleteTodos(ids, usersId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

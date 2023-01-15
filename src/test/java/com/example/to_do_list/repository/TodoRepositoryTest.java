@@ -117,6 +117,18 @@ public class TodoRepositoryTest {
         assertThat(list.get(2).getTitle()).contains("title");
     }
     @Test
+    void TodoList_다른날짜_불러오기() {
+        PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.ASC, "id");
+        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now().plusDays(3));
+        List<TodoResponsesDto> list = slice.getContent();
+        System.out.println(list);
+
+        assertThat(list.size()).isEqualTo(4);
+        assertThat(list.get(0).getTitle()).contains("title");
+        assertThat(list.get(1).getTitle()).contains("title");
+        assertThat(list.get(2).getTitle()).contains("title");
+    }
+    @Test
     void USER의_TODO_불러오기() {
 
     }

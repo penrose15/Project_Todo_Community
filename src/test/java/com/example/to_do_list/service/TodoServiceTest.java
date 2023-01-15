@@ -48,7 +48,7 @@ public class TodoServiceTest {
         TodoSaveDto todoSaveDto = TodoSaveDto.builder()
                 .title("title")
                 .content("content")
-                .endDate(LocalDate.of(2023,1,20))
+                .endDate("2022-01-15")
                 .expose("PUBLIC")
                 .build();
         Long fakeTodoId = 1L;
@@ -123,7 +123,7 @@ public class TodoServiceTest {
         TodoSaveDto dto = TodoSaveDto.builder()
                 .title("title")
                 .content("content")
-                .endDate(LocalDate.of(2023,1,20))
+                .endDate("2023-01-23")
                 .expose("PUBLIC")
                 .build();
         Long fakeTodoId = 1L;

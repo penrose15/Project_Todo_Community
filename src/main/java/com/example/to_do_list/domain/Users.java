@@ -2,15 +2,17 @@ package com.example.to_do_list.domain;
 
 import com.example.to_do_list.baseentity.BaseEntity;
 import com.example.to_do_list.domain.role.Role;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.security.AuthProvider;
 import java.util.ArrayList;
 import java.util.List;
-
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
 @Table(name = "users", uniqueConstraints = {
