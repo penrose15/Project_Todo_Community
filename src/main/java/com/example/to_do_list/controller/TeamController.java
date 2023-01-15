@@ -42,8 +42,8 @@ public class TeamController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<TeamResponseDto> showTeamDetails(Long teamId) {
+    @GetMapping("/{id}") //팀원도 조회 가능하도록 변경?하기
+    public ResponseEntity<TeamResponseDto> showTeamDetails(@PathVariable(value = "id") Long teamId) {
         TeamResponseDto response = teamService.showTeamDetails(teamId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -57,7 +57,7 @@ public class TeamController {
         return new ResponseEntity<>(teamList, HttpStatus.OK);
     }
 
-    @GetMapping("/todoList/{id}/{date}")
+    @GetMapping("/todoList/{id}/{date}") // 방장의 todolist가 조회 안됨
     public ResponseEntity<TeamDetailResponseDto> showUsersTodoList(@PathVariable(value = "id") Long teamId,
                                                                    @PathVariable(value = "date") String date
 //                                                                   @AuthenticationPrincipal CustomUserDetails user
@@ -70,12 +70,12 @@ public class TeamController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/host")
-    public ResponseEntity<Long> mandateHost(@RequestParam(value = "team-id") Long teamId,
-                                            @RequestParam(value = "host-id") Long hostsId
+    @PatchMapping("/host") //deserialize error
+    public ResponseEntity<Long> mandateHost(@RequestParam(value = "teamId") Long teamId,
+                                            @RequestBody Long usersId
 //                                            @AuthenticationPrincipal CustomUserDetails users
     ) {
-        Long usersId = 1L;
+        Long hostsId = 1L;
         Long response = teamService.mandateHost(teamId, hostsId, usersId);
 
         return new ResponseEntity<>(response, HttpStatus.OK);

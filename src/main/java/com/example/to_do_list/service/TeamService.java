@@ -8,10 +8,12 @@ import com.example.to_do_list.repository.TeamRepository;
 import com.example.to_do_list.repository.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,6 +21,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Log4j2
+@Transactional
 @RequiredArgsConstructor
 @Service
 public class TeamService {
@@ -32,9 +36,15 @@ public class TeamService {
 
         Team team = teamSaveDto.toEntity();
         team.setHostUserId(users1.getUsersId());
-        team.addUsers(users1);
 
         Team team1 = teamRepository.save(team);
+        team1.setUsersList(new ArrayList<>());
+        team1.addUsers(users1);
+
+        users1.joinTeam(team1);
+
+        usersRepository.save(users1);
+
         return team1.getTeamId();
     }
 
@@ -60,10 +70,17 @@ public class TeamService {
 
         Users users = usersRepository.findById(usersId)
                         .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
-        verifyingUsers(usersList, usersId);
+        try {
+            verifyingUsers(usersList, usersId);
+        } catch (IllegalArgumentException e) {
+            log.info(e.getMessage());
+        }
+
 
         usersList.remove(users);
         team.setUsersList(usersList);
+
+        teamRepository.save(team);
     }
 
     public Long mandateHost(Long teamId, Long hostsId, Long usersid) {
@@ -133,13 +150,23 @@ public class TeamService {
         }
     }
 
-    private void verifyingUsers(List<Users> usersList, Long usersId) {
+    public void verifyingUsers(List<Users> usersList, Long usersId) {
         Users users = usersRepository.findById(usersId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
 
         if(!usersList.contains(users)) {
             throw new NoSuchElementException("존재하지 않는 유저");
         }
+    }
+
+    public void deleteTeam(Long hostsId, Team team) {
+        Users users = usersRepository.findById(hostsId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        verifyingHosts(team.getHostUserId(), hostsId);
+        if(team.getUsersList().size() != 0) {
+            throw new IllegalArgumentException("팀원이 0명이어야만 삭제가 가능합니다.");
+        }
+        teamRepository.delete(team);
     }
 
 

@@ -7,10 +7,11 @@ import com.example.to_do_list.repository.TeamRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class UsersService {

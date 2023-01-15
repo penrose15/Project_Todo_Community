@@ -1,0 +1,13 @@
+{{>auth/layout/header}}
+<h1> Login Page</h1>
+<div class ="col-md-12">
+    {{date}}
+    <div class="row">
+        {{#todolist}}
+            {{todolist.title}}
+            {{todolist.status}}
+        {{/todolist}}
+    </div>
+    <p>percentage : {{percentage}}</p>
+</div>
+{{>auth/layout/footer}}

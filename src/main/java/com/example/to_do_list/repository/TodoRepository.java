@@ -17,10 +17,10 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
             " from Todo t where :date >= t.date and :date <= t.endDate")
     Slice<TodoResponsesDto> findByDateNow(Pageable pageable, LocalDate date);
 
-    @Query("select count(t) from Todo t where t.users.usersId = :id and :date >= t.date and :date <= t.endDate and t.expose = 1")
+    @Query("select count(t) from Todo t where t.users.usersId = :id and :date >= t.date and :date <= t.endDate and t.expose = 'PUBLIC' ")
     int findByDate(Long id,LocalDate date);
 
-    @Query("select count(t) from Todo t where t.users.usersId = :id and :date >= t.date and :date <= t.endDate and t.status = 1 and t.expose = 'PUBLIC' ")
+    @Query("select count(t) from Todo t where t.users.usersId = :id and :date >= t.date and :date <= t.endDate and t.status = TRUE and t.expose = 'PUBLIC' ")
     int findByDateAndStatus(Long id,LocalDate date);
 
     @Query("SELECT new com.example.to_do_list.dto.todo.TodoTitleResponsesDto(t.id, t.title) " +
