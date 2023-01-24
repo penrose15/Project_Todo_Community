@@ -78,9 +78,11 @@ public class TeamService {
 
 
         usersList.remove(users);
+        users.setTeam(null);
         team.setUsersList(usersList);
 
         teamRepository.save(team);
+        usersRepository.save(users);
     }
 
     public Long mandateHost(Long teamId, Long hostsId, Long usersid) {
@@ -121,7 +123,6 @@ public class TeamService {
             UsersTodoDto usersTodoDto = UsersTodoDto.builder()
                     .usersId(users.getUsersId())
                     .username(users.getUsername())
-                    .profile(users.getProfile())
                     .todoList(todoTitleResponsesDto)
                     .build();
             list.add(usersTodoDto);
@@ -159,14 +160,20 @@ public class TeamService {
         }
     }
 
-    public void deleteTeam(Long hostsId, Team team) {
+    public void deleteTeam(Long hostsId, Long teamId) {
         Users users = usersRepository.findById(hostsId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+        Team team = findTeam(teamId);
         verifyingHosts(team.getHostUserId(), hostsId);
         if(team.getUsersList().size() != 0) {
             throw new IllegalArgumentException("팀원이 0명이어야만 삭제가 가능합니다.");
         }
         teamRepository.delete(team);
+    }
+    private Team findTeam(Long teamId) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀"));
+        return team;
     }
 
 

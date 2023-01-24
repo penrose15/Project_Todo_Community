@@ -37,15 +37,15 @@ public class TodoRepositoryTest {
     void addData() {
         Users users1 = Users.builder()
                 .email("123@gmail.com")
-                .profile("dog.png")
+//                .profile("dog.png")
                 .username("users1")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Users users2 = Users.builder()
                 .email("456@gmail.com")
-                .profile("cat.png")
+//                .profile("cat.png")
                 .username("users2")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
 
 
@@ -108,7 +108,7 @@ public class TodoRepositoryTest {
     @Test
     void TODOLIST_오늘치_불러오기() {
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.ASC, "id");
-        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now());
+        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now(), 1L);
         List<TodoResponsesDto> list = slice.getContent();
 
         assertThat(list.size()).isEqualTo(4);
@@ -119,7 +119,7 @@ public class TodoRepositoryTest {
     @Test
     void TodoList_다른날짜_불러오기() {
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.ASC, "id");
-        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now().plusDays(3));
+        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now().plusDays(3),1L);
         List<TodoResponsesDto> list = slice.getContent();
         System.out.println(list);
 

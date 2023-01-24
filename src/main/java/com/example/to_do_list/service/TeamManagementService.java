@@ -37,6 +37,10 @@ public class TeamManagementService {
                     Long usersId = attend.getUserId();
                     if(attendMap.containsKey(usersId)) {
                         List<Attend> attends =  attendMap.get(usersId);
+                        for (Attend attend1 : attends) {
+                            System.out.print(attend1.getUserId() + " ");
+                            System.out.println(attend1.getPercentage());
+                        }
                        if(attends.contains(attend)) { //중복 방지
                            attends.add(attend);
                            attendMap.put(usersId, attends);

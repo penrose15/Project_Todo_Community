@@ -49,8 +49,6 @@ public class AttendService {
             team.addAttendList();
         }
         team.addAttends(attend);
-
-
     }
 
     private int getPercentage(Long usersId) {

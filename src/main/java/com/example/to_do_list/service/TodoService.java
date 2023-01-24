@@ -69,9 +69,9 @@ public class TodoService {
 
         return todo.updateStatus();
     }
-    public Slice<TodoResponsesDto> findByDate(int page, int size, LocalDate date) {
+    public Slice<TodoResponsesDto> findByDate(int page, int size, LocalDate date, Long usersId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Slice<TodoResponsesDto> todos = todoRepository.findByDateNow(pageRequest,date);
+        Slice<TodoResponsesDto> todos = todoRepository.findByDateNow(pageRequest,date, usersId);
 
         return todos;
     }

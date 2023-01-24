@@ -57,8 +57,8 @@ public class TodoServiceTest {
         Users users = Users.builder()
                 .username("name")
                 .email("name@gmail.com")
-                .profile("dog.jpg")
-                .role(Role.USER)
+//                .profile("dog.jpg")
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Long fakeUsersId = 1L;
 
@@ -94,8 +94,8 @@ public class TodoServiceTest {
         Users users = Users.builder()
                 .username("name")
                 .email("name@gmail.com")
-                .profile("dog.jpg")
-                .role(Role.USER)
+//                .profile("dog.jpg")
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Long fakeUsersId = 1L;
 
@@ -153,8 +153,8 @@ public class TodoServiceTest {
         Slice<TodoResponsesDto> slice = new SliceImpl<>(list);
 
         doReturn(slice)
-                .when(todoRepository).findByDateNow(any(PageRequest.class), any(LocalDate.class));
-        Slice<TodoResponsesDto> list1 = todoService.findByDate(0, 10, LocalDate.now());
+                .when(todoRepository).findByDateNow(any(PageRequest.class), any(LocalDate.class), anyLong());
+        Slice<TodoResponsesDto> list1 = todoService.findByDate(0, 10, LocalDate.now(),anyLong());
         List<TodoResponsesDto> responsesDtos =
                 list1.getContent();
         assertThat(list.size()).isEqualTo(responsesDtos.size());

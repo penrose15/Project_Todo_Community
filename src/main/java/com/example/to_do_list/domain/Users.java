@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import java.security.AuthProvider;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,12 +20,6 @@ import java.util.List;
         @UniqueConstraint(columnNames = "email")
 })
 public class Users extends BaseEntity {
-    @PrePersist
-    void prePersist() {
-        if(nickname == null) {
-            nickname = this.username; //닉네임 초반 이름은 OAuth2에서 받은 username으로 설정
-        }
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,14 +28,12 @@ public class Users extends BaseEntity {
     @Column
     private String username;
 
-    @Column
-    private String nickname;
-
     @Email
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String profile;
+    @Column
+    private String password;
 
     @OneToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
     private List<Todo> todoList = new ArrayList<>();
@@ -49,9 +42,8 @@ public class Users extends BaseEntity {
     @JoinColumn(name = "team_id", nullable = true)
     private Team team;
 
-    @Column(name = "roles")
-    @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> role = new ArrayList<>();
 
     private String refreshToken;
 
@@ -68,16 +60,41 @@ public class Users extends BaseEntity {
 
     public Users update(String username, String picture) {
         this.username = username;
-        this.profile = profile;
-
         return this;
     }
 
     @Builder
-    public Users(String username, String email, String profile, Role role) {
+    public Users(String username,
+                 String email,
+                 List<String> role,
+                 String password) {
         this.username = username;
         this.email = email;
-        this.profile = profile;
         this.role = role;
+        this.password = password;
+    }
+
+    public Users(long usersId, String email, String password, List<String> role) {
+        this.usersId = usersId;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public Users(String email, String password, List<String> role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setUsersId(long usersId) {
+        this.usersId = usersId;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }

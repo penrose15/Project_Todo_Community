@@ -34,15 +34,15 @@ public class TeamRepositoryTest {
     void addData() {
         Users users1 = Users.builder()
                 .email("123@gmail.com")
-                .profile("dog.png")
+//                .profile("dog.png")
                 .username("users1")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Users users2 = Users.builder()
                 .email("456@gmail.com")
-                .profile("cat.png")
+//                .profile("cat.png")
                 .username("users2")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
 
         usersRepository.save(users1);

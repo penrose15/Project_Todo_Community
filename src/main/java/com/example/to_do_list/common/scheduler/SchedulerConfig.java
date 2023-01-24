@@ -1,4 +1,4 @@
-package com.example.to_do_list.config.scheduler;
+package com.example.to_do_list.common.scheduler;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;

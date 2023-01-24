@@ -11,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 public interface UsersRepository extends JpaRepository<Users, Long> {
+
+    Optional<Users> findByUsersId(Long userId);
     Optional<Users> findByEmail(String email);
 
     @Query("select u.refreshToken from Users u where u.usersId= :id")

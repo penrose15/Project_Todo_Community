@@ -14,14 +14,12 @@ public class UsersTodoDto {
 
     private Long usersId;
     private String username;
-    private String profile;
     private List<TodoTitleResponsesDto> todoList;
 
     @Builder
-    public UsersTodoDto(Long usersId, String username, String profile, List<TodoTitleResponsesDto> todoList) {
+    public UsersTodoDto(Long usersId, String username, List<TodoTitleResponsesDto> todoList) {
         this.usersId = usersId;
         this.username = username;
-        this.profile = profile;
         this.todoList = todoList;
     }
 }
