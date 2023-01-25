@@ -16,6 +16,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,8 +50,7 @@ public class TeamServiceTest {
         Users users = Users.builder()
                 .username("name")
                 .email("name@gmail.com")
-                .profile("dog.jpg")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Long fakeUsersId = 1L;
 
@@ -85,8 +85,7 @@ public class TeamServiceTest {
         Users users = Users.builder()
                 .username("name")
                 .email("name@gmail.com")
-                .profile("dog.jpg")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Long fakeUsersId = 1L;
 
@@ -113,15 +112,13 @@ public class TeamServiceTest {
         Users users = Users.builder()
                 .username("name")
                 .email("name@gmail.com")
-                .profile("dog.jpg")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Long fakeUsersId = 1L;
         Users users1 = Users.builder()
                 .username("name")
                 .email("name@gmail.com")
-                .profile("dog.jpg")
-                .role(Role.USER)
+                .role(List.of(Role.USER.getRole()))
                 .build();
         Long fakeUsersId1 = 2L;
 
