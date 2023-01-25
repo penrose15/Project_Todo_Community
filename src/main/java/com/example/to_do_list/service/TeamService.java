@@ -37,9 +37,10 @@ public class TeamService {
         Team team = teamSaveDto.toEntity();
         team.setHostUserId(users1.getUsersId());
 
+        team.setUsersList(new ArrayList<>());
+        team.addUsers(users1);
+
         Team team1 = teamRepository.save(team);
-        team1.setUsersList(new ArrayList<>());
-        team1.addUsers(users1);
 
         users1.joinTeam(team1);
 
@@ -75,8 +76,6 @@ public class TeamService {
         } catch (IllegalArgumentException e) {
             log.info(e.getMessage());
         }
-
-
         usersList.remove(users);
         users.setTeam(null);
         team.setUsersList(usersList);

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class TeamManagementService {
+    private final Clock clock;
     private final TeamRepository teamRepository;
     private final TeamService teamService;
     private final AttendRepository attendRepository;
@@ -31,16 +33,12 @@ public class TeamManagementService {
             int criteria = team.getCriteria();
             if(criteria > 0) {
                 List<Attend> attendList =
-                        attendRepository.findByTeamIdAndDate(team.getTeamId(), LocalDate.now().minusDays(criteria));
+                        attendRepository.findByTeamIdAndDate(team.getTeamId(), LocalDate.now(clock).minusDays(criteria));
                 Map<Long, List<Attend>> attendMap = new HashMap<>();
                 for (Attend attend : attendList) {
                     Long usersId = attend.getUserId();
                     if(attendMap.containsKey(usersId)) {
                         List<Attend> attends =  attendMap.get(usersId);
-                        for (Attend attend1 : attends) {
-                            System.out.print(attend1.getUserId() + " ");
-                            System.out.println(attend1.getPercentage());
-                        }
                        if(attends.contains(attend)) { //중복 방지
                            attends.add(attend);
                            attendMap.put(usersId, attends);

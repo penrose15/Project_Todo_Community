@@ -1,12 +1,15 @@
 package com.example.to_do_list.common.security.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +19,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+@Log4j2
 @Component
 public class JwtTokenizer {
     @Getter
@@ -77,6 +81,24 @@ public class JwtTokenizer {
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(jws);
+    }
+    public boolean validateToken(String jwtToken) {
+        String base64EncodedSecretKey = encodeBase64SecretKey(secretKey);
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        try {
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
+            return !claimsJws.getBody().getExpiration().before(new Date());
+        } catch (ExpiredJwtException e) {
+            log.info(e.getMessage());
+            return false;
+        }
+    }
+
+    public String getEmailFromRefreshToken(String jwt) {
+        String base64EncodedSecretKey = encodeBase64SecretKey(secretKey);
+        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt);
+        return claimsJws.getBody().getSubject();
     }
 
     // (5)

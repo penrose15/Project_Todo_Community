@@ -80,7 +80,7 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, usersRepository,jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new UsersAuthenticationFailureHandler());

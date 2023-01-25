@@ -4,6 +4,7 @@ import com.example.to_do_list.common.security.dto.LoginDto;
 import com.example.to_do_list.common.security.jwt.JwtTokenizer;
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
 import com.example.to_do_list.domain.Users;
+import com.example.to_do_list.repository.UsersRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -25,6 +26,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
+    private final UsersRepository usersRepository;
     private final JwtTokenizer jwtTokenizer;
 
     @SneakyThrows
@@ -43,11 +45,16 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
 
+        Users users = customUserDetails.getUsers();
+
         String accessToken = delegateAccessToken(customUserDetails);
         String refreshToken = delegateRefreshToken(customUserDetails);
 
         response.setHeader("Authorization","Bearer "+ accessToken);
-        response.setHeader("Refresh",refreshToken);
+        response.setHeader("Refresh", "Bearer "+ refreshToken);
+
+        users.addRefreshToken("Bearer "+refreshToken);
+        usersRepository.save(users);
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }

@@ -6,6 +6,7 @@ import com.example.to_do_list.common.security.utils.CustomAuthorityUtils;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.repository.UsersRepository;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,9 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class JwtVerificationFilter extends OncePerRequestFilter {
@@ -34,12 +33,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
-        } catch (SignatureException se) {
-            se.printStackTrace();
-            request.setAttribute("exception", se);
-        } catch (ExpiredJwtException ee) {
+        }  catch (ExpiredJwtException | SignatureException ee) {
             ee.printStackTrace();
-            request.setAttribute("exception", ee);
+            reissueToken(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("exception", e);
@@ -53,6 +49,51 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
         return authorization == null || !authorization.startsWith("Bearer ");
 
+    }
+    private String getAccessJwtToken(HttpServletRequest request) {
+        if(request.getHeader("Authorization") != null) {
+            return request.getHeader("Authorization").substring(7);
+        }
+        return null;
+    }
+    private String getRefreshToken(HttpServletRequest request) {
+        if(request.getHeader("Refresh") != null) {
+            return request.getHeader("Refresh");
+        }
+        return null;
+    }
+
+    private void reissueToken(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println(">>reissue start");
+        String jws = getAccessJwtToken(request);
+        String refreshToken = getRefreshToken(request);
+        if(!jwtTokenizer.validateToken(jws) && refreshToken != null) {
+            try {
+                refreshToken = refreshToken.substring(7);
+                if(jwtTokenizer.validateToken(refreshToken)) {
+                    String email = jwtTokenizer.getEmailFromRefreshToken(refreshToken);
+                    Users users = usersRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("잘못된 리프레시토큰"));
+                    System.out.println(users.getEmail());
+                    if(Objects.equals(refreshToken, users.getRefreshToken().substring(7))) {
+                        Map<String, Object> claims = new HashMap<>();
+                        claims.put("username", users.getEmail());
+                        claims.put("roles",users.getRole());
+                        System.out.println(">>");
+                        Date expiration = jwtTokenizer.getTokenExpiration(Integer.parseInt(jwtTokenizer.getAccessTokenExpirationMinutes()));
+                        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+                        String accessToken = jwtTokenizer.generateAccessToken(claims, email, expiration, base64EncodedSecretKey);
+                        response.setHeader("Authorization", accessToken);
+                        setAuthenticationToContext(claims);
+                    } else {
+                        throw new MalformedJwtException("wrong refreshToken");
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.info("리프레시 토큰 없음, 유효하지 않은 액서스 토큰");
+        }
     }
 
     private Map<String, Object> verifyJws(HttpServletRequest request) {

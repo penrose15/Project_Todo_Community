@@ -97,4 +97,8 @@ public class Users extends BaseEntity {
     public void setTeam(Team team) {
         this.team = team;
     }
+
+    public void addRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

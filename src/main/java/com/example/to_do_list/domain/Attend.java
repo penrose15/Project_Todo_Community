@@ -19,14 +19,14 @@ public class Attend {
 
     private LocalDate date;
     private Long userId;
-    private int percentage;
+    private double percentage;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 
     @Builder
-    public Attend(LocalDate date, Long userId, int percentage, Team team) {
+    public Attend(LocalDate date, Long userId, double percentage, Team team) {
         this.date = date;
         this.userId = userId;
         this.percentage = percentage;

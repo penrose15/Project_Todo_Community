@@ -10,12 +10,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+
 @Transactional
 @Service
 @RequiredArgsConstructor
 public class AttendService {
+
+    private final Clock clock;
     private final AttendRepository attendRepository;
     private final TeamRepository teamRepository;
     private final TodoRepository todoRepository;
@@ -23,21 +28,23 @@ public class AttendService {
     public void saveAll() {
         System.out.println("start");
         List<Team> allTeam = teamRepository.findAll();
-        if(allTeam.isEmpty()) return;
+        if(allTeam == null ||allTeam.isEmpty()) return;
 
-        for(int i = 0; i<allTeam.size(); i++) {
-            Team team = allTeam.get(i);
-            List<Users> usersList = team.getUsersList();
-            if(usersList.isEmpty()) continue;
-            for (Users users : usersList) {
-                saveAttend(users, team);
+        for (Team team : allTeam) {
+            if (team.getUsersList() != null && !team.getUsersList().isEmpty()){
+                List<Users> usersList = team.getUsersList();
+                for (Users users : usersList) {
+                    team = saveAttend(users, team);
+                }
             }
+
         }
+        teamRepository.saveAll(allTeam);
         System.out.println("done");
 
     }
 
-    public void saveAttend(Users users, Team team) {
+    public Team saveAttend(Users users, Team team) {
         Attend attend = Attend.builder()
                 .date(LocalDate.now())
                 .percentage(getPercentage(users.getUsersId()))
@@ -49,15 +56,24 @@ public class AttendService {
             team.addAttendList();
         }
         team.addAttends(attend);
+
+        return team;
     }
 
-    private int getPercentage(Long usersId) {
-        int findAll = todoRepository.findByDate(usersId, LocalDate.now());
-        int findAllDone = todoRepository.findByDateAndStatus(usersId, LocalDate.now());
+    public double getPercentage(Long usersId) {
+        LocalDate now = LocalDate.now(clock);
+        int findAll = todoRepository.findByDate(usersId, now);
+        int findAllDone = todoRepository.findByDateAndStatus(usersId, now);
 
-        int result = 0;
+        System.out.println(findAll);
+        System.out.println(findAllDone);
+
+        double result = 0;
         if(findAll != 0){
-            result = (int)Math.round((double) findAllDone / (double) findAll) * 100;
+            result = (int)Math.round((double) findAllDone * 100 / (double) findAll);
+        }
+        if(findAll == 0) {
+            result = 0;
         }
         return result;
     }

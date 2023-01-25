@@ -14,7 +14,7 @@ public class Scheduler {
 
 //    @Async
 //    @Scheduled(cron = "0/10 * * * * *")
-    @Scheduled(cron = "0 59 23 * * *")
+    @Scheduled(cron = "0 45 23 * * *")
     public void saveAttend(){
         attendService.saveAll(); //매일 저장
         teamManagementService.deleteUser();//매일 체크리스트 몇일 연속 퍼센테지 0퍼인 사람 확인 후 삭제

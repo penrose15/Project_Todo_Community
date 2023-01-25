@@ -29,12 +29,12 @@ public class TodoController {
     private final UsersService usersService;
 
     @PostMapping("/posts")
-    public Long save(@RequestBody TodoSaveDto request,
+    public ResponseEntity<Long> save(@RequestBody TodoSaveDto request,
                      @AuthenticationPrincipal CustomUserDetails user) {
 
         System.out.println(">>> " + user);
         Long usersId = usersService.findByEmail(user.getUsers().getEmail());
-        return todoService.save(request,usersId);
+        return new ResponseEntity<>(todoService.save(request,usersId), HttpStatus.CREATED);
     }
 
     @PatchMapping("/posts/{id}")
@@ -99,8 +99,7 @@ public class TodoController {
 
     @DeleteMapping("/posts")
     public ResponseEntity<Void> deleteTodos(@RequestBody List<Long> ids,
-                                            @AuthenticationPrincipal CustomUserDetails user
-    ) {
+                                            @AuthenticationPrincipal CustomUserDetails user) {
         Long usersId = usersService.findById(user.getUsers().getUsersId());
         todoService.deleteTodos(ids, usersId);
 
