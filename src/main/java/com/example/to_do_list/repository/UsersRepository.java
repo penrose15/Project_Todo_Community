@@ -15,11 +15,11 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
     Optional<Users> findByUsersId(Long userId);
     Optional<Users> findByEmail(String email);
 
-    @Query("select u.refreshToken from Users u where u.usersId= :id")
-    String getRefreshTokenById(@Param("id") Long id);
-
-    @Transactional
-    @Modifying
-    @Query("update Users u set u.refreshToken= :token where u.usersId =:id")
-    void updateRefreshToken(@Param("id") Long id, @Param("token") String token);
+//    @Query("select u.refreshToken from Users u where u.usersId= :id")
+//    String getRefreshTokenById(@Param("id") Long id);
+//
+//    @Transactional
+//    @Modifying
+//    @Query("update Users u set u.refreshToken= :token where u.usersId =:id")
+//    void updateRefreshToken(@Param("id") Long id, @Param("token") String token);
 }
