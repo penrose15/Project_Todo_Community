@@ -1,5 +1,6 @@
 package com.example.to_do_list.common.security.config;
 
+import com.example.to_do_list.common.redis.RefreshTokenRepository;
 import com.example.to_do_list.common.security.filter.JwtAuthenticationFilter;
 import com.example.to_do_list.common.security.filter.JwtVerificationFilter;
 import com.example.to_do_list.common.security.filter.UsersAuthenticationFailureHandler;
@@ -34,6 +35,7 @@ public class SecurityConfig {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final UsersRepository usersRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -80,12 +82,12 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, usersRepository,jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, usersRepository,refreshTokenRepository,jwtTokenizer);
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new UsersAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer,usersRepository, authorityUtils );
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer,usersRepository, refreshTokenRepository,authorityUtils );
 
             builder
                     .addFilter(jwtAuthenticationFilter)

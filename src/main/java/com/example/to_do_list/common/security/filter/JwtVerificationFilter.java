@@ -1,5 +1,6 @@
 package com.example.to_do_list.common.security.filter;
 
+import com.example.to_do_list.common.redis.RefreshTokenRepository;
 import com.example.to_do_list.common.security.jwt.JwtTokenizer;
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
 import com.example.to_do_list.common.security.utils.CustomAuthorityUtils;
@@ -26,6 +27,7 @@ import java.util.*;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final UsersRepository usersRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final CustomAuthorityUtils authorityUtils;
 
     @Override
@@ -74,7 +76,15 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     String email = jwtTokenizer.getEmailFromRefreshToken(refreshToken);
                     Users users = usersRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("잘못된 리프레시토큰"));
                     System.out.println(users.getEmail());
-                    if(Objects.equals(refreshToken, users.getRefreshToken().substring(7))) {
+
+                    Long usersId = users.getUsersId();
+                    Long usersId2 = refreshTokenRepository.findById(refreshToken)
+                            .orElseThrow(() -> new NoSuchElementException("잘못된 토큰"))
+                            .getUsersId();
+
+                    if(Objects.equals(usersId2, usersId)) {
+                        System.out.println(">>>" + Objects.equals(usersId2, usersId));
+
                         Map<String, Object> claims = new HashMap<>();
                         claims.put("username", users.getEmail());
                         claims.put("roles",users.getRole());

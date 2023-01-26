@@ -30,6 +30,9 @@ public final class CustomUserDetails implements UserDetails {
 
         return authorities;
     }
+    public Long getUsersId() {
+        return users.getUsersId();
+    }
 
     @Override
     public String getPassword() {

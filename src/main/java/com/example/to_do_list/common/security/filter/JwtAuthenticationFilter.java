@@ -1,8 +1,10 @@
 package com.example.to_do_list.common.security.filter;
 
+import com.example.to_do_list.common.redis.RefreshTokenRepository;
 import com.example.to_do_list.common.security.dto.LoginDto;
 import com.example.to_do_list.common.security.jwt.JwtTokenizer;
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
+import com.example.to_do_list.domain.RefreshToken;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.repository.UsersRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +29,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final UsersRepository usersRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenizer jwtTokenizer;
 
     @SneakyThrows
@@ -43,6 +46,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
 
         Users users = customUserDetails.getUsers();
@@ -53,8 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization","Bearer "+ accessToken);
         response.setHeader("Refresh", "Bearer "+ refreshToken);
 
-        users.addRefreshToken("Bearer "+refreshToken);
-        usersRepository.save(users);
+        refreshTokenRepository.save(new RefreshToken("Bearer" + refreshToken, users.getUsersId()));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
@@ -62,6 +65,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private String delegateAccessToken(CustomUserDetails customUserDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", customUserDetails.getUsers().getEmail());
+        claims.put("usersId", customUserDetails.getUsers().getUsersId());
         claims.put("roles",customUserDetails.getUsers().getRole());
 
         String subject = customUserDetails.getUsers().getEmail();

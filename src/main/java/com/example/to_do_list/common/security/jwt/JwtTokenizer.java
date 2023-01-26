@@ -1,5 +1,8 @@
 package com.example.to_do_list.common.security.jwt;
 
+import com.example.to_do_list.common.redis.RefreshTokenRepository;
+import com.example.to_do_list.domain.RefreshToken;
+import com.example.to_do_list.repository.UsersRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -18,6 +21,7 @@ import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @Log4j2
 @Component
@@ -33,6 +37,14 @@ public class JwtTokenizer {
     @Getter
     @Value("${jwt.refresh-token-expiration-minutes}")
     private String refreshTokenExpirationMinutes;
+
+    private final UsersRepository usersRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+
+    public JwtTokenizer(UsersRepository usersRepository, RefreshTokenRepository refreshTokenRepository) {
+        this.usersRepository = usersRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
+    }
 
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
@@ -55,13 +67,19 @@ public class JwtTokenizer {
 
     public String generateRefreshToken(String subject, Date expiration, String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
+        Long usersId = usersRepository.findByEmail(subject)
+                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저")).getUsersId();
 
-        return Jwts.builder()
+        String jwts =  Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(Calendar.getInstance().getTime())
                 .setExpiration(expiration)
                 .signWith(key)
                 .compact();
+        RefreshToken refreshToken = new RefreshToken(jwts, usersId);
+        refreshTokenRepository.save(refreshToken);
+
+        return jwts;
     }
 
     public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {

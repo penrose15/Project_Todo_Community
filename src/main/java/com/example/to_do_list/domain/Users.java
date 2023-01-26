@@ -45,8 +45,6 @@ public class Users extends BaseEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> role = new ArrayList<>();
 
-    private String refreshToken;
-
     public void addTodoList(Todo todo) {
         this.todoList.add(todo);
     }
@@ -96,9 +94,5 @@ public class Users extends BaseEntity {
 
     public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public void addRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
     }
 }
