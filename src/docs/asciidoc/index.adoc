@@ -1,0 +1,104 @@
+= Spring REST Docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[todo-post]]
+== Todo
+[[todo-post]]
+=== todo-post
+
+==== Http Request
+include::{snippets}/post-todo/http-request.adoc[]
+
+==== Request field
+include::{snippets}/post-todo/request-fields.adoc[]
+
+==== Response Body
+include::{snippets}/post-todo/response-body.adoc[]
+
+[[todo-patch]]
+=== todo-patch
+
+==== Http Request
+include::{snippets}/todo-patch/http-request.adoc[]
+
+==== PathParameters
+include::{snippets}/todo-patch/path-parameters.adoc[]
+
+==== Request field
+include::{snippets}/todo-patch/request-fields.adoc[]
+
+==== Response body
+include::{snippets}/todo-patch/response-body.adoc[]
+
+[[todo-get]]
+=== Todo-get
+
+==== Http Request
+include::{snippets}/todo-get/http-request.adoc[]
+==== PathParameters
+include::{snippets}/todo-get/path-parameters.adoc[]
+==== Response body
+include::{snippets}/todo-get/response-body.adoc[]
+
+
+[[todo-get-done]]
+=== Todos-get-done
+
+==== Http Request
+include::{snippets}/todo-done/http-request.adoc[]
+==== PathParameters
+include::{snippets}/todo-done/path-parameters.adoc[]
+==== Response body
+include::{snippets}/todo-done/response-body.adoc[]
+
+
+[[todos-get-today]]
+=== Todos-get-today
+
+==== Http Request
+include::{snippets}/todo-today/http-request.adoc[]
+==== Request Parameters
+include::{snippets}/todo-today/request-parameters.adoc[]
+==== Response field
+include::{snippets}/todo-today/response-fields.adoc[]
+==== Response Body
+include::{snippets}/todo-today/response-body.adoc[]
+
+
+
+[[todo-get-day]]
+=== Todo-get-day
+
+==== Http Request
+include::{snippets}/todo-find-days/http-request.adoc[]
+==== Request Parameters
+include::{snippets}/todo-find-days/request-parameters.adoc[]
+==== Response field
+include::{snippets}/todo-find-days/response-fields.adoc[]
+==== Response body
+include::{snippets}/todo-find-days/response-body.adoc[]
+
+
+[[todo-delete]]
+=== Todo-delete
+
+==== Http Request
+include::{snippets}/todo-delete/http-request.adoc[]
+==== PathParameters
+include::{snippets}/todo-delete/path-parameters.adoc[]
+==== Http Response
+include::{snippets}/todos-delete/http-response.adoc[]
+
+[[todos-delete]]
+=== Todos-delete
+
+==== Http Request
+include::{snippets}/todos-delete/http-request.adoc[]
+==== Request-body
+include::{snippets}/todos-delete/request-body.adoc[]
+==== Request field
+include::{snippets}/todos-delete/request-fields.adoc[]
+==== Http Response
+include::{snippets}/todos-delete/http-response.adoc[]

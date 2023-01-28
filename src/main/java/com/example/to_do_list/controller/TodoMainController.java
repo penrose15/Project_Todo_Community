@@ -25,7 +25,7 @@ public class TodoMainController {
                        @RequestParam int size,
                        Model model,
                        @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long usersId = customUserDetails.getUsers().getUsersId();
+        Long usersId = customUserDetails.getUsersId();
         Slice<TodoResponsesDto> request = todoService.findByDate(page, size, LocalDate.now(), usersId);
         List<TodoResponsesDto> list = request.getContent();
         TodoMainPageDto todoMainPageDto = todoService.mainPageDto(list, LocalDate.now());

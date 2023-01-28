@@ -3,6 +3,7 @@ package com.example.to_do_list.common.security.filter;
 import com.example.to_do_list.common.redis.RefreshTokenRepository;
 import com.example.to_do_list.common.security.jwt.JwtTokenizer;
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
+import com.example.to_do_list.common.security.userdetails.CustomUserDetailsService;
 import com.example.to_do_list.common.security.utils.CustomAuthorityUtils;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.repository.UsersRepository;
@@ -117,7 +118,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private void setAuthenticationToContext(Map<String, Object> claims) {
         String username = (String) claims.get("username");
         Users users = usersRepository.findByEmail(username).orElseThrow(() -> new NoSuchElementException());
-        CustomUserDetails customUserDetails = new CustomUserDetails(users);
+        CustomUserDetails customUserDetails = new CustomUserDetails(users.getUsersId(), users.getEmail(), users.getRole());
 
 
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List) claims.get("roles"));

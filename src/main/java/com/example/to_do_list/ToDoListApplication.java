@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableAsync
 @EnableScheduling // 추가
-@EnableJpaAuditing
 @SpringBootApplication
 public class ToDoListApplication {
 

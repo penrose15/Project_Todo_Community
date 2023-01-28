@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "teams")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team extends BaseEntity {
-
+    // TODO: 2023-01-28 todo 완수하면 완수 날짜 기록 후 저장(이거 없으면 달성 퍼센트 계산 이상해짐)
 //    @PrePersist
 //    void prePersist() {
 //        if(this.usersList == null) {

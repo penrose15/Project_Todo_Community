@@ -22,7 +22,9 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.Clock;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +45,9 @@ public class TodoServiceTest {
 
     @Mock
     private UsersRepository usersRepository;
+
+
+
     @Test
     void Todo_생성() {
         TodoSaveDto todoSaveDto = TodoSaveDto.builder()
@@ -85,7 +90,7 @@ public class TodoServiceTest {
                 .title("title")
                 .content("content")
                 .status(false)
-                .endDate(LocalDate.of(2023,1,20))
+                .endDate("2023-02-15")
                 .expose("PUBLIC")
                 .build();
         Long fakeTodoId = 1L;
@@ -129,12 +134,13 @@ public class TodoServiceTest {
         Long fakeTodoId = 1L;
         Todo todo = dto.toEntity();
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         TodoResponseDto todoResponseDto = TodoResponseDto.builder()
                 .title("title")
                 .content("content")
                 .status(false)
                 .expose("PUBLIC")
-                .endDate(LocalDate.of(2023,1,20))
+                .endDate(LocalDate.of(2023,1,20).format(formatter))
                 .build();
 
         doReturn(Optional.ofNullable(todo))

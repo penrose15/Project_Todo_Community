@@ -78,7 +78,7 @@ public class Todo extends BaseEntity {
             this.expose = updateDto.getExpose();
         }
         if(updateDto.getEndDate() != null) {
-            this.endDate = updateDto.getEndDate();
+            this.endDate = LocalDate.parse(updateDto.getEndDate());
         }
     }
 

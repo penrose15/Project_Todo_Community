@@ -2,10 +2,7 @@ package com.example.to_do_list.domain;
 
 import com.example.to_do_list.baseentity.BaseEntity;
 import com.example.to_do_list.domain.role.Role;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email")
@@ -84,15 +82,5 @@ public class Users extends BaseEntity {
         this.password = password;
         this.role = role;
     }
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public void setUsersId(long usersId) {
-        this.usersId = usersId;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
 }

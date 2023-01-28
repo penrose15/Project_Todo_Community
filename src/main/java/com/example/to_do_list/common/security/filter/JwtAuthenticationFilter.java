@@ -49,7 +49,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
 
-        Users users = customUserDetails.getUsers();
 
         String accessToken = delegateAccessToken(customUserDetails);
         String refreshToken = delegateRefreshToken(customUserDetails);
@@ -57,18 +56,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization","Bearer "+ accessToken);
         response.setHeader("Refresh", "Bearer "+ refreshToken);
 
-        refreshTokenRepository.save(new RefreshToken("Bearer" + refreshToken, users.getUsersId()));
+        refreshTokenRepository.save(new RefreshToken("Bearer" + refreshToken, customUserDetails.getUsersId()));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
 
     private String delegateAccessToken(CustomUserDetails customUserDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", customUserDetails.getUsers().getEmail());
-        claims.put("usersId", customUserDetails.getUsers().getUsersId());
-        claims.put("roles",customUserDetails.getUsers().getRole());
+        claims.put("username", customUserDetails.getEmail());
+        claims.put("usersId", customUserDetails.getUsersId());
+        claims.put("roles",customUserDetails.getRoles());
 
-        String subject = customUserDetails.getUsers().getEmail();
+        String subject = customUserDetails.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(Integer.parseInt(jwtTokenizer.getAccessTokenExpirationMinutes()));
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         String accessToken = jwtTokenizer.generateAccessToken(claims, subject, expiration, base64EncodedSecretKey);
@@ -76,7 +75,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     private String delegateRefreshToken(CustomUserDetails customUserDetails) {
-        String subject = customUserDetails.getUsers().getEmail();
+        String subject = customUserDetails.getEmail();
         Date expiration = jwtTokenizer.getTokenExpiration(Integer.parseInt(jwtTokenizer.getRefreshTokenExpirationMinutes()));
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 

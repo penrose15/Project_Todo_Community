@@ -39,7 +39,7 @@ public class UsersController {
     @PatchMapping("/team/{teamId}")
     public ResponseEntity<Long> joinTeam(@PathVariable(value = "teamId") Long teamId,
                                          @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long usersId = customUserDetails.getUsers().getUsersId();
+        Long usersId = customUserDetails.getUsersId();
         Long id = usersService.joinTeam(teamId, usersId);
 
         return new ResponseEntity<>(id, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class UsersController {
 
     @PatchMapping("/withdrawal")//
     public ResponseEntity<Void> withdrawalTeam(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long usersId = customUserDetails.getUsers().getUsersId();
+        Long usersId = customUserDetails.getUsersId();
         usersService.resignTeam(usersId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

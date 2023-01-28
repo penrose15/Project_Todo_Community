@@ -14,10 +14,10 @@ public class TodoUpdateDto {
     private String content;
     private boolean status;
     private String expose;
-    private LocalDate endDate;
+    private String endDate;
 
     @Builder
-    public TodoUpdateDto(String title, String content, boolean status, String expose, LocalDate endDate) {
+    public TodoUpdateDto(String title, String content, boolean status, String expose, String endDate) {
         this.title = title;
         this.content = content;
         this.status = status;
@@ -25,13 +25,15 @@ public class TodoUpdateDto {
         this.endDate = endDate;
     }
 
+
     public Todo toEntity() {
+        LocalDate localDate = LocalDate.parse(this.endDate);
         return Todo.builder()
                 .title(title)
                 .content(content)
                 .status(status)
                 .expose(expose)
-                .endDate(endDate)
+                .endDate(localDate)
                 .build();
     }
 }

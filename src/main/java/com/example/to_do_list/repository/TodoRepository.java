@@ -3,6 +3,7 @@ package com.example.to_do_list.repository;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
 import com.example.to_do_list.dto.todo.TodoTitleResponsesDto;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("select new com.example.to_do_list.dto.todo.TodoResponsesDto(t.id ,t.title, t.status) " +
             " from Todo t where :date >= t.date and :date <= t.endDate and t.users.usersId = :usersId")
-    Slice<TodoResponsesDto> findByDateNow(Pageable pageable, LocalDate date, Long usersId);
+    Page<TodoResponsesDto> findByDateNow(Pageable pageable, LocalDate date, Long usersId);
 
     @Query("select count(t) from Todo t where t.users.usersId = :id and :date >= t.date and :date <= t.endDate and t.expose = 'PUBLIC' ")
     int findByDate(Long id,LocalDate date);

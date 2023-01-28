@@ -6,9 +6,7 @@ import com.example.to_do_list.dto.todo.*;
 import com.example.to_do_list.repository.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,16 +46,17 @@ public class TodoService {
     }
 
     public TodoResponseDto findById(Long id) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Todo todo = todoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("존재 하지 않은 할일"));
         return TodoResponseDto.builder()
                 .title(todo.getTitle())
                 .content(todo.getContent())
                 .status(todo.isStatus())
                 .expose(todo.getExpose())
-                .endDate(todo.getEndDate())
+                .endDate(todo.getEndDate().format(formatter))
                 .build();
     }
-    public boolean changeStatus(Long id, Long usersId) {
+    public Long changeStatus(Long id, Long usersId) {
         Users users = findUsersById(usersId);
         List<Todo> list = users.getTodoList();
 
@@ -67,11 +66,20 @@ public class TodoService {
             throw new IllegalArgumentException("자신의 todo만 변경 가능합니다.");
         }
 
-        return todo.updateStatus();
+        todo.updateStatus();
+        todoRepository.save(todo);
+
+        return todo.getId();
     }
-    public Slice<TodoResponsesDto> findByDate(int page, int size, LocalDate date, Long usersId) {
+    public Page<TodoResponsesDto> findByDate(int page, int size, LocalDate date, Long usersId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Slice<TodoResponsesDto> todos = todoRepository.findByDateNow(pageRequest,date, usersId);
+        Page<TodoResponsesDto> todos;
+        try {
+             todos = todoRepository.findByDateNow(pageRequest,date, usersId);
+        } catch (NullPointerException e) {
+            todos = new PageImpl<>(new ArrayList<>());
+        }
+
 
         return todos;
     }

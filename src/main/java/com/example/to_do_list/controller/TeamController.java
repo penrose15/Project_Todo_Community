@@ -28,7 +28,7 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<Long> createTeam(@RequestBody TeamSaveDto request,
                                            @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = user.getUsers().getUsersId();
+        Long usersId = user.getUsersId();
 //        Long usersId = 1L;
         Long result = teamService.save(request, usersId);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -38,7 +38,7 @@ public class TeamController {
     public ResponseEntity<Long> updateTeam(@PathVariable(value = "id") Long teamId,
                            @RequestBody TeamUpdateDto request,
                            @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = user.getUsers().getUsersId();
+        Long usersId = user.getUsersId();
         Long result =  teamService.update(request, teamId, usersId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -62,7 +62,7 @@ public class TeamController {
     public ResponseEntity<TeamDetailResponseDto> showUsersTodoList(@PathVariable(value = "id") Long teamId,
                                                                    @PathVariable(value = "date") String date,
                                                                    @AuthenticationPrincipal CustomUserDetails user) {
-        usersService.findById(user.getUsers().getUsersId());
+        usersService.findById(user.getUsersId());
 
         LocalDate localDate = LocalDate.parse(date);
         TeamDetailResponseDto response = teamService.showUsersTodoList(teamId, localDate);
@@ -74,7 +74,7 @@ public class TeamController {
     public ResponseEntity<Long> mandateHost(@RequestParam(value = "teamId") Long teamId,
                                             @RequestBody UsersMandateDto dto,
                                             @AuthenticationPrincipal CustomUserDetails users) {
-        Long hostsId = users.getUsers().getUsersId();
+        Long hostsId = users.getUsersId();
         Long response = teamService.mandateHost(teamId, hostsId, dto.getUsersId());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -84,7 +84,7 @@ public class TeamController {
     public ResponseEntity<Void> deleteUser(@RequestParam(value = "teamId") Long teamId,
                                            @RequestParam(value = "usersId") Long usersId,
                                            @AuthenticationPrincipal CustomUserDetails users) {
-        Long hostsId = users.getUsers().getUsersId();
+        Long hostsId = users.getUsersId();
         teamService.deleteUser(teamId, hostsId, usersId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -93,7 +93,7 @@ public class TeamController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable(value = "id")Long id,
                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long usersId = userDetails.getUsers().getUsersId();
+        Long usersId = userDetails.getUsersId();
         teamService.deleteTeam(usersId, id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
