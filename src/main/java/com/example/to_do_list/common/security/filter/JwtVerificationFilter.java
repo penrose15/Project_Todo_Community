@@ -118,7 +118,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private void setAuthenticationToContext(Map<String, Object> claims) {
         String username = (String) claims.get("username");
         Users users = usersRepository.findByEmail(username).orElseThrow(() -> new NoSuchElementException());
-        CustomUserDetails customUserDetails = new CustomUserDetails(users.getUsersId(), users.getEmail(), users.getRole());
+        CustomUserDetails customUserDetails = new CustomUserDetails(users.getUsersId(), users.getEmail(), users.getPassword(),users.getRole());
 
 
         List<GrantedAuthority> authorities = authorityUtils.createAuthorities((List) claims.get("roles"));

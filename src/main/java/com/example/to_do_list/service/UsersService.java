@@ -38,7 +38,7 @@ public class UsersService {
         return users.getUsersId();
     }
 
-    public Users createUsers(UsersSaveDto users) {
+    public String createUsers(UsersSaveDto users) {
         verifyEmail(users.getEmail());
 
         String encryptedPassword = passwordEncoder.encode(users.getPassword());
@@ -48,9 +48,9 @@ public class UsersService {
         users.setRoles(roleList);
 
         Users users1 = users.toEntity();
+        usersRepository.save(users1);
 
-        return usersRepository.save(users1);
-
+        return users1.getEmail();
     }
 
 
@@ -73,8 +73,8 @@ public class UsersService {
         return users.getUsersId();
     }
 
-    public Long joinTeam(Long teamId, Long usersId) {
-        Users users = usersRepository.findById(usersId)
+    public Long joinTeam(Long teamId, String email) {
+        Users users = usersRepository.findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원"));
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
@@ -92,8 +92,8 @@ public class UsersService {
         return teamId;
     }
 
-    public void resignTeam(Long usersId) {
-        Users users = usersRepository.findById(usersId)
+    public void resignTeam(String email) {
+        Users users = usersRepository.findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원"));
 
         Team team = users.getTeam();

@@ -10,6 +10,6 @@ import java.lang.annotation.RetentionPolicy;
 public @interface WithAuthUser {
     long usersId() default 1L;
     String email() default "abc@gmail.com";
-
+    String password() default "1234abcd!";
     String roles() default "USER";
 }

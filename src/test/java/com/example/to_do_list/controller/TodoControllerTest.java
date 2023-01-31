@@ -3,7 +3,6 @@ package com.example.to_do_list.controller;
 import com.example.to_do_list.WithAuthUser;
 import com.example.to_do_list.common.security.config.SecurityConfig;
 import com.example.to_do_list.common.security.jwt.JwtTokenizer;
-import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.todo.*;
 import com.example.to_do_list.service.TodoService;
 import com.example.to_do_list.service.UsersService;
@@ -19,13 +18,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -35,7 +34,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.List;
 
 import static com.example.to_do_list.util.ApiDocumentUtils.getDocumentRequest;
 import static com.example.to_do_list.util.ApiDocumentUtils.getDocumentResponse;
@@ -63,19 +62,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class TodoControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private WebApplicationContext context;
-
     @MockBean
     private TodoService todoService;
-
     @MockBean
     private UsersService usersService;
-
-    @MockBean
-    private JwtTokenizer jwtTokenizer;
-
     @Autowired
     private Gson gson;
 

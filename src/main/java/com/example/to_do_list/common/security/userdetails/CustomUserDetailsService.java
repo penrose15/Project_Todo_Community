@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<Users> usersOptional = usersRepository.findByEmail(username);
         Users users = usersOptional.orElseThrow(() -> new NoSuchElementException(" 존재하지 않는 멤버"));
 
-        return new CustomUserDetails(users.getUsersId(), users.getEmail(), users.getRole());
+        return new CustomUserDetails(users.getUsersId(), users.getEmail(), users.getPassword(),users.getRole());
     }
 
 }

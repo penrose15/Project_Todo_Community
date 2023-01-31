@@ -9,39 +9,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
-public final class CustomUserDetails implements UserDetails {
+public final class CustomUserDetails implements UserDetails  {
 
-    private Users users;
+    private Long usersId;
+    private String email;
+    private String password;
+    private List<String> roles;
 
-    public CustomUserDetails(Users users) {
-        this.users = users;
+    public CustomUserDetails(Long usersId, String email, String password,List<String> roles) {
+        this.usersId = usersId;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        users.getRole().forEach(n -> {
+        roles.forEach(n -> {
             authorities.add(() -> n);
         });
 
 
         return authorities;
     }
-    public Long getUsersId() {
-        return users.getUsersId();
+    public long getUsersId() {
+        return usersId;
     }
 
     @Override
     public String getPassword() {
-        return users.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return users.getEmail();
+        return email;
     }
 
     @Override

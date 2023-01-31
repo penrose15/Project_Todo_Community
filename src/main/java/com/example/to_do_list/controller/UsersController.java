@@ -30,25 +30,25 @@ public class UsersController {
     }
 
     @PostMapping("/account")
-    public ResponseEntity<Users> joinUser(@RequestBody UsersSaveDto usersSaveDto) {
-        Users users = usersService.createUsers(usersSaveDto);
+    public ResponseEntity<String> joinUser(@RequestBody UsersSaveDto usersSaveDto) {
+        String email = usersService.createUsers(usersSaveDto);
 
-        return new ResponseEntity<>(users, HttpStatus.CREATED);
+        return new ResponseEntity<>(email, HttpStatus.CREATED);
     }
 
     @PatchMapping("/team/{teamId}")
     public ResponseEntity<Long> joinTeam(@PathVariable(value = "teamId") Long teamId,
                                          @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long usersId = customUserDetails.getUsersId();
-        Long id = usersService.joinTeam(teamId, usersId);
+        String email = customUserDetails.getEmail();
+        Long id = usersService.joinTeam(teamId, email);
 
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @PatchMapping("/withdrawal")//
     public ResponseEntity<Void> withdrawalTeam(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        Long usersId = customUserDetails.getUsersId();
-        usersService.resignTeam(usersId);
+        String email = customUserDetails.getEmail();
+        usersService.resignTeam(email);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

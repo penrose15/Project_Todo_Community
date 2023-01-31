@@ -4,11 +4,15 @@ package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
 import com.example.to_do_list.domain.Team;
+import com.example.to_do_list.domain.Users;
+import com.example.to_do_list.dto.MultiResponseDto;
+import com.example.to_do_list.dto.SingleResponseDto;
 import com.example.to_do_list.dto.team.*;
 import com.example.to_do_list.dto.user.UsersMandateDto;
 import com.example.to_do_list.service.TeamService;
 import com.example.to_do_list.service.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +32,10 @@ public class TeamController {
     @PostMapping
     public ResponseEntity<Long> createTeam(@RequestBody TeamSaveDto request,
                                            @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = user.getUsersId();
+        String email = user.getEmail();
+        Long userId = usersService.findByEmail(email);
 //        Long usersId = 1L;
-        Long result = teamService.save(request, usersId);
+        Long result = teamService.save(request, userId);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
@@ -38,7 +43,8 @@ public class TeamController {
     public ResponseEntity<Long> updateTeam(@PathVariable(value = "id") Long teamId,
                            @RequestBody TeamUpdateDto request,
                            @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = user.getUsersId();
+        String email = user.getEmail();
+        Long usersId = usersService.findByEmail(email);
         Long result =  teamService.update(request, teamId, usersId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -50,34 +56,36 @@ public class TeamController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<TeamResponsesDto>> showTeamList(@RequestParam(value = "page") int page,
-                                                               @RequestParam(value = "size") int size) {
-        Slice<TeamResponsesDto> teamSlice = teamService.teamList(page, size);
-        List<TeamResponsesDto> teamList = teamSlice.getContent();
+    public ResponseEntity showTeamList(@RequestParam(value = "page") int page,
+                                       @RequestParam(value = "size") int size) {
+        Page<TeamResponsesDto> teamPage = teamService.teamList(page, size);
+        List<TeamResponsesDto> teamList = teamPage.getContent();
 
-        return new ResponseEntity<>(teamList, HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(teamList, teamPage), HttpStatus.OK);
     }
 
     @GetMapping("/todoList/{id}/{date}")
-    public ResponseEntity<TeamDetailResponseDto> showUsersTodoList(@PathVariable(value = "id") Long teamId,
+    public ResponseEntity showUsersTodoList(@PathVariable(value = "id") Long teamId,
                                                                    @PathVariable(value = "date") String date,
                                                                    @AuthenticationPrincipal CustomUserDetails user) {
-        usersService.findById(user.getUsersId());
+        usersService.findByEmail(user.getUsername());
 
         LocalDate localDate = LocalDate.parse(date);
         TeamDetailResponseDto response = teamService.showUsersTodoList(teamId, localDate);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
     @PatchMapping("/host")
-    public ResponseEntity<Long> mandateHost(@RequestParam(value = "teamId") Long teamId,
+    public ResponseEntity mandateHost(@RequestParam(value = "teamId") Long teamId,
                                             @RequestBody UsersMandateDto dto,
                                             @AuthenticationPrincipal CustomUserDetails users) {
-        Long hostsId = users.getUsersId();
+        String email = users.getUsername();
+
+        Long hostsId = usersService.findByEmail(email);
         Long response = teamService.mandateHost(teamId, hostsId, dto.getUsersId());
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
     @DeleteMapping("/user")
