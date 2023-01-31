@@ -15,13 +15,29 @@ import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     @Query("select new com.example.to_do_list.dto.todo.TodoResponsesDto(t.id ,t.title, t.status) " +
-            " from Todo t where :date >= t.date and :date <= t.endDate and t.users.usersId = :usersId")
+            " from Todo t " +
+            "where :date >= t.date " +
+            "and :date <= t.endDate " +
+            "and t.users.usersId = :usersId")
     Page<TodoResponsesDto> findByDateNow(Pageable pageable, LocalDate date, Long usersId);
 
-    @Query("select count(t) from Todo t where t.users.usersId = :id and :date >= t.date and :date <= t.endDate and t.expose = 'PUBLIC' ")
+    @Query("select count(t) " +
+            "from Todo t " +
+            "where t.users.usersId = :id " +
+            "and :date >= t.date " +
+            "and :date <= t.endDate " +
+            "and t.expose = 'PUBLIC' " +
+            "and (t.finishDate is null or t.finishDate = :date)")
     int findByDate(Long id,LocalDate date);
 
-    @Query("select count(t) from Todo t where t.users.usersId = :id and :date >= t.date and :date <= t.endDate and t.status = TRUE and t.expose = 'PUBLIC' ")
+    @Query("select count(t) " +
+            "from Todo t " +
+            "where t.users.usersId = :id " +
+            "and :date >= t.date " +
+            "and :date <= t.endDate " +
+            "and t.status = TRUE " +
+            "and t.expose = 'PUBLIC' " +
+            "and t.finishDate = :date")
     int findByDateAndStatus(Long id,LocalDate date);
 
     @Query("SELECT new com.example.to_do_list.dto.todo.TodoTitleResponsesDto(t.id, t.title, t.status) " +

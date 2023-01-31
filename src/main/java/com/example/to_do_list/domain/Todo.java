@@ -50,6 +50,9 @@ public class Todo extends BaseEntity {
     @Column
     private LocalDate endDate;
 
+    @Column
+    private LocalDate finishDate;
+
     @ManyToOne
     @JoinColumn(name = "users_id")
     private Users users;
@@ -82,9 +85,14 @@ public class Todo extends BaseEntity {
         }
     }
 
-    public boolean updateStatus() {
-        this.status = !this.status;
-        return this.status;
-    }
+    public Todo updateStatus(Todo todo) {
+        todo.status = !todo.status;
 
+        if(todo.status) { //만약 status가 true면 끝낸 날짜 오늘로 설정
+            todo.finishDate = LocalDate.now();
+        } else { //만약 status가 false라면 끝낸 날짜 삭제
+            todo.finishDate = null;
+        }
+        return todo;
+    }
 }

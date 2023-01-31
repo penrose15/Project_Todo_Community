@@ -66,7 +66,7 @@ public class TodoService {
             throw new IllegalArgumentException("자신의 todo만 변경 가능합니다.");
         }
 
-        todo.updateStatus();
+        todo = todo.updateStatus(todo); // status -> true
         todoRepository.save(todo);
 
         return todo.getId();
