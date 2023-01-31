@@ -9,6 +9,7 @@ import com.example.to_do_list.repository.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -107,6 +108,8 @@ public class TeamService {
                 .teamId(teamId)
                 .title(team.getTitle())
                 .explanation(team.getExplanation())
+                .limit(team.getLimits())
+                .criteria(team.getCriteria())
                 .build();
     }
 
@@ -137,11 +140,11 @@ public class TeamService {
     }
 
 
-    public Slice<TeamResponsesDto> teamList(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Slice<TeamResponsesDto> slice = teamRepository.findTeamResponsesDto(pageRequest);
+    public Page<TeamResponsesDto> teamList(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "teamId");
+        Page<TeamResponsesDto> page1 = teamRepository.findTeamResponsesDto(pageRequest);
 
-        return slice;
+        return page1;
     }
 
     private void verifyingHosts(Long teamHostsId, Long hostId) {
