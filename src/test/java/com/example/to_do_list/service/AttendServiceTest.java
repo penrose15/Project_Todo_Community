@@ -8,35 +8,26 @@ import com.example.to_do_list.domain.role.Role;
 import com.example.to_do_list.dto.team.TeamSaveDto;
 import com.example.to_do_list.repository.AttendRepository;
 import com.example.to_do_list.repository.TeamRepository;
-import com.example.to_do_list.repository.TodoRepository;
+import com.example.to_do_list.repository.todo.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.format.datetime.DateFormatter;
 
 import java.time.Clock;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 public class AttendServiceTest {
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 1);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 5);
 
     @Spy
     @InjectMocks

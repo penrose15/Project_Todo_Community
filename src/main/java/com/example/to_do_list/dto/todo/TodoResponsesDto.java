@@ -2,6 +2,7 @@ package com.example.to_do_list.dto.todo;
 
 import lombok.Getter;
 
+//todo : enddate 추가하기
 @Getter
 public class TodoResponsesDto {
     private long id;

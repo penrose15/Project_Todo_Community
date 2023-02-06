@@ -14,14 +14,16 @@ public class TodoUpdateDto {
     private String content;
     private boolean status;
     private String expose;
+    private int priority;
     private String endDate;
 
     @Builder
-    public TodoUpdateDto(String title, String content, boolean status, String expose, String endDate) {
+    public TodoUpdateDto(String title, String content, boolean status, String expose, int priority,String endDate) {
         this.title = title;
         this.content = content;
         this.status = status;
         this.expose = expose;
+        this.priority = priority;
         this.endDate = endDate;
     }
 
@@ -33,6 +35,7 @@ public class TodoUpdateDto {
                 .content(content)
                 .status(status)
                 .expose(expose)
+                .priority(priority)
                 .endDate(localDate)
                 .build();
     }

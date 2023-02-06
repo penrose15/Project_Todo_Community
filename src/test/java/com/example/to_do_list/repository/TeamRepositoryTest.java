@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
@@ -45,26 +46,31 @@ public class TeamRepositoryTest {
                 .role(List.of(Role.USER.getRole()))
                 .build();
 
-        usersRepository.save(users1);
-        usersRepository.save(users2);
-
-        List<Users> usersList = new ArrayList<>();
-        usersList.add(users2);
-
         Team team1 = Team.builder()
                 .hostUserId(1L)
                 .title("title1")
                 .explanation("test1")
+                .criteria(2)
                 .limits(3)
                 .build();
 
 
         teamRepository.save(team1);
 
+        List<Users> usersList = new ArrayList<>();
+        usersList.add(users2);
+
         users2.joinTeam(team1);
         team1.setUsersList(usersList);
 
+        usersRepository.save(users1);
         usersRepository.save(users2);
+
+
+
+
+
+
     }
     @AfterEach
     void clean() {
@@ -74,7 +80,7 @@ public class TeamRepositoryTest {
     @Test
     void Team_조회하기() {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "id");
-        Slice<TeamResponsesDto> slice = teamRepository.findTeamResponsesDto(pageRequest);
+        Page<TeamResponsesDto> slice = teamRepository.findTeamResponsesDto(pageRequest);
         List<TeamResponsesDto> list = slice.getContent();
 
         assertThat(list.get(0).getTitle()).isEqualTo("title1");

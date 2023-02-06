@@ -6,7 +6,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -44,6 +46,10 @@ public class Todo extends BaseEntity {
     @Column
     private String expose;
 
+    @Range(min = 1, max = 4)
+    @ColumnDefault(value = "4")
+    private int priority;
+
     @Column
     private LocalDate date;
 
@@ -57,11 +63,16 @@ public class Todo extends BaseEntity {
     @JoinColumn(name = "users_id")
     private Users users;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     @Builder
-    public Todo(String title, String content, boolean status, String expose, LocalDate endDate) {
+    public Todo(String title, String content, boolean status, int priority,String expose, LocalDate endDate) {
         this.title = title;
         this.content = content;
         this.status = status;
+        this.priority = priority;
         this.expose = expose;
         this.endDate = endDate;
     }
@@ -80,6 +91,9 @@ public class Todo extends BaseEntity {
         if(updateDto.getExpose() != null) {
             this.expose = updateDto.getExpose();
         }
+        if(updateDto.getPriority() != 0) {
+            this.priority = updateDto.getPriority();
+        }
         if(updateDto.getEndDate() != null) {
             this.endDate = LocalDate.parse(updateDto.getEndDate());
         }
@@ -94,5 +108,11 @@ public class Todo extends BaseEntity {
             todo.finishDate = null;
         }
         return todo;
+    }
+
+    public void setCategory(Category category) {
+        if(this.category != category) {
+            this.category = category;
+        }
     }
 }

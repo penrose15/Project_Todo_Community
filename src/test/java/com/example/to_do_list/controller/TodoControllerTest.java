@@ -74,7 +74,7 @@ public class TodoControllerTest {
 
     private Clock fixedClock;
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 01, 28);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 02, 5);
 
     @Test
     @WithAuthUser
@@ -353,6 +353,23 @@ public class TodoControllerTest {
         int page = 1;
         int size = 10;
 
+        usersService.save();
+
+        TodoSaveDto todoSaveDto1 = TodoSaveDto.builder()
+                .title("title1")
+                .content("content1")
+                .endDate("2023-02-15")
+                .expose("PUBLIC")
+                .build();
+        todoService.save(todoSaveDto1, 1L);
+        TodoSaveDto todoSaveDto2 = TodoSaveDto.builder()
+                .title("title2")
+                .content("content2")
+                .endDate("2023-02-15")
+                .expose("PUBLIC")
+                .build();
+        todoService.save(todoSaveDto2, 1L);
+
         TodoResponsesDto todoResponsesDto1 = new TodoResponsesDto(1L, "title1",true);
         TodoResponsesDto todoResponsesDto2 = new TodoResponsesDto(2L, "title2",false);
 
@@ -367,7 +384,7 @@ public class TodoControllerTest {
         doReturn(1L)
                 .when(usersService).findByEmail(anyString());
         doReturn(todoResponsesDtoPage)
-                .when(todoService).findByDate(anyInt(), anyInt(), eq(LOCAL_DATE.plusDays(2L)), anyLong());
+                .when(todoService).findByDate(anyInt(), anyInt(), eq(LOCAL_DATE), anyLong());
 
         ResultActions actions = mockMvc.perform(
                 get("/api/todo/posts/days")
@@ -375,7 +392,7 @@ public class TodoControllerTest {
                         .header("Refresh","Bearer (refreshToken)")
                         .param("page","1")
                         .param("size","10")
-                        .param("date","2023-01-30")
+                        .param("date","2023-02-05")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)

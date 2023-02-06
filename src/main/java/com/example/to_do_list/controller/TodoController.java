@@ -1,15 +1,12 @@
 package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
-import com.example.to_do_list.common.security.userdetails.CustomUserDetailsService;
-import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.MultiResponseDto;
 import com.example.to_do_list.dto.todo.*;
 import com.example.to_do_list.service.TodoService;
 import com.example.to_do_list.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -87,6 +83,22 @@ public class TodoController {
         List<TodoResponsesDto> list = request.getContent();
 
         return new ResponseEntity<>(new MultiResponseDto<>(list, request), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity searchTodo(@RequestParam int page,
+                                     @RequestParam int size,
+                                     @RequestParam(required = false) String title,
+                                     @RequestParam(required = false) String content,
+                                     @RequestParam(required = false) Integer priority,
+                                     @RequestParam(required = false) String expose,
+                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long usersId = usersService.findByEmail(userDetails.getEmail());
+
+        Page<TodoResponsesDto> request = todoService.searchByTitleOrContents(page, size, title, content, priority, expose, usersId);
+        List<TodoResponsesDto> list = request.getContent();
+
+        return new ResponseEntity(new MultiResponseDto<>(list, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/posts/{id}")

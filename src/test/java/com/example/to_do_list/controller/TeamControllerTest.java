@@ -39,6 +39,7 @@ import java.util.List;
 import static com.example.to_do_list.util.ApiDocumentUtils.getDocumentRequest;
 import static com.example.to_do_list.util.ApiDocumentUtils.getDocumentResponse;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -72,7 +73,7 @@ public class TeamControllerTest {
 
     private Clock fixedClock;
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 1);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 5);
 
     @Test
     @WithAuthUser
@@ -177,7 +178,7 @@ public class TeamControllerTest {
 
         actions
                 .andExpect(status().isOk())
-                .andDo(document("show team detail",
+                .andDo(document("show-team-detail",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestHeaders(headerWithName("Authorization").description("accessToken"),
@@ -228,7 +229,7 @@ public class TeamControllerTest {
                 .andExpect(jsonPath("$.pageInfo.size").value(10))
                 .andExpect(jsonPath("$.pageInfo.totalElements").value(12))
                 .andExpect(jsonPath("$.pageInfo.totalPages").value(2))
-                .andDo(document("show team List",
+                .andDo(document("show-team-List",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestHeaders(headerWithName("Authorization").description("accessToken"),
@@ -297,7 +298,7 @@ public class TeamControllerTest {
                 .when(teamService).showUsersTodoList(anyLong(), eq(LOCAL_DATE));
 
         ResultActions actions = mockMvc.perform(
-                get("/api/team/todoList/{id}/{date}", 1L, "2023-02-01")
+                get("/api/team/todoList/{id}/{date}", 1L, "2023-02-03")
                         .header("Authorization", "Bearer (accessToken)")
                         .header("Refresh", "Bearer (refreshToken)")
                         .accept(MediaType.APPLICATION_JSON)
@@ -356,7 +357,7 @@ public class TeamControllerTest {
         );
 
         actions.andExpect(status().isOk())
-                .andDo(document("mandate team host",
+                .andDo(document("mandate-team-host",
                         getDocumentRequest(),
                         getDocumentResponse(),
                         requestHeaders(headerWithName("Authorization").description("accessToken"),
@@ -373,6 +374,64 @@ public class TeamControllerTest {
                                 List.of(
                                         fieldWithPath("data").type(JsonFieldType.NUMBER).description("방장 권한 위임할 대상 식별자")
                                 )
+                        )
+                        ));
+    }
+
+    @Test
+    @WithAuthUser
+    void deleteUser() throws Exception {
+        Long fakeUsersId = 1L;
+
+        doReturn(fakeUsersId)
+                .when(usersService).findByEmail(anyString());
+        doNothing()
+                .when(teamService).deleteUser(anyLong(), anyLong(), anyLong());
+
+        ResultActions actions = mockMvc.perform(
+                delete("/api/team/user")
+                        .header("Authorization", "Bearer (accessToken)")
+                        .header("Refresh", "Bearer (refreshToken)")
+                        .param("teamId", "1")
+                        .param("usersId","1")
+        );
+
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-user",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        requestHeaders(headerWithName("Authorization").description("accessToken"),
+                                headerWithName("Refresh").description("refreshToken")),
+                        requestParameters(
+                                parameterWithName("teamId").description("team식별자"),
+                                parameterWithName("usersId").description("team에 속한 user의 식별자")
+                        )));
+
+    }
+
+    @Test
+    @WithAuthUser
+    void deleteTeam() throws Exception {
+        Long fakeUsersId = 1L;
+        doReturn(fakeUsersId)
+                .when(usersService).findByEmail(anyString());
+        doNothing()
+                .when(teamService).deleteTeam(anyLong(), anyLong());
+
+        ResultActions actions = mockMvc.perform(
+                delete("/api/team/{id}", 1)
+                        .header("Authentication", "Bearer (accessToken)")
+                        .header("Refresh", "Bearer (refreshToken)")
+        );
+
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-team",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
+                        pathParameters(
+                                parameterWithName("id").description("team 식별자")
                         )
                         ));
     }

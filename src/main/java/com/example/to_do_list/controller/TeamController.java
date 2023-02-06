@@ -92,7 +92,7 @@ public class TeamController {
     public ResponseEntity<Void> deleteUser(@RequestParam(value = "teamId") Long teamId,
                                            @RequestParam(value = "usersId") Long usersId,
                                            @AuthenticationPrincipal CustomUserDetails users) {
-        Long hostsId = users.getUsersId();
+        Long hostsId = usersService.findByEmail(users.getUsername());
         teamService.deleteUser(teamId, hostsId, usersId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -101,7 +101,7 @@ public class TeamController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTeam(@PathVariable(value = "id")Long id,
                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long usersId = userDetails.getUsersId();
+        Long usersId = usersService.findByEmail(userDetails.getUsername());
         teamService.deleteTeam(usersId, id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

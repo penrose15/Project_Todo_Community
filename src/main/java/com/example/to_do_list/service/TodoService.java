@@ -3,8 +3,9 @@ package com.example.to_do_list.service;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.todo.*;
-import com.example.to_do_list.repository.TodoRepository;
+import com.example.to_do_list.repository.todo.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
+import com.example.to_do_list.repository.todo.TodoRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.NoSuchElementException;
 public class TodoService {
     private final TodoRepository todoRepository;
     private final UsersRepository usersRepository;
+    private final TodoRepositoryImpl todoRepositoryImpl;
 
     public Long save(TodoSaveDto todoSaveDto, Long usersId) {
         Todo todo = todoSaveDto.toEntity();
@@ -71,6 +73,22 @@ public class TodoService {
 
         return todo.getId();
     }
+    //todo : 정렬 기능 만들기
+
+    //todo : controller 에 기능 추가하기
+    public Page<TodoResponsesDto> findStatusIsFalse(int page, int size, Long usersId) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
+        Page<TodoResponsesDto> todoLists = todoRepository.findByUsersIdAndStatusIsFalse(usersId, pageRequest);
+
+        return todoLists;
+    }
+    //todo : controller 에 기능 추가
+    public Page<TodoResponsesDto> searchByTitleOrContents(int page, int size, String title, String content, Integer priority, String expose, long usersId) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
+
+        return todoRepositoryImpl.searchTodo(title, content, priority, expose,usersId,pageRequest);
+    }
+
     public Page<TodoResponsesDto> findByDate(int page, int size, LocalDate date, Long usersId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
         Page<TodoResponsesDto> todos;

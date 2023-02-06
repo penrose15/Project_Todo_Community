@@ -3,7 +3,7 @@
 :toclevels: 2
 :sectlinks:
 
-[[todo-post]]
+[[todo]]
 == Todo
 [[todo-post]]
 === todo-post
@@ -102,3 +102,147 @@ include::{snippets}/todos-delete/request-body.adoc[]
 include::{snippets}/todos-delete/request-fields.adoc[]
 ==== Http Response
 include::{snippets}/todos-delete/http-response.adoc[]
+
+[[Users]]
+== Users
+
+[[user-signUp]]
+=== user-signUp
+
+==== Http Request
+include::{snippets}/users-signUp/http-request.adoc[]
+==== Request Body
+include::{snippets}/users-signUp/request-body.adoc[]
+==== Request Field
+include::{snippets}/users-signUp/request-fields.adoc[]
+==== Http Response
+include::{snippets}/users-signUp/http-response.adoc[]
+==== Response Body
+include::{snippets}/users-signUp/response-body.adoc[]
+
+[[user-joinTeam]]
+=== user-joinTeam
+
+==== Http Request
+include::{snippets}/join-team/http-request.adoc[]
+
+==== PathParameter
+include::{snippets}/join-team/path-parameters.adoc[]
+==== Response Body
+include::{snippets}/join-team/http-response.adoc[]
+
+[[user-withdrawal-team]]
+=== user-withdrawal-team
+
+==== Http Request
+include::{snippets}/withdrawal-team/http-request.adoc[]
+
+==== Http Response
+include::{snippets}/withdrawal-team/http-response.adoc[]
+
+[[Team]]
+== Team
+
+[[create_team]]
+=== create_team
+
+==== Http Request
+include::{snippets}/create-team/http-request.adoc[]
+==== Request Body
+include::{snippets}/create-team/request-body.adoc[]
+==== Request Field
+include::{snippets}/create-team/request-fields.adoc[]
+==== Http Response
+include::{snippets}/create-team/http-response.adoc[]
+==== Response Body
+include::{snippets}/create-team/response-body.adoc[]
+
+[[update_team]]
+=== update_team
+
+==== Http Request
+include::{snippets}/update-team/http-request.adoc[]
+=== Path Parameter
+include::{snippets}/update-team/path-parameters.adoc[]
+==== Request Body
+include::{snippets}/update-team/request-body.adoc[]
+==== Request Field
+include::{snippets}/update-team/request-fields.adoc[]
+==== Http Response
+include::{snippets}/update-team/http-response.adoc[]
+==== Response Body
+include::{snippets}/update-team/response-body.adoc[]
+
+[[team_detail]]
+=== team_detail
+
+==== Http Request
+include::{snippets}/show-team-detail/http-request.adoc[]
+==== Request Body
+include::{snippets}/show-team-detail/request-body.adoc[]
+==== Request Field
+include::{snippets}/show-team-detail/path-parameters.adoc[]
+==== Http Response
+include::{snippets}/show-team-detail/http-response.adoc[]
+==== Response Body
+include::{snippets}/show-team-detail/response-body.adoc[]
+
+[[teamList]]
+=== teamList
+
+==== Http Request
+include::{snippets}/show-team-List/http-request.adoc[]
+==== Request Parameter
+include::{snippets}/show-team-List/request-parameters.adoc[]
+==== Http Response
+include::{snippets}/show-team-List/http-response.adoc[]
+==== Response Body
+include::{snippets}/show-team-List/response-body.adoc[]
+
+[[users-todo-Lists]]
+=== users-todo-Lists
+
+==== Http Request
+include::{snippets}/showUsersTodoList/http-request.adoc[]
+==== Request Body
+include::{snippets}/showUsersTodoList/path-parameters.adoc[]
+==== Http Response
+include::{snippets}/showUsersTodoList/http-response.adoc[]
+==== Response Body
+include::{snippets}/showUsersTodoList/response-body.adoc[]
+
+[[mandate_host]]
+=== mandate_host
+
+==== Http Request
+include::{snippets}/mandate-team-host/http-request.adoc[]
+==== Request Body
+include::{snippets}/mandate-team-host/request-body.adoc[]
+==== Request Parameter
+include::{snippets}/mandate-team-host/request-parameters.adoc[]
+==== Http Response
+include::{snippets}/mandate-team-host/http-response.adoc[]
+==== Response Body
+include::{snippets}/mandate-team-host/response-body.adoc[]
+
+[[delete_user]]
+=== delete_user
+
+==== Http Request
+include::{snippets}/delete-user/http-request.adoc[]
+==== Request Field
+include::{snippets}/delete-user/request-parameters.adoc[]
+==== Http Response
+include::{snippets}/delete-user/http-response.adoc[]
+
+[[delete_team]]
+=== delete_team
+
+==== Http Request
+include::{snippets}/delete-team/http-request.adoc[]
+==== Path Parameter
+include::{snippets}/delete-team/path-parameters.adoc[]
+==== Http Response
+include::{snippets}/delete-team/http-response.adoc[]
+
+

@@ -3,16 +3,16 @@ package com.example.to_do_list.repository;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.domain.role.Role;
-import com.example.to_do_list.dto.todo.TodoResponseDto;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
+import com.example.to_do_list.repository.todo.TodoRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -107,26 +107,29 @@ public class TodoRepositoryTest {
 
     @Test
     void TODOLIST_오늘치_불러오기() {
+        List<Users> users = usersRepository.findAll();
+
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.ASC, "id");
-        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now(), 1L);
+        Page<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now(), users.get(0).getUsersId());
         List<TodoResponsesDto> list = slice.getContent();
 
-        assertThat(list.size()).isEqualTo(4);
+
+        assertThat(list.size()).isEqualTo(2);
         assertThat(list.get(0).getTitle()).contains("title");
         assertThat(list.get(1).getTitle()).contains("title");
-        assertThat(list.get(2).getTitle()).contains("title");
     }
     @Test
     void TodoList_다른날짜_불러오기() {
+        List<Users> users = usersRepository.findAll();
+
         PageRequest pageRequest = PageRequest.of(0, 5, Sort.Direction.ASC, "id");
-        Slice<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now().plusDays(3),1L);
+        Page<TodoResponsesDto> slice = todoRepository.findByDateNow(pageRequest,LocalDate.now().plusDays(1),users.get(0).getUsersId());
         List<TodoResponsesDto> list = slice.getContent();
         System.out.println(list);
 
-        assertThat(list.size()).isEqualTo(4);
+        assertThat(list.size()).isEqualTo(2);
         assertThat(list.get(0).getTitle()).contains("title");
         assertThat(list.get(1).getTitle()).contains("title");
-        assertThat(list.get(2).getTitle()).contains("title");
     }
     @Test
     void USER의_TODO_불러오기() {

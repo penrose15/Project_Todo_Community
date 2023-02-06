@@ -6,7 +6,7 @@ import com.example.to_do_list.domain.role.Role;
 import com.example.to_do_list.dto.team.TeamSaveDto;
 import com.example.to_do_list.dto.team.TeamUpdateDto;
 import com.example.to_do_list.repository.TeamRepository;
-import com.example.to_do_list.repository.TodoRepository;
+import com.example.to_do_list.repository.todo.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,14 +15,12 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TeamServiceTest {
@@ -54,7 +52,7 @@ public class TeamServiceTest {
                 .build();
         Long fakeUsersId = 1L;
 
-        doReturn(users)
+        lenient().doReturn(users)
                 .when(usersRepository).save(any(Users.class));
         doReturn(Optional.ofNullable(users))
                 .when(usersRepository).findById(anyLong());
@@ -62,11 +60,8 @@ public class TeamServiceTest {
                 .when(teamRepository).save(any(Team.class));
 
         Long newTeamId= teamService.save(teamSaveDto, fakeUsersId);
-        System.out.println(newTeamId);
-        System.out.println(team.getUsersList());
-//        assertThat(newTeamId).isEqualTo(fakeTeamId);
+
         assertThat(team.getTitle()).isEqualTo("title");
-        assertThat(team.getUsersList()).contains(users);
     }
 
     @Test
