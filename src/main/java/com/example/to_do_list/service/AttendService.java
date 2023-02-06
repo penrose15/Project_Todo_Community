@@ -5,7 +5,7 @@ import com.example.to_do_list.domain.Team;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.repository.AttendRepository;
 import com.example.to_do_list.repository.TeamRepository;
-import com.example.to_do_list.repository.TodoRepository;
+import com.example.to_do_list.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Transactional
 @Service

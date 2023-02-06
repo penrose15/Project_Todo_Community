@@ -1,6 +1,7 @@
 package com.example.to_do_list.repository.todo;
 
 import com.example.to_do_list.domain.Todo;
+import com.example.to_do_list.dto.todo.TodoCalendarDTO;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -67,6 +68,20 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom{
                 .where(todo.users.usersId.eq(usersId)
                         .and(todo.date.eq(date)))
                 .fetchFirst();
+    }
+
+    @Override
+    public List<TodoCalendarDTO> findTodoByMonth(LocalDate startDate, LocalDate endDate, long usersId) {
+        return queryFactory
+                .select(Projections.constructor(TodoCalendarDTO.class, todo.id, todo.title, todo.endDate, todo.priority))
+                .from(todo)
+                .join(users)
+                .on(todo.users.usersId.eq(users.usersId))
+                .where(todo.users.usersId.eq(usersId)
+                        .and(todo.endDate.before(endDate))
+                        .and(todo.endDate.after(startDate)))
+                .groupBy(todo.id)
+                .fetch();
     }
 
     private BooleanExpression isTitleContains(String title) {
