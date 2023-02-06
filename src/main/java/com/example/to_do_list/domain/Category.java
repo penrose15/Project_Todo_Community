@@ -20,6 +20,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long categoryId;
 
+    @Column
+    private long usersId;
+
     @Column(nullable = false)
     @NotNull
     private String name;
@@ -31,7 +34,8 @@ public class Category {
     private List<Todo> todoList = new ArrayList<>();
 
     @Builder
-    public Category(String name, String explanation) {
+    public Category(Long usersId, String name, String explanation) {
+        this.usersId = usersId;
         this.name = name;
         this.explanation = explanation;
     }

@@ -2,6 +2,7 @@ package com.example.to_do_list.service;
 
 import com.example.to_do_list.domain.Category;
 import com.example.to_do_list.domain.Todo;
+import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.category.CategoriesResponseDto;
 import com.example.to_do_list.dto.category.CategorySaveDto;
 import com.example.to_do_list.dto.category.CategoryUpdateDto;
@@ -26,14 +27,19 @@ public class CategoryService {
 
     public String save(CategorySaveDto request) {
         Category category = request.toEntity();
+
         category.addEmptyList();
 
         Category savedCategory = categoryRepository.save(category);
         return category.getName();
     }
 
-    public String update(CategoryUpdateDto request, long categoryId) {
+    public String update(CategoryUpdateDto request, long categoryId, long usersId) {
         Category findCategory = verifyById(categoryId);
+
+        if(usersId != categoryId) {
+            throw new IllegalArgumentException("본인의 category만 수정 가능");
+        }
 
         findCategory.update(request);
 
@@ -41,9 +47,11 @@ public class CategoryService {
         return updatedCategory.getName();
     }
 
-    public String addTodoList(TodoSaveDto request, long categoryId) {
+    public String addTodoList(TodoSaveDto request, long categoryId, Users users) {
         Todo todo = request.toEntity();
         Category category = verifyById(categoryId);
+
+        todo.setUsers(users);
 
         Todo savedTodo = todoRepository.save(todo);
 
@@ -60,7 +68,7 @@ public class CategoryService {
      * */
     //todo : controller에 기능 추가하기
     public List<CategoriesResponseDto> showAllCategories(Long usersId) {
-        List<Category> categories = categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAllByUsersId(usersId);
         List<CategoriesResponseDto> responses = new ArrayList<>();
 
         for(int i = 0; i<categories.size(); i++) {
@@ -77,8 +85,11 @@ public class CategoryService {
         return responses;
     }
 
-    public void deleteCategory(long categoryId) {
+    public void deleteCategory(long categoryId, Long usersId) {
         Category category = verifyById(categoryId);
+        if(category.getUsersId() != usersId) {
+            throw new IllegalArgumentException("유저 아이디 일치하지 않음");
+        }
         categoryRepository.delete(category);
     }
 
