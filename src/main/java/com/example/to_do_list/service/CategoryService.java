@@ -53,10 +53,12 @@ public class CategoryService {
 
         todo.setUsers(users);
 
-        Todo savedTodo = todoRepository.save(todo);
 
-        category.addTodo(savedTodo);
         todo.setCategory(category);
+
+        Todo savedTodo = todoRepository.save(todo);
+        category.addTodo(savedTodo);
+        categoryRepository.save(category);
 
         return todo.getCategory().getName();
     }

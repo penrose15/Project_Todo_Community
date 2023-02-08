@@ -1,8 +1,10 @@
 package com.example.to_do_list.service;
 
+import com.example.to_do_list.domain.Category;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.todo.*;
+import com.example.to_do_list.repository.CategoryRepository;
 import com.example.to_do_list.repository.todo.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
 import com.example.to_do_list.repository.todo.TodoRepositoryImpl;
@@ -23,6 +25,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final UsersRepository usersRepository;
     private final TodoRepositoryImpl todoRepositoryImpl;
+    private final CategoryRepository categoryRepository;
 
     public Long save(TodoSaveDto todoSaveDto, Long usersId) {
         Todo todo = todoSaveDto.toEntity();
@@ -45,6 +48,21 @@ public class TodoService {
         todo.updateColumns(todoUpdateDto);
         todoRepository.save(todo);
         return id;
+    }
+
+    public Long changeCategories(Long todoId, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리"));
+        Todo todo = todoRepository.findById(todoId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 todo"));
+
+        todo.setCategory(category);
+        category.addTodo(todo);
+
+        todoRepository.save(todo);
+        categoryRepository.save(category);
+
+        return todo.getId();
     }
 
     public TodoResponseDto findById(Long id) {

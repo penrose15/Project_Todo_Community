@@ -27,7 +27,7 @@ import static org.mockito.Mockito.doReturn;
 @ExtendWith(MockitoExtension.class)
 public class AttendServiceTest {
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 5);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 7);
 
     @Spy
     @InjectMocks
@@ -58,14 +58,14 @@ public class AttendServiceTest {
                 .content("content1")
                 .expose("PUBLIC")
                 .status(false)
-                .endDate(LocalDate.of(2022,2,1))
+                .endDate(LocalDate.of(2026,2,1))
                 .build();
         Todo todo1 = Todo.builder()
                 .title("title2")
                 .content("content2")
                 .expose("PUBLIC")
                 .status(true)
-                .endDate(LocalDate.of(2022,2,1))
+                .endDate(LocalDate.of(2026,2,1))
                 .build();
         Todo todo2 = Todo.builder()
                 .title("title2")
@@ -91,9 +91,9 @@ public class AttendServiceTest {
 
 
         doReturn(3)
-                .when(todoRepository).findByDate(anyLong(), eq(LOCAL_DATE));
+                .when(todoRepository).findByDate(anyLong(), eq(LocalDate.now(fixedClock)));
         doReturn(1)
-                .when(todoRepository).findByDateAndStatus(anyLong(), eq(LOCAL_DATE));
+                .when(todoRepository).findByDateAndStatus(anyLong(), eq(LocalDate.now(fixedClock)));
 
         double percentage = attendService.getPercentage(1L);
         System.out.println(percentage);

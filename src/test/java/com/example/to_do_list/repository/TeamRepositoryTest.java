@@ -1,9 +1,12 @@
 package com.example.to_do_list.repository;
 
+import com.example.to_do_list.common.JPAConfig;
+import com.example.to_do_list.common.queryDSL.QueryDslConfig;
 import com.example.to_do_list.domain.Team;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.domain.role.Role;
 import com.example.to_do_list.dto.team.TeamResponsesDto;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,12 +14,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,12 +29,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
+@Import({JPAConfig.class, QueryDslConfig.class})
 public class TeamRepositoryTest {
 
     @Autowired
     private TeamRepository teamRepository;
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    EntityManager em;
+    JPAQueryFactory queryFactory;
+
+    @BeforeEach
+    public void init() {
+        queryFactory = new JPAQueryFactory(em);
+    }
 
     @BeforeEach
     void addData() {

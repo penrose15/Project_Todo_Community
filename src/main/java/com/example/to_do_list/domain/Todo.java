@@ -26,6 +26,9 @@ public class Todo extends BaseEntity {
         if(this.endDate == null) {
             this.endDate = LocalDate.now();
         }
+        if(this.priority == 0) {
+            this.priority = 4;
+        }
     }
 
     @Id
@@ -47,7 +50,6 @@ public class Todo extends BaseEntity {
     private String expose;
 
     @Range(min = 1, max = 4)
-    @ColumnDefault(value = "4")
     private int priority;
 
     @Column

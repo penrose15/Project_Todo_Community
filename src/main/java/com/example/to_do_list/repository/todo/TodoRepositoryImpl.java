@@ -24,6 +24,7 @@ import static com.example.to_do_list.domain.QUsers.users;
 @Repository
 public class TodoRepositoryImpl implements TodoRepositoryCustom{
 
+
     private final JPAQueryFactory queryFactory;
 
 

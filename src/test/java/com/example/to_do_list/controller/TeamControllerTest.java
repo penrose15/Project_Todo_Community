@@ -73,7 +73,7 @@ public class TeamControllerTest {
 
     private Clock fixedClock;
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 5);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 7);
 
     @Test
     @WithAuthUser
@@ -275,12 +275,12 @@ public class TeamControllerTest {
         UsersTodoDto usersTodoDto = UsersTodoDto.builder()
                 .todoList(todoTitleResponsesDtos)
                 .usersId(1L)
-                .username("Justin.Oh")
+                .username("user1")
                 .build();
         UsersTodoDto usersTodoDto1 = UsersTodoDto.builder()
                 .todoList(todoTitleResponsesDtos1)
                 .usersId(2L)
-                .username("JeongSu.Park")
+                .username("user2")
                 .build();
         List<UsersTodoDto> todoDtos = new ArrayList<>();
         todoDtos.add(usersTodoDto);
@@ -298,7 +298,7 @@ public class TeamControllerTest {
                 .when(teamService).showUsersTodoList(anyLong(), eq(LOCAL_DATE));
 
         ResultActions actions = mockMvc.perform(
-                get("/api/team/todoList/{id}/{date}", 1L, "2023-02-03")
+                get("/api/team/todoList/{id}/{date}", 1L, "2023-02-07")
                         .header("Authorization", "Bearer (accessToken)")
                         .header("Refresh", "Bearer (refreshToken)")
                         .accept(MediaType.APPLICATION_JSON)

@@ -1,5 +1,7 @@
 package com.example.to_do_list.repository;
 
+import com.example.to_do_list.common.JPAConfig;
+import com.example.to_do_list.common.queryDSL.QueryDslConfig;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.domain.role.Role;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -25,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
+@Import({JPAConfig.class, QueryDslConfig.class})
 public class TodoRepositoryTest {
 
     @Autowired
@@ -66,12 +70,14 @@ public class TodoRepositoryTest {
                 .status(done)
                 .expose(expose)
                 .endDate(endDate)
+                .priority(1)
                 .build();
         Todo todo2 = Todo.builder()
                 .title(title + "1")
                 .content(content)
                 .status(done)
                 .expose(expose)
+                .priority(1)
                 .endDate(endDate.plusDays(1L))
                 .build();
         Todo todo3 = Todo.builder()
@@ -79,6 +85,7 @@ public class TodoRepositoryTest {
                 .content(content)
                 .status(done)
                 .expose(expose)
+                .priority(1)
                 .endDate(endDate.plusDays(2L))
                 .build();
         Todo todo4 = Todo.builder()
@@ -86,6 +93,7 @@ public class TodoRepositoryTest {
                 .content(content)
                 .status(done)
                 .expose(expose)
+                .priority(1)
                 .endDate(endDate.plusDays(3L))
                 .build();
 

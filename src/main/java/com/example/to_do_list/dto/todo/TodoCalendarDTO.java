@@ -2,8 +2,10 @@ package com.example.to_do_list.dto.todo;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class TodoCalendarDTO {
     private Long id;
     private String title;

@@ -43,7 +43,7 @@ public class TodoServiceTest {
 
     private Clock fixedClock;
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 3);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 7);
 
 
 
@@ -139,7 +139,7 @@ public class TodoServiceTest {
                 .content("content")
                 .status(false)
                 .expose("PUBLIC")
-                .endDate(LocalDate.of(2023,1,20).format(formatter))
+                .endDate(LocalDate.of(2023,3,20).format(formatter))
                 .build();
 
         doReturn(Optional.ofNullable(todo))

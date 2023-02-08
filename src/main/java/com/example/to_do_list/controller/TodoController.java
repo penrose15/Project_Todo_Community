@@ -43,6 +43,16 @@ public class TodoController {
         return new ResponseEntity<>(todoService.update(id, request, usersId), HttpStatus.OK);
     }
 
+    @GetMapping("/posts/category")
+    public ResponseEntity<Long> changeCategory(@RequestParam Long todoId,
+                                               @RequestParam Long categoryId,
+                                               @AuthenticationPrincipal CustomUserDetails userDetails) {
+        usersService.findByEmail(userDetails.getUsername());
+        Long response = todoService.changeCategories(todoId, categoryId);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @GetMapping("/posts/{id}")
     public ResponseEntity<TodoResponseDto> findById(@PathVariable Long id,
                                                     @AuthenticationPrincipal CustomUserDetails userDetails) {

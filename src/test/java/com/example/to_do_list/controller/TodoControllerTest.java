@@ -74,7 +74,7 @@ public class TodoControllerTest {
 
     private Clock fixedClock;
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 02, 5);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 02, 7);
 
     @Test
     @WithAuthUser
@@ -114,6 +114,7 @@ public class TodoControllerTest {
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("본문"),
                                         fieldWithPath("expose").type(JsonFieldType.STRING).description("공개여부"),
+                                        fieldWithPath("priority").type(JsonFieldType.NUMBER).description("우선순위"),
                                         fieldWithPath("endDate").type(JsonFieldType.STRING).description("마감 날자")
                                 )
                         )
@@ -221,6 +222,7 @@ public class TodoControllerTest {
                                         fieldWithPath("title").type(JsonFieldType.STRING).description("todo제목"),
                                         fieldWithPath("content").type(JsonFieldType.STRING).description("todo본문"),
                                         fieldWithPath("status").type(JsonFieldType.BOOLEAN).description("실행/미실행"),
+                                        fieldWithPath("priority").type(JsonFieldType.NUMBER).description("우선순위"),
                                         fieldWithPath("expose").type(JsonFieldType.STRING).description("공개/비공개"),
                                         fieldWithPath("endDate").type(JsonFieldType.STRING).description("마감날짜")
                                 )
@@ -392,7 +394,7 @@ public class TodoControllerTest {
                         .header("Refresh","Bearer (refreshToken)")
                         .param("page","1")
                         .param("size","10")
-                        .param("date","2023-02-05")
+                        .param("date","2023-02-07")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)

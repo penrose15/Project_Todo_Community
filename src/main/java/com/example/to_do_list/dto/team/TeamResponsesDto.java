@@ -1,8 +1,10 @@
 package com.example.to_do_list.dto.team;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class TeamResponsesDto {
     private long teamId;
     private String title;
