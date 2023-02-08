@@ -295,7 +295,7 @@ public class TeamControllerTest {
         doReturn(1L)
                 .when(usersService).findByEmail(anyString());
         doReturn(teamDetailResponseDto)
-                .when(teamService).showUsersTodoList(anyLong(), eq(LOCAL_DATE));
+                .when(teamService).showUsersTodoList(anyLong(), eq(LocalDate.now(fixedClock)));
 
         ResultActions actions = mockMvc.perform(
                 get("/api/team/todoList/{id}/{date}", 1L, "2023-02-07")

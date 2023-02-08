@@ -74,7 +74,7 @@ public class TodoControllerTest {
 
     private Clock fixedClock;
 
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 02, 7);
+    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 02, 9);
 
     @Test
     @WithAuthUser
@@ -304,7 +304,7 @@ public class TodoControllerTest {
         doReturn(1L)
                 .when(usersService).findByEmail(anyString());
         doReturn(todoResponsesDtoPage)
-                .when(todoService).findByDate(anyInt(), anyInt(), eq(LOCAL_DATE), anyLong());
+                .when(todoService).findByDate(anyInt(), anyInt(), eq(LocalDate.now(fixedClock)), anyLong());
 
         ResultActions actions = mockMvc.perform(
                 get("/api/todo/posts/today")
@@ -314,6 +314,7 @@ public class TodoControllerTest {
                         .param("size","10")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .content(content)
         );
 
         actions
@@ -386,7 +387,7 @@ public class TodoControllerTest {
         doReturn(1L)
                 .when(usersService).findByEmail(anyString());
         doReturn(todoResponsesDtoPage)
-                .when(todoService).findByDate(anyInt(), anyInt(), eq(LOCAL_DATE), anyLong());
+                .when(todoService).findByDate(anyInt(), anyInt(), eq(LocalDate.now(fixedClock)), anyLong());
 
         ResultActions actions = mockMvc.perform(
                 get("/api/todo/posts/days")
@@ -394,7 +395,7 @@ public class TodoControllerTest {
                         .header("Refresh","Bearer (refreshToken)")
                         .param("page","1")
                         .param("size","10")
-                        .param("date","2023-02-07")
+                        .param("date","2023-02-09")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content)
