@@ -272,22 +272,6 @@ public class TodoControllerTest {
         int page = 1;
         int size = 10;
 
-        usersService.save();
-
-        TodoSaveDto todoSaveDto1 = TodoSaveDto.builder()
-                .title("title1")
-                .content("content1")
-                .endDate("2023-02-15")
-                .expose("PUBLIC")
-                .build();
-        todoService.save(todoSaveDto1, 1L);
-        TodoSaveDto todoSaveDto2 = TodoSaveDto.builder()
-                .title("title2")
-                .content("content2")
-                .endDate("2023-02-15")
-                .expose("PUBLIC")
-                .build();
-        todoService.save(todoSaveDto2, 1L);
 
         TodoResponsesDto todoResponsesDto1 = new TodoResponsesDto(1L, "title1",true);
         TodoResponsesDto todoResponsesDto2 = new TodoResponsesDto(2L, "title2",false);
@@ -295,7 +279,7 @@ public class TodoControllerTest {
 
         List<TodoResponsesDto> todoResponsesDtos = List.of(todoResponsesDto1, todoResponsesDto2);
 
-        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.Direction.DESC, "todoId");
+        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.Direction.DESC, "id");
         Page<TodoResponsesDto> todoResponsesDtoPage = new PageImpl<>(todoResponsesDtos,pageRequest, 2);
 
 
