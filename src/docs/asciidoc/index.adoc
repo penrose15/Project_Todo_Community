@@ -54,17 +54,17 @@ include::{snippets}/todo-done/path-parameters.adoc[]
 include::{snippets}/todo-done/response-body.adoc[]
 
 
-[[todos-get-today]]
-=== Todos-get-today
-
-==== Http Request
-include::{snippets}/todo-today/http-request.adoc[]
-==== Request Parameters
-include::{snippets}/todo-today/request-parameters.adoc[]
-==== Response field
-include::{snippets}/todo-today/response-fields.adoc[]
-==== Response Body
-include::{snippets}/todo-today/response-body.adoc[]
+//[[todos-get-today]]
+//=== Todos-get-today
+//
+//==== Http Request
+//include::{snippets}/todo-today/http-request.adoc[]
+//==== Request Parameters
+//include::{snippets}/todo-today/request-parameters.adoc[]
+//==== Response field
+//include::{snippets}/todo-today/response-fields.adoc[]
+//==== Response Body
+//include::{snippets}/todo-today/response-body.adoc[]
 
 
 

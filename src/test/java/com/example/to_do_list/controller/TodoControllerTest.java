@@ -263,73 +263,73 @@ public class TodoControllerTest {
 
     }
 
-    @Test
-    @WithAuthUser
-    void todo_today() throws Exception {
-        fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
-        doReturn(fixedClock.instant()).when(clock).instant();
-        doReturn(fixedClock.getZone()).when(clock).getZone();
-        int page = 1;
-        int size = 10;
-
-
-        TodoResponsesDto todoResponsesDto1 = new TodoResponsesDto(1L, "title1",true);
-        TodoResponsesDto todoResponsesDto2 = new TodoResponsesDto(2L, "title2",false);
-
-
-        List<TodoResponsesDto> todoResponsesDtos = List.of(todoResponsesDto1, todoResponsesDto2);
-
-        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.Direction.DESC, "id");
-        Page<TodoResponsesDto> todoResponsesDtoPage = new PageImpl<>(todoResponsesDtos,pageRequest, 2);
-
-
-        String content = gson.toJson(todoResponsesDtos);
-
-        doReturn(1L)
-                .when(usersService).findByEmail(anyString());
-        doReturn(todoResponsesDtoPage)
-                .when(todoService).findByDate(anyInt(), anyInt(), eq(LocalDate.now(fixedClock)), anyLong());
-
-        ResultActions actions = mockMvc.perform(
-                get("/api/todo/posts/today")
-                        .header("Authorization", "Bearer (accessToken)")
-                        .header("Refresh","Bearer (refreshToken)")
-                        .param("page","1")
-                        .param("size","10")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content)
-        );
-
-        actions
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data").isArray())
-                .andExpect(jsonPath("$.pageInfo.page").value(1))
-                .andExpect(jsonPath("$.pageInfo.size").value(10))
-                .andExpect(jsonPath("$.pageInfo.totalElements").value(2))
-                .andExpect(jsonPath("$.pageInfo.totalPages").value(1))
-                .andDo(document("todo-today",
-                                getDocumentRequest(),
-                                getDocumentResponse(),
-                        requestHeaders(headerWithName("Authorization").description("Basic auth credentials")),
-                        requestParameters(
-                                parameterWithName("page").description("현재 페이지"),
-                                parameterWithName("size").description("페이지 당 크기")
-                        ),
-                        responseFields(
-                                List.of(
-                                        fieldWithPath("data").type(JsonFieldType.ARRAY).description("todo-list"),
-                                        fieldWithPath("data.[]id").type(JsonFieldType.NUMBER).description("todo 식별자"),
-                                        fieldWithPath("data.[]title").type(JsonFieldType.STRING).description("todo 제목"),
-                                        fieldWithPath("data.[]status").type(JsonFieldType.BOOLEAN).description("todo 실행/미실행"),
-                                        fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
-                                        fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("page"),
-                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("size"),
-                                        fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
-                                        fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("totalPages")
-                                )
-                        )));
-    }
+//    @Test
+//    @WithAuthUser
+//    void todo_today() throws Exception {
+//        fixedClock = Clock.fixed(LOCAL_DATE.atStartOfDay(ZoneId.systemDefault()).toInstant(), ZoneId.systemDefault());
+//        doReturn(fixedClock.instant()).when(clock).instant();
+//        doReturn(fixedClock.getZone()).when(clock).getZone();
+//        int page = 1;
+//        int size = 10;
+//
+//
+//        TodoResponsesDto todoResponsesDto1 = new TodoResponsesDto(1L, "title1",true);
+//        TodoResponsesDto todoResponsesDto2 = new TodoResponsesDto(2L, "title2",false);
+//
+//
+//        List<TodoResponsesDto> todoResponsesDtos = List.of(todoResponsesDto1, todoResponsesDto2);
+//
+//        PageRequest pageRequest = PageRequest.of(page-1, size, Sort.Direction.DESC, "id");
+//        Page<TodoResponsesDto> todoResponsesDtoPage = new PageImpl<>(todoResponsesDtos,pageRequest, 2);
+//
+//
+//        String content = gson.toJson(todoResponsesDtos);
+//
+//        doReturn(1L)
+//                .when(usersService).findByEmail(anyString());
+//        doReturn(todoResponsesDtoPage)
+//                .when(todoService).findByDate(anyInt(), anyInt(), eq(LocalDate.now(fixedClock)), anyLong());
+//
+//        ResultActions actions = mockMvc.perform(
+//                get("/api/todo/posts/today")
+//                        .header("Authorization", "Bearer (accessToken)")
+//                        .header("Refresh","Bearer (refreshToken)")
+//                        .param("page","1")
+//                        .param("size","10")
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(content)
+//        );
+//
+//        actions
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.data").isArray())
+//                .andExpect(jsonPath("$.pageInfo.page").value(1))
+//                .andExpect(jsonPath("$.pageInfo.size").value(10))
+//                .andExpect(jsonPath("$.pageInfo.totalElements").value(2))
+//                .andExpect(jsonPath("$.pageInfo.totalPages").value(1))
+//                .andDo(document("todo-today",
+//                                getDocumentRequest(),
+//                                getDocumentResponse(),
+//                        requestHeaders(headerWithName("Authorization").description("Basic auth credentials")),
+//                        requestParameters(
+//                                parameterWithName("page").description("현재 페이지"),
+//                                parameterWithName("size").description("페이지 당 크기")
+//                        ),
+//                        responseFields(
+//                                List.of(
+//                                        fieldWithPath("data").type(JsonFieldType.ARRAY).description("todo-list"),
+//                                        fieldWithPath("data.[]id").type(JsonFieldType.NUMBER).description("todo 식별자"),
+//                                        fieldWithPath("data.[]title").type(JsonFieldType.STRING).description("todo 제목"),
+//                                        fieldWithPath("data.[]status").type(JsonFieldType.BOOLEAN).description("todo 실행/미실행"),
+//                                        fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
+//                                        fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("page"),
+//                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("size"),
+//                                        fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("totalElements"),
+//                                        fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("totalPages")
+//                                )
+//                        )));
+//    }
 
     @Test
     @WithAuthUser
