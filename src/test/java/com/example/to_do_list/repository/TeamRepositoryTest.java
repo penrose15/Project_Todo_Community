@@ -52,13 +52,11 @@ public class TeamRepositoryTest {
     void addData() {
         Users users1 = Users.builder()
                 .email("123@gmail.com")
-//                .profile("dog.png")
                 .username("users1")
                 .role(List.of(Role.USER.getRole()))
                 .build();
         Users users2 = Users.builder()
                 .email("456@gmail.com")
-//                .profile("cat.png")
                 .username("users2")
                 .role(List.of(Role.USER.getRole()))
                 .build();
