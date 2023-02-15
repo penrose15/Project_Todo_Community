@@ -159,7 +159,9 @@ public class TodoService {
                 throw new IllegalArgumentException("존재하지 않는 todoList");
             }
         }
-        todoRepository.deleteAllById(ids);
+        for (Long id : ids) {
+            todoRepository.deleteById(id);
+        }
     }
 
     public Users findUsersById(Long usersId) {

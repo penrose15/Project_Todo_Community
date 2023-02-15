@@ -51,9 +51,6 @@ public class Team extends BaseEntity {
         this.criteria = criteria;
     }
 
-    public void setTeamIdForTest(long teamId) {
-        this.teamId = teamId;
-    }
 
     public void setHostUserId(long hostUserId) {
         this.hostUserId = hostUserId;
