@@ -5,12 +5,17 @@
 #      path: /h2
 #  datasource:
 #    url: jdbc:h2:mem:test
+
+
+
 spring:
+  config:
+    import: aws-parameterstore:/project-todo-community/hsj
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: {AWS RDS Endpoint}
-    username: {RDS Mysql Admin id}
-    password: {RDS Mysql Admin password}
+    url:
+    username:
+    password:
   jpa:
     hibernate:
       ddl-auto: create  # (1) ??? ?? ??
@@ -23,14 +28,36 @@ spring:
     host: localhost
     port: 6379
 
-jwt.secret: { jwt secret }
+
+aws:
+  paramstore:
+    enabled: true
+    prefix: /project-todo-community
+    profile-separator: _
+    name: hsj
+
+
+
+jwt.secret:
+
+
 
 jwt:
-  key: { jwt key }
+  key: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
 
 mail:
   address:
-    admin: { admin email }
+    admin: hsj99215@gmail.com
+
+cloud:
+  aws:
+    credentials:
+      accessKey: { AWS accessKey }  # AWS IAM AccessKey 적기
+      secretKey: { AWS secretKey } # AWS IAM SecretKey 적기
+    region:
+      static: "ap-northeast-2"
+    stack:
+      auto: false
 
