@@ -9,7 +9,7 @@ sudo docker rmi admin1125/hsj:1.0
 sudo docker pull admin1125/hsj:1.0
 
 # 도커 run
-docker run -d -p 8080:8080 -v /home/ec2-user:/config --name hsj admin1125/hsj:1.0
+docker run -d -p 8080:8080 -v --name hsj admin1125/hsj:1.0
 # redis start
 docker run -d --name myredis -p 6379:6379 redis
 
