@@ -20,7 +20,7 @@ public class CalendarService {
     public CalendarDto todoMonth(int year, int month, Long usersId) {
 
         LocalDate startDate = LocalDate.of(year, month, 1);
-        LocalDate endDate = LocalDate.of(year, month, startDate.getDayOfMonth());
+        LocalDate endDate = LocalDate.of(year, month, startDate.lengthOfMonth());
 
 
         List<TodoCalendarDTO> todoCalendarDTOS = todoRepositoryImpl.findTodoByMonth(startDate, endDate, usersId);

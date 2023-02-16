@@ -33,7 +33,7 @@ public class Users extends BaseEntity {
     @Column
     private String password;
 
-    @OneToMany(mappedBy = "users", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "users")
     private List<Todo> todoList = new ArrayList<>();
 
     @ManyToOne

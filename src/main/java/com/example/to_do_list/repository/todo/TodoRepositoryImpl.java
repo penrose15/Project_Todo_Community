@@ -14,6 +14,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,10 +37,10 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom{
                 .join(users)
                 .on(todo.users.usersId.eq(users.usersId))
                 .where(todo.users.usersId.eq(usersId)
-                        .and(isTitleContains(title)
-                                .or(isContentsContains(content))
-                                .or(isPriorityEqual(priority))
-                                .or(todo.expose.eq(expose)))
+                        .and(isTitleContains(title))
+                        .and(isContentsContains(content))
+                        .and(isPriorityEqual(priority))
+                        .and(isExposeEqual(expose))
                         .and(todo.status.isFalse()))
                 .groupBy(todo.id)
                 .offset(pageable.getOffset())
@@ -51,8 +52,10 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom{
                 .join(users)
                 .on(todo.users.usersId.eq(users.usersId))
                 .where(todo.users.usersId.eq(usersId)
-                        .and(isTitleContains(title)
-                                .or(isContentsContains(content)))
+                        .and(isTitleContains(title))
+                        .and(isContentsContains(content))
+                        .and(isPriorityEqual(priority))
+                        .and(isExposeEqual(expose))
                         .and(todo.status.isFalse()))
                 .groupBy(todo.id);
         return PageableExecutionUtils.getPage(todoList, pageable, count::fetchCount);
@@ -73,14 +76,15 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom{
 
     @Override
     public List<TodoCalendarDTO> findTodoByMonth(LocalDate startDate, LocalDate endDate, long usersId) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("")
+
         return queryFactory
-                .select(Projections.constructor(TodoCalendarDTO.class, todo.id, todo.title, todo.endDate, todo.priority))
+                .select(Projections.constructor(TodoCalendarDTO.class, todo.id, todo.title,todo.endDate, todo.priority))
                 .from(todo)
                 .join(users)
                 .on(todo.users.usersId.eq(users.usersId))
                 .where(todo.users.usersId.eq(usersId)
-                        .and(todo.endDate.before(endDate))
-                        .and(todo.endDate.after(startDate)))
+                        .and(todo.endDate.between(startDate, endDate)))
                 .groupBy(todo.id)
                 .fetch();
     }
@@ -95,5 +99,9 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom{
 
     private BooleanExpression isPriorityEqual(Integer priority) {
         return priority != null ? todo.priority.eq(priority) : null;
+    }
+
+    private BooleanExpression isExposeEqual(String expose) {
+        return expose != null ? todo.expose.eq(expose) : null;
     }
 }

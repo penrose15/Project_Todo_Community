@@ -95,7 +95,7 @@ public class TodoController {
         return new ResponseEntity<>(new MultiResponseDto<>(list, request), HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search") //todorepositoryImpl eqExpose 에러 --> 해결
     public ResponseEntity searchTodo(@RequestParam int page,
                                      @RequestParam int size,
                                      @RequestParam(required = false) String title,
@@ -111,7 +111,7 @@ public class TodoController {
         return new ResponseEntity(new MultiResponseDto<>(list, request), HttpStatus.OK);
     }
 
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/posts/{id}") //삭제가 안되는데....? --> 수정함 테스트 ㄱㄱ --> 해결!
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id,
                                            @AuthenticationPrincipal CustomUserDetails user
     ) {
@@ -121,7 +121,7 @@ public class TodoController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/posts")
+    @DeleteMapping("/posts") //삭제가 안된다...? --> 해결!
     public ResponseEntity<Void> deleteTodos(@RequestBody TodoIdsDto ids,
                                             @AuthenticationPrincipal CustomUserDetails user) {
         Long usersId = usersService.findByEmail(user.getEmail());

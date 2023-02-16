@@ -166,9 +166,15 @@ public class TeamService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
         Team team = findTeam(teamId);
         verifyingHosts(team.getHostUserId(), hostsId);
-        if(team.getUsersList().size() != 0) {
+        if(team.getUsersList().size() >1) {
             throw new IllegalArgumentException("팀원이 0명이어야만 삭제가 가능합니다.");
         }
+        verifyingHosts(team.getHostUserId(), team.getUsersList().get(0).getUsersId());
+
+        team.setUsersList(new ArrayList<>());
+        users.setTeam(null);
+        teamRepository.save(team);
+
         teamRepository.delete(team);
     }
     private Team findTeam(Long teamId) {

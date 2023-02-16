@@ -144,7 +144,7 @@ public class TodoService {
         if(!list.contains(todo)) {
             throw new IllegalArgumentException("본인의 todo만 삭제 가능");
         }
-        todoRepository.deleteById(id);
+        todoRepository.delete(todo);
     }
 
     public void deleteTodos(List<Long> ids, Long usersId) {

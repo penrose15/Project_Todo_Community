@@ -98,7 +98,7 @@ public class TeamController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") // 오류 : 팀원이 0명이어야만 삭제가 가능한데 팀원에 방장도 포함되어 있어서 삭제가 안됨 --> 해결
     public ResponseEntity<Void> deleteTeam(@PathVariable(value = "id")Long id,
                                            @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long usersId = usersService.findByEmail(userDetails.getUsername());
