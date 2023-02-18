@@ -1,15 +1,12 @@
 package com.example.to_do_list.service;
 
-import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.CalendarDto;
 import com.example.to_do_list.dto.todo.TodoCalendarDTO;
-import com.example.to_do_list.repository.UsersRepository;
 import com.example.to_do_list.repository.todo.TodoRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

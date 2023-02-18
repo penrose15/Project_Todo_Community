@@ -4,8 +4,10 @@ package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
 import com.example.to_do_list.domain.Users;
+import com.example.to_do_list.dto.ChangePasswordDto;
 import com.example.to_do_list.dto.user.UsersJoinDto;
 import com.example.to_do_list.dto.user.UsersSaveDto;
+import com.example.to_do_list.service.ChangePasswordService;
 import com.example.to_do_list.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,12 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UsersController {
     private final UsersService usersService;
-
-//    @GetMapping("/api/me")
-//    @PreAuthorize("hasRole('USER')")
-//    public Long get(@AuthenticationPrincipal CustomUserDetails userDetails) {
-//        return usersService.findById(userDetails.getId());
-//    }
+    private final ChangePasswordService changePasswordService;
     @PostMapping("/tmp")
     public Long tmpUser() {
         return usersService.save();
@@ -52,4 +49,14 @@ public class UsersController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PatchMapping("/password")
+    public ResponseEntity updatePassword(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                         @RequestBody ChangePasswordDto dto) {
+        String email = customUserDetails.getUsername();
+        boolean checkedPassword = changePasswordService.changePassword(dto, email);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+
 }

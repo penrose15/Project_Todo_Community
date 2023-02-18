@@ -1,5 +1,7 @@
 package com.example.to_do_list.service;
 
+import com.example.to_do_list.common.exception.BusinessLogicException;
+import com.example.to_do_list.common.exception.ExceptionCode;
 import com.example.to_do_list.domain.Category;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
@@ -18,6 +20,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import static com.example.to_do_list.common.exception.ExceptionCode.*;
+
 @Transactional
 @RequiredArgsConstructor
 @Service
@@ -43,7 +48,7 @@ public class TodoService {
     public Long update(Long id, TodoUpdateDto todoUpdateDto, Long usersId) {
         Users users = findUsersById(usersId);
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 할일입니다."));
+                .orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
 
         todo.updateColumns(todoUpdateDto);
         todoRepository.save(todo);
@@ -52,9 +57,9 @@ public class TodoService {
 
     public Long changeCategories(Long todoId, Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 카테고리"));
+                .orElseThrow(() -> new BusinessLogicException(CATEGORY_NOT_FOUND));
         Todo todo = todoRepository.findById(todoId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 todo"));
+                .orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
 
         todo.setCategory(category);
         category.addTodo(todo);
@@ -67,7 +72,7 @@ public class TodoService {
 
     public TodoResponseDto findById(Long id) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Todo todo = todoRepository.findById(id).orElseThrow(() -> new NoSuchElementException("존재 하지 않은 할일"));
+        Todo todo = todoRepository.findById(id).orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
         return TodoResponseDto.builder()
                 .title(todo.getTitle())
                 .content(todo.getContent())
@@ -81,9 +86,9 @@ public class TodoService {
         List<Todo> list = users.getTodoList();
 
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("todo not found"));
+                .orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
         if(!list.contains(todo)) {
-            throw new IllegalArgumentException("자신의 todo만 변경 가능합니다.");
+            throw new BusinessLogicException(INVALID_TODO_UPDATE);
         }
 
         todo = todo.updateStatus(todo); // status -> true
@@ -93,14 +98,11 @@ public class TodoService {
     }
     //todo : 정렬 기능 만들기
 
-    //todo : controller 에 기능 추가하기
     public Page<TodoResponsesDto> findStatusIsFalse(int page, int size, Long usersId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
-        Page<TodoResponsesDto> todoLists = todoRepository.findByUsersIdAndStatusIsFalse(usersId, pageRequest);
 
-        return todoLists;
+        return todoRepository.findByUsersIdAndStatusIsFalse(usersId, pageRequest);
     }
-    //todo : controller 에 기능 추가
     public Page<TodoResponsesDto> searchByTitleOrContents(int page, int size, String title, String content, Integer priority, String expose, long usersId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
 
@@ -120,29 +122,13 @@ public class TodoService {
         return todos;
     }
 
-    public TodoMainPageDto mainPageDto(List<TodoResponsesDto> list, LocalDate date) {
-        int done = 0;
-        for(int i = 0; i<list.size(); i++) {
-            if(list.get(i).isStatus()) {
-                done++;
-            }
-        }
-        int percentage = (int) (Math.round((double)done / (double) list.size() ) * 100);
-
-        return TodoMainPageDto.builder()
-                .todoResponsesDto(list)
-                .date(date.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                .percentage(percentage)
-                .build();
-    }
-
     public void deleteTodo(Long id, Long usersId) {
         Users users = findUsersById(usersId);
         List<Todo> list = users.getTodoList();
         Todo todo = todoRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 todo"));
+                .orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
         if(!list.contains(todo)) {
-            throw new IllegalArgumentException("본인의 todo만 삭제 가능");
+            throw new BusinessLogicException(INVALID_TODO_DELETE);
         }
         todoRepository.delete(todo);
     }
@@ -156,7 +142,7 @@ public class TodoService {
         }
         for (Long id : ids) {
             if(!list.contains(id)) {
-                throw new IllegalArgumentException("존재하지 않는 todoList");
+                throw new BusinessLogicException(TODO_NOT_FOUND);
             }
         }
         for (Long id : ids) {
@@ -166,6 +152,6 @@ public class TodoService {
 
     public Users findUsersById(Long usersId) {
         return usersRepository.findById(usersId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
     }
 }

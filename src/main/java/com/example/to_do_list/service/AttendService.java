@@ -7,6 +7,7 @@ import com.example.to_do_list.repository.AttendRepository;
 import com.example.to_do_list.repository.TeamRepository;
 import com.example.to_do_list.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Transactional
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AttendService {
 
     private final Clock clock;
@@ -25,7 +27,7 @@ public class AttendService {
     private final TodoRepository todoRepository;
 
     public void saveAll() {
-        System.out.println("start");
+        log.info("start save");
         List<Team> allTeam = teamRepository.findAll();
         if(allTeam == null ||allTeam.isEmpty()) return;
 
@@ -39,7 +41,7 @@ public class AttendService {
 
         }
         teamRepository.saveAll(allTeam);
-        System.out.println("done");
+        log.info("done");
 
     }
 

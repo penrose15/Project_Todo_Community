@@ -1,12 +1,13 @@
 package com.example.to_do_list.service;
 
+import com.example.to_do_list.common.exception.BusinessLogicException;
 import com.example.to_do_list.domain.Team;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.team.*;
 import com.example.to_do_list.dto.todo.TodoTitleResponsesDto;
 import com.example.to_do_list.repository.TeamRepository;
-import com.example.to_do_list.repository.todo.TodoRepository;
 import com.example.to_do_list.repository.UsersRepository;
+import com.example.to_do_list.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -18,8 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
+
+import static com.example.to_do_list.common.exception.ExceptionCode.*;
 
 @Log4j2
 @Transactional
@@ -32,7 +35,7 @@ public class TeamService {
 
     public Long save(TeamSaveDto teamSaveDto, Long usersId) {
         Optional<Users> users = usersRepository.findById(usersId);
-        Users users1 = users.orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
+        Users users1 = users.orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
 
         Team team = teamSaveDto.toEntity();
         team.setHostUserId(users1.getUsersId());
@@ -51,9 +54,9 @@ public class TeamService {
 
     public Long update(TeamUpdateDto teamUpdateDto, Long teamId, Long usersId) {
         Users users = usersRepository.findById(usersId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
 
         verifyingHosts(team.getHostUserId(), users.getUsersId());
 
@@ -64,13 +67,13 @@ public class TeamService {
 
     public void deleteUser(Long teamId,Long hostsId, Long usersId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
         verifyingHosts(team.getHostUserId(), hostsId);
 
         List<Users> usersList = team.getUsersList();
 
         Users users = usersRepository.findById(usersId)
-                        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
+                        .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
         try {
             verifyingUsers(usersList, usersId);
         } catch (IllegalArgumentException e) {
@@ -86,14 +89,14 @@ public class TeamService {
 
     public Long mandateHost(Long teamId, Long hostsId, Long usersid) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
         verifyingHosts(team.getHostUserId(), hostsId);
         List<Users> usersList = team.getUsersList();
         verifyingUsers(usersList, usersid);
         team.setHostUserId(usersid);
 
         Users hostUsers = usersRepository.findById(hostsId)
-                        .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
+                        .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
         usersList.add(hostUsers);
 
         team.setUsersList(usersList);
@@ -102,7 +105,7 @@ public class TeamService {
     }
     public TeamResponseDto showTeamDetails(Long teamId) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
         return TeamResponseDto.builder()
                 .teamId(teamId)
                 .title(team.getTitle())
@@ -114,7 +117,7 @@ public class TeamService {
 
     public TeamDetailResponseDto showUsersTodoList(Long teamId, LocalDate date) {
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
 
         List<UsersTodoDto> list = new ArrayList<>();
         List<Users> usersList = team.getUsersList();
@@ -141,33 +144,32 @@ public class TeamService {
 
     public Page<TeamResponsesDto> teamList(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "teamId");
-        Page<TeamResponsesDto> page1 = teamRepository.findTeamResponsesDto(pageRequest);
 
-        return page1;
+        return teamRepository.findTeamResponsesDto(pageRequest);
     }
 
     private void verifyingHosts(Long teamHostsId, Long hostId) {
-        if(teamHostsId != hostId) {
-            throw new IllegalArgumentException("팀의 방장만이 가능한 권리입니다.");
+        if(!Objects.equals(teamHostsId, hostId)) {
+            throw new BusinessLogicException(ONLY_TEAM_HOST_AVAILABLE);
         }
     }
 
     public void verifyingUsers(List<Users> usersList, Long usersId) {
         Users users = usersRepository.findById(usersId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저"));
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
 
         if(!usersList.contains(users)) {
-            throw new NoSuchElementException("존재하지 않는 유저");
+            throw new BusinessLogicException(USER_NOT_FOUND);
         }
     }
 
     public void deleteTeam(Long hostsId, Long teamId) {
         Users users = usersRepository.findById(hostsId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
         Team team = findTeam(teamId);
         verifyingHosts(team.getHostUserId(), hostsId);
         if(team.getUsersList().size() >1) {
-            throw new IllegalArgumentException("팀원이 0명이어야만 삭제가 가능합니다.");
+            throw new BusinessLogicException(NUMBER_OF_USERS_IS_NOT_ZERO);
         }
         verifyingHosts(team.getHostUserId(), team.getUsersList().get(0).getUsersId());
 
@@ -178,9 +180,8 @@ public class TeamService {
         teamRepository.delete(team);
     }
     private Team findTeam(Long teamId) {
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 팀"));
-        return team;
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
     }
 
 

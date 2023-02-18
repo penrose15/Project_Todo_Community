@@ -1,5 +1,6 @@
 package com.example.to_do_list.service;
 
+import com.example.to_do_list.common.exception.BusinessLogicException;
 import com.example.to_do_list.common.security.utils.CustomAuthorityUtils;
 import com.example.to_do_list.domain.Team;
 import com.example.to_do_list.domain.Users;
@@ -12,10 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static com.example.to_do_list.common.exception.ExceptionCode.*;
 
 @Transactional
 @Service
@@ -28,13 +30,13 @@ public class UsersService {
 
     public Long findById(Long userId) {
         Users users = usersRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
         return users.getUsersId();
     }
 
     public Long findByEmail(String email) {
         Users users = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("not found"));
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
         return users.getUsersId();
     }
 
@@ -75,12 +77,12 @@ public class UsersService {
 
     public Long joinTeam(Long teamId, String email) {
         Users users = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원"));
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
         Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 팀"));
+                .orElseThrow(() -> new BusinessLogicException(TEAM_NOT_FOUND));
 
         if(users.getTeam() != null) {
-            throw new IllegalArgumentException("하나의 팀만 참여 가능합니다.");
+            throw new BusinessLogicException(INVALID_TEAM_JOIN);
         }
 
         users.joinTeam(team);
@@ -94,7 +96,7 @@ public class UsersService {
 
     public void resignTeam(String email) {
         Users users = usersRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 회원"));
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
 
         Team team = users.getTeam();
 
@@ -107,11 +109,21 @@ public class UsersService {
 
     public Users getUser(String email) {
         return usersRepository.findByEmail(email)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 이메일"));
+                .orElseThrow(() -> new BusinessLogicException(INVALID_EMAIL));
     }
+
+    public void changePassword(String email,String tmpPassword) {
+        Users users = getUser(email);
+        users.setPassword(passwordEncoder.encode(tmpPassword));
+
+        usersRepository.save(users);
+    }
+
+
 
     private void verifyEmail(String email) {
         Optional<Users> users = usersRepository.findByEmail(email);
-        if(users.isPresent()) throw new IllegalArgumentException("이메일이 존재합니다.");
+        if(users.isPresent()) throw new BusinessLogicException(EMAIL_ALREADY_EXIST);
     }
+
 }

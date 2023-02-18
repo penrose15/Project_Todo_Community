@@ -1,5 +1,7 @@
 package com.example.to_do_list.service;
 
+import com.example.to_do_list.common.exception.BusinessLogicException;
+import com.example.to_do_list.common.exception.ExceptionCode;
 import com.example.to_do_list.domain.Category;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
@@ -37,8 +39,8 @@ public class CategoryService {
     public String update(CategoryUpdateDto request, long categoryId, long usersId) {
         Category findCategory = verifyById(categoryId);
 
-        if(usersId != categoryId) {
-            throw new IllegalArgumentException("본인의 category만 수정 가능");
+        if(usersId != findCategory.getUsersId()) {
+            throw new BusinessLogicException(ExceptionCode.USER_ID_NOT_MATCH);
         }
 
         findCategory.update(request);
@@ -62,13 +64,7 @@ public class CategoryService {
 
         return todo.getCategory().getName();
     }
-    /*
-     * category 이름과 todo이름과 아이디만 조회되도록 할 것임
-     * 이를 위해서는 todo들 조회시 전체 조회가 아니라 아니라 이름과 아이다만
-     * 조회 가능하도록 해야 함
-     * QueryDSL 을 사용해야 하거나 쿼리를 두번 날리든가 해야 함
-     * */
-    //todo : controller에 기능 추가하기
+
     public List<CategoriesResponseDto> showAllCategories(Long usersId) {
         List<Category> categories = categoryRepository.findAllByUsersId(usersId);
         List<CategoriesResponseDto> responses = new ArrayList<>();
@@ -90,7 +86,7 @@ public class CategoryService {
     public void deleteCategory(long categoryId, Long usersId) {
         Category category = verifyById(categoryId);
         if(category.getUsersId() != usersId) {
-            throw new IllegalArgumentException("유저 아이디 일치하지 않음");
+            throw new BusinessLogicException(ExceptionCode.USER_ID_NOT_MATCH);
         }
         categoryRepository.delete(category);
     }
@@ -98,6 +94,6 @@ public class CategoryService {
 
     private Category verifyById(long categoryId) {
         return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new NoSuchElementException("존재하지 않는 카테고리"));
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.CATEGORY_NOT_FOUND));
     }
 }
