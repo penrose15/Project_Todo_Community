@@ -10,6 +10,8 @@
 # 도커허브 이미지 pull
 #sudo docker pull admin1125/hsj:1.0
 
+echo "> hello"
+
 #여기에 nginx 실행하고 포트 나누면 될 듯하다
 sudo sh /home/ec2-user/test.sh
 
