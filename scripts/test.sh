@@ -26,10 +26,24 @@ sudo docker rm ${IDLE_PROFILE}
 
 TAG_ID=$(docker images | sort -r -k2  -h | awk 'NR > 1 {if ($1 == "아이디/devyy") {print $2 += .01; exit} else {print 0.01; exit}}')
 
-sudo docker pull admin1125/hsj:${TAG_ID}
+echo "> 도버 build 실행 : docker build --build-arg DEPENDENCY=build/dependency --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t 아이디/devyy:${TAG_ID} ."
+sudo docker build --build-arg DEPENDENCY=build/dependency --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t admin1125/hsj:${TAG_ID} .
+
+
+echo "> $IDLE_PROFILE 배포"
+
+sudo docker login -u admin1125 -p rnrzktmxps15!
+
+sudo docker push admin1125/hsj:${TAG_ID}
+
+#tag가 latest인 image를 최신 버전을 통해 생성
+sudo docker tag admin1125/hsj:${TAG_ID} admin1125/hsj:latest
+
+#latest를 docker hub에 push
+sudo docker push admin1125/hsj:latest
 
 echo "> 도커 run 실행 :  sudo docker run --name $IDLE_PROFILE -d --rm -p $IDLE_PORT:${IDLE_PORT} admin1125/hsj  "
-sudo docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} admin/hsj
+sudo docker run --name $IDLE_PROFILE -d --rm -p $IDLE_PORT:${IDLE_PORT} admin1125/hsj
 
 echo "> $IDLE_PROFILE 10초 후 Health check 시작"
 echo "> curl -s http://localhost:$IDLE_PORT/actuator/health "
