@@ -3,6 +3,7 @@ package com.example.to_do_list.controller;
 import com.example.to_do_list.WithAuthUser;
 import com.example.to_do_list.common.security.config.SecurityConfig;
 import com.example.to_do_list.dto.user.UsersSaveDto;
+import com.example.to_do_list.service.ChangePasswordService;
 import com.example.to_do_list.service.UsersService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,9 @@ public class UsersControllerTest {
 
         @MockBean
         private UsersService usersService;
+
+        @MockBean
+        private ChangePasswordService changePasswordService;
 
         @Autowired
         private Gson gson;

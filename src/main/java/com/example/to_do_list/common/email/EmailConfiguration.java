@@ -11,22 +11,22 @@ import java.util.Properties;
 
 @Configuration
 public class EmailConfiguration {
-    @Value("${mail.smtp.host}")
+    @Value("${spring.mail.host}")
     private String host;
 
-    @Value("${mail.smtp.port}")
+    @Value("${spring.mail.port}")
     private int port;
 
-    @Value("${mail.smtp.username}")
+    @Value("${spring.mail.username}")
     private String username;
 
-    @Value("mail.smtp.password")
+    @Value("spring.mail.password")
     private String password;
 
-    @Value("${properties.mail.smtp.auth}")
+    @Value("${spring.mail.properties.mail.smtp.auth}")
     private String auth;
 
-    @Value("${properties.mail.smtp.ssl.enable}")
+    @Value("${spring.mail.properties.mail.smtp.ssl.enable}")
     private String sslEnable;
 
     @Primary
