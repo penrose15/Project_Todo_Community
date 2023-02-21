@@ -5,7 +5,7 @@ sudo docker ps -a -q --filter "name=hsj" | grep -q . && docker stop hsj && docke
 sudo docker ps -a -q --filter "name=myredis" | grep -q . && docker stop myredis && docker rm myredis | true
 
 # 기존 이미지 삭제
-sudo docker rmi admin1125/hsj:latest
+sudo docker rmi admin1125/hsj:1.0
 
 # 도커허브 이미지 pull
 sudo docker pull admin1125/hsj:1.0
