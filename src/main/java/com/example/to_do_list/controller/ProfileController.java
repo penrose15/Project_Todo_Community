@@ -23,4 +23,9 @@ public class ProfileController {
                 .orElse("");
     }
 
+    @GetMapping("/profile/test")
+    public String test() {
+        return "hello";
+    }
+
 }
