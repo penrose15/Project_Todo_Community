@@ -16,7 +16,7 @@ echo "> hello"
 #sudo sh /home/ec2-user/test.sh
 
 # 도커 run
-docker run -d -p 8080:8080 --name hsj admin1125/hsj:1.0
+docker run -d -p 8080:8080 -v --name hsj admin1125/hsj:1.0
 # redis start
 docker run -d --name myredis -p 6379:6379 redis
 
