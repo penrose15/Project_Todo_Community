@@ -1,8 +1,8 @@
 
 spring:
   config:
-    activate:
-      on-profile: set1
+#    activate:
+#      on-profile: set1
     import: aws-parameterstore:/project-todo-community/hsj
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -57,73 +57,72 @@ cloud:
       static: "ap-northeast-2"
     stack:
       auto: false
-server:
-  port: 8080
+#server:
+#  port: 8080
 
----
-spring:
-  config:
-    activate:
-      on-profile: set2
-    import: aws-parameterstore:/project-todo-community/hsj
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
-  jpa:
-    hibernate:
-      ddl-auto: create  # (1) ??? ?? ??
-    show-sql: true      # (2) SQL ?? ??
-    properties:
-      hibernate:
-        format_sql: true  # (3) SQL pretty print
-  mail:
-    host: smtp.naver.com
-    port: 995
-    username:
-    password:
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true
-
-  redis:
-    host: localhost
-    port: 6379
-
-
-aws:
-  paramstore:
-    enabled: true
-    prefix: /project-todo-community
-    profile-separator: _
-    name: hsj
-
-
-
-jwt.secret:
-
-
-
-jwt:
-  key: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
-
-mail:
-  address:
-    admin:
-
-cloud:
-  aws:
-    credentials:
-      accessKey: { AWS accessKey }  # AWS IAM AccessKey 적기
-      secretKey: { AWS secretKey } # AWS IAM SecretKey 적기
-    region:
-      static: "ap-northeast-2"
-    stack:
-      auto: false
-
-server:
-  port: 8081
-
+#spring:
+#  config:
+#    activate:
+#      on-profile: set2
+#    import: aws-parameterstore:/project-todo-community/hsj
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url:
+#    username:
+#    password:
+#  jpa:
+#    hibernate:
+#      ddl-auto: create  # (1) ??? ?? ??
+#    show-sql: true      # (2) SQL ?? ??
+#    properties:
+#      hibernate:
+#        format_sql: true  # (3) SQL pretty print
+#  mail:
+#    host: smtp.naver.com
+#    port: 995
+#    username:
+#    password:
+#    properties:
+#      mail.smtp.auth: true
+#      mail.smtp.ssl.enable: true
+#
+#  redis:
+#    host: localhost
+#    port: 6379
+#
+#
+#aws:
+#  paramstore:
+#    enabled: true
+#    prefix: /project-todo-community
+#    profile-separator: _
+#    name: hsj
+#
+#
+#
+#jwt.secret:
+#
+#
+#
+#jwt:
+#  key: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
+#  access-token-expiration-minutes: 30
+#  refresh-token-expiration-minutes: 420
+#
+#mail:
+#  address:
+#    admin:
+#
+#cloud:
+#  aws:
+#    credentials:
+#      accessKey: { AWS accessKey }  # AWS IAM AccessKey 적기
+#      secretKey: { AWS secretKey } # AWS IAM SecretKey 적기
+#    region:
+#      static: "ap-northeast-2"
+#    stack:
+#      auto: false
+#
+#server:
+#  port: 8081
+#

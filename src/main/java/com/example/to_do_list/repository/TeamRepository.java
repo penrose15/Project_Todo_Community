@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface TeamRepository extends JpaRepository<Team, Long> {
-    @Query("select new com.example.to_do_list.dto.team.TeamResponsesDto(t.teamId, t.title, t.explanation, t.limits) " +
+    @Query("select new com.example.to_do_list.dto.team.TeamResponsesDto(t.teamId, t.title, t.explanation, t.limits, t.criteria) " +
             " from Team t")
     Page<TeamResponsesDto> findTeamResponsesDto(Pageable pageable);
 }

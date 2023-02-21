@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @Import({JPAConfig.class, QueryDslConfig.class})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@ActiveProfiles("set1")
+//@ActiveProfiles("set1")
 public class TeamRepositoryTest {
 
     @Autowired

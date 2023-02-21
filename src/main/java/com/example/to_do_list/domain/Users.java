@@ -30,6 +30,7 @@ public class Users extends BaseEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
+//    @NotNull
     @Column
     private String password;
 

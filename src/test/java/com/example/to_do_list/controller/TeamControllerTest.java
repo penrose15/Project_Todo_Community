@@ -202,8 +202,8 @@ public class TeamControllerTest {
     @WithAuthUser
     void showTeamList() throws Exception {
 
-        TeamResponsesDto teamResponsesDto1 = new TeamResponsesDto(1L, "team name", "team explanation", 5);
-        TeamResponsesDto teamResponsesDto2 = new TeamResponsesDto(2L, "team name1", "team explanation2", 3);
+        TeamResponsesDto teamResponsesDto1 = new TeamResponsesDto(1L, "team name", "team explanation", 5,3);
+        TeamResponsesDto teamResponsesDto2 = new TeamResponsesDto(2L, "team name1", "team explanation2", 3, 0);
         List<TeamResponsesDto> teamResponsesDtos = new ArrayList<>();
         teamResponsesDtos.add(teamResponsesDto1);
         teamResponsesDtos.add(teamResponsesDto2);
@@ -245,6 +245,7 @@ public class TeamControllerTest {
                                         fieldWithPath("data.[]title").type(JsonFieldType.STRING).description("team 이름"),
                                         fieldWithPath("data.[]explanation").type(JsonFieldType.STRING).description("team 설명"),
                                         fieldWithPath("data.[]limits").type(JsonFieldType.NUMBER).description("team 인원 제한"),
+                                        fieldWithPath("data.[]criteria").type(JsonFieldType.NUMBER).description("강퇴 기준"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("page"),
                                         fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("size"),
