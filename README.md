@@ -1,8 +1,13 @@
 # project_todo_community
 
-동기부여를 위해 커뮤니티에 합류하여 TODOLIST와 달성도를 공유할 수 있습니다!
 
-사용 기술 : Java, Spring Boot, JPA, MySQL,Junit, RestDocs, Spring Security, JWT, Redis, AWS(EC2, RDS, S3) 
+> Todolist-Community는 TodoList 기능과 TodoList를 팀과 공유하며 동기부여를 얻을 수 있는 서비스입니다. 평소 혼자서 TodoList를 작성하면서 혼자보단 내 TodoList와 달성도를 공유함으로써 동기부여를 얻으면 좋을 것 같다는 생각에서 시작되었습니다.
+
+### 🛠️ 사용 기술& 라이브러리
+- Java
+- Spring Boot, Spring Security, JPA, Junit5, RestDocs, QueryDSL, JWT
+- MySQL, Redis, AWS(EC2, RDS, S3), Jenkins, Docker
+- Github, Postman
 
 인원 : 개인(1인)
 
