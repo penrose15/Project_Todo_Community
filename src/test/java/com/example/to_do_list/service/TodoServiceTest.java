@@ -38,14 +38,6 @@ public class TodoServiceTest {
     @Mock
     private UsersRepository usersRepository;
 
-    @Mock
-    private Clock clock;
-
-    private Clock fixedClock;
-
-    private final static LocalDate LOCAL_DATE = LocalDate.of(2023, 2, 7);
-
-
 
     @Test
     void Todo_생성() {

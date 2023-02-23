@@ -20,7 +20,7 @@ public class RefreshTokenRepository {
     public void save(final RefreshToken refreshToken) {
         ValueOperations<String, Long> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(refreshToken.getRefreshToken(), refreshToken.getUsersId());
-        redisTemplate.expire(refreshToken.getRefreshToken(), 60L, TimeUnit.SECONDS);
+        redisTemplate.expire(refreshToken.getRefreshToken(), 60L * 60  * 24, TimeUnit.SECONDS);
     }
 
     public Optional<RefreshToken> findById(final String refreshToken) {

@@ -42,7 +42,7 @@ jwt.secret:
 jwt:
   key: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
   access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+  refresh-token-expiration-minutes: 720
 
 mail:
   address:

@@ -3,6 +3,10 @@
 :toclevels: 2
 :sectlinks:
 
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
 [[todo]]
 == Todo
 [[todo-post]]

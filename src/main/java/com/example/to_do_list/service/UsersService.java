@@ -84,6 +84,9 @@ public class UsersService {
         if(users.getTeam() != null) {
             throw new BusinessLogicException(INVALID_TEAM_JOIN);
         }
+        if(team.getLimits() <= team.getUsersList().size()) {
+            throw new BusinessLogicException(TEAM_IS_FULL);
+        }
 
         users.joinTeam(team);
         team.addUsers(users);

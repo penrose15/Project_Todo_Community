@@ -14,6 +14,7 @@ public enum ExceptionCode {
     INVALID_TODO_UPDATE(405, "자신의 todo만 변경 가능합니다."),
     INVALID_TODO_DELETE(405, "본인의 todo만 삭제 가능"),
     INVALID_TEAM_JOIN(405, "하나의 팀만 참여 가능합니다."),
+    TEAM_IS_FULL(405, "팀이 가득 찼습니다..?"),
     INVALID_EMAIL(404,"존재하지 않는 이메일"),
     EMAIL_ALREADY_EXIST(405, "이메일이 존재합니다."),
     PASSWORD_NOt_MATCH(405, "패스워드가 위와 일치해야 합니다.");

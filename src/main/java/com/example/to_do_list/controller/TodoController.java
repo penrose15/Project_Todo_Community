@@ -28,7 +28,6 @@ public class TodoController {
     public ResponseEntity<Long> save(@RequestBody TodoSaveDto request,
                      @AuthenticationPrincipal CustomUserDetails user) {
 
-        System.out.println(">>> " + user);
         Long usersId = usersService.findByEmail(user.getUsername());
         return new ResponseEntity<>(todoService.save(request,usersId), HttpStatus.CREATED);
     }
