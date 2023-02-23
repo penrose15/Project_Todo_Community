@@ -2,6 +2,7 @@ package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
 import com.example.to_do_list.dto.CalendarDto;
+import com.example.to_do_list.dto.SingleResponseDto;
 import com.example.to_do_list.service.CalendarService;
 import com.example.to_do_list.service.UsersService;
 import lombok.Getter;
@@ -25,6 +26,6 @@ public class CalendarController {
         Long usersId = usersService.findByEmail(userDetails.getUsername());
         CalendarDto calendarDto = calendarService.todoMonth(year, month, usersId);
 
-        return new ResponseEntity(calendarDto, HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto<>(calendarDto), HttpStatus.OK);
     }
 }
