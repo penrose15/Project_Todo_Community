@@ -11,6 +11,7 @@ import com.example.to_do_list.dto.category.CategoryUpdateDto;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
 import com.example.to_do_list.dto.todo.TodoSaveDto;
 import com.example.to_do_list.repository.CategoryRepository;
+import com.example.to_do_list.repository.UsersRepository;
 import com.example.to_do_list.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ import java.util.NoSuchElementException;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final TodoRepository todoRepository;
+
+    private final UsersRepository usersRepository;
 
     public String save(CategorySaveDto request) {
         Category category = request.toEntity();
@@ -49,7 +52,10 @@ public class CategoryService {
         return updatedCategory.getName();
     }
 
-    public String addTodoList(TodoSaveDto request, long categoryId, Users users) {
+    public String addTodoList(TodoSaveDto request, long categoryId, String email) {
+        Users users = usersRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+
         Todo todo = request.toEntity();
         Category category = verifyById(categoryId);
 
@@ -62,7 +68,7 @@ public class CategoryService {
         category.addTodo(savedTodo);
         categoryRepository.save(category);
 
-        return todo.getCategory().getName();
+        return todo.getTitle();
     }
 
     public List<CategoriesResponseDto> showAllCategories(Long usersId) {
@@ -83,9 +89,12 @@ public class CategoryService {
         return responses;
     }
 
-    public void deleteCategory(long categoryId, Long usersId) {
+    public void deleteCategory(long categoryId, String email) {
         Category category = verifyById(categoryId);
-        if(category.getUsersId() != usersId) {
+        Users users = usersRepository.findById(category.getUsersId())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+
+        if(!email.equals(users.getEmail())) {
             throw new BusinessLogicException(ExceptionCode.USER_ID_NOT_MATCH);
         }
         categoryRepository.delete(category);
