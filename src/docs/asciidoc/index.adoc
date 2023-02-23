@@ -4,7 +4,7 @@
 :sectlinks:
 
 ifndef::snippets[]
-:snippets: ./build/generated-snippets
+:snippets: ../../../build/generated-snippets
 endif::[]
 
 [[todo]]
