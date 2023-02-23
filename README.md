@@ -42,6 +42,9 @@
 ## 유스케이스 다이어그램
 <img src="https://user-images.githubusercontent.com/96187152/220667102-365db9e1-a689-45ca-a4cc-02ff018ce3da.png" width="60%"/>
 
+## API 문서
+[API 문서](https://github.com/penrose15/project_todo_community/wiki/API-%EB%AC%B8%EC%84%9C)
+
 ## 💻구현한 기능
 
 ### 1. RestfulAPI 서버 개발
