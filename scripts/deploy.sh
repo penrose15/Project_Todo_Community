@@ -1,9 +1,11 @@
-sudo docker ps -a -q --filter "name=hsj" | grep -q . && docker stop hsj && docker rm hsj | true
+sudo docker ps -a -q --filter "name=hsj1" | grep -q . && docker stop hsj && docker rm hsj1 | true
+sudo docker ps -a -q --filter "name=hsj2" | grep -q . && docker stop hsj && docker rm hsj2 | true
 
 sudo docker ps -a -q --filter "name=myredis" | grep -q . && docker stop myredis && docker rm myredis | true
 
 # 기존 이미지 삭제
-sudo docker rmi admin1125/hsj:1.0
+sudo docker rmi admin1125/hsj1:1.0
+sudo docker rmi admin1125/hsj2:1.0
 
 # 도커허브 이미지 pull
 sudo docker pull admin1125/hsj:1.0
@@ -14,7 +16,8 @@ echo "> hello"
 #sudo sh /home/ec2-user/test.sh
 
 # 도커 run
-docker run -d -p 8080:8080 --name hsj admin1125/hsj:1.0
+docker run -d -p 8080:8080 --name hsj1 admin1125/hsj:1.0
+docker run -d -p 8081:8080 --name hsj2 admin1125/hsj:1.0
 # redis start
 docker run -d --name myredis -p 6379:6379 redis
 
