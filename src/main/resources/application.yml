@@ -1,8 +1,8 @@
 
 spring:
-#  config:
-#    activate:
-#      on-profile: prod1
+  config:
+    activate:
+      on-profile: prod1
     import: aws-parameterstore:/project-todo-community/hsj
   #    h2:
   #      console:
@@ -68,7 +68,7 @@ cloud:
       static: "ap-northeast-2"
     stack:
       auto: false
-
+#
 #server:
 #  port: 8080
 #
