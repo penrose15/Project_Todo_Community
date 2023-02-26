@@ -1,8 +1,8 @@
 
 spring:
   config:
-    activate:
-      on-profile: prod1
+#    activate:
+#      on-profile: prod1
     import: aws-parameterstore:/project-todo-community/hsj
   #    h2:
   #      console:
