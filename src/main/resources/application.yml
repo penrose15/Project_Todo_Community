@@ -1,9 +1,15 @@
 
 spring:
-  config:
+#  config:
 #    activate:
-#      on-profile: set1
+#      on-profile: prod1
     import: aws-parameterstore:/project-todo-community/hsj
+  #    h2:
+  #      console:
+  #        enabled: true
+  #        path: /h2
+  #    datasource:
+  #      url: jdbc:h2:mem:test
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url:
@@ -18,12 +24,17 @@ spring:
         format_sql: true  # (3) SQL pretty print
   mail:
     host: smtp.naver.com
-    port: 995
+    port: 465
     username:
     password:
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
+      mail.smtp.auth.connectiontimeout: 5000
+      mail.smtp.auth.timeout: 5000
+      mail.smtp.auth.writetimeout: 5000
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.enable.required: true
 
   redis:
     host: localhost
@@ -37,7 +48,7 @@ aws:
     profile-separator: _
     name: hsj
 
-jwt.secret:
+jwt.secret: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
 
 jwt:
   key: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
@@ -57,14 +68,23 @@ cloud:
       static: "ap-northeast-2"
     stack:
       auto: false
+
 #server:
 #  port: 8080
-
+#
+#---
+#
 #spring:
 #  config:
 #    activate:
-#      on-profile: set2
+#      on-profile: prod2
 #    import: aws-parameterstore:/project-todo-community/hsj
+#  #    h2:
+#  #      console:
+#  #        enabled: true
+#  #        path: /h2
+#  #    datasource:
+#  #      url: jdbc:h2:mem:test
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url:
@@ -79,12 +99,17 @@ cloud:
 #        format_sql: true  # (3) SQL pretty print
 #  mail:
 #    host: smtp.naver.com
-#    port: 995
+#    port: 465
 #    username:
 #    password:
 #    properties:
 #      mail.smtp.auth: true
 #      mail.smtp.ssl.enable: true
+#      mail.smtp.auth.connectiontimeout: 5000
+#      mail.smtp.auth.timeout: 5000
+#      mail.smtp.auth.writetimeout: 5000
+#      mail.smtp.starttls.enable: true
+#      mail.smtp.starttls.enable.required: true
 #
 #  redis:
 #    host: localhost
@@ -98,16 +123,12 @@ cloud:
 #    profile-separator: _
 #    name: hsj
 #
-#
-#
-#jwt.secret:
-#
-#
+#jwt.secret: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
 #
 #jwt:
 #  key: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
 #  access-token-expiration-minutes: 30
-#  refresh-token-expiration-minutes: 420
+#  refresh-token-expiration-minutes: 720
 #
 #mail:
 #  address:
@@ -125,4 +146,3 @@ cloud:
 #
 #server:
 #  port: 8081
-#
