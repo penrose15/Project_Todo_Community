@@ -25,11 +25,11 @@ IMAGE_NAME=hsj
 TAG_ID=$(docker images | sort -r -k2 -h | grep "${IMAGE_NAME}" | awk 'BEGIN{tag = 1} NR==1{tag += $2} END{print tag}')
 
 echo "start docker pull IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} ."
-docker pull IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
+docker pull ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
 
 echo "> $IDLE_PROFILE 배포"
 echo "> 도커 run 실행 :  sudo docker run --name $IDLE_PROFILE -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}"
-docker run --name $IDLE_PROFILE -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
+docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
 
 
 # redis start
