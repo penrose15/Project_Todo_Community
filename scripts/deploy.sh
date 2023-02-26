@@ -29,14 +29,14 @@ docker pull ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
 
 echo "> $IDLE_PROFILE 배포"
 echo "> 도커 run 실행 :  sudo docker run --name $IDLE_PROFILE -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}"
-docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
+docker run --name ${IDLE_PROFILE} -d -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
 
 
 # 사용하지 않는 불필요한 이미지 삭제 -> 현재 컨테이너가 물고 있는 이미지는 삭제되지 않습니다.
 docker rmi -f $(docker images -f "dangling=true" -q) || true
 
 echo "> $IDLE_PROFILE 10초 후 Health check 시작"
-echo "> curl -s http://localhost:$IDLE_PORT/actuator/health "
+echo "> curl -s http://3.37.219.0:$IDLE_PORT/actuator/health "
 sleep 10
 
 
