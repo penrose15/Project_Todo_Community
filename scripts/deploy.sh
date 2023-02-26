@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "> 현재 구동중인 profile 확인"
-CURRENT_PROFILE= $(curl -s http://localhost/profile)
+CURRENT_PROFILE=$(curl -s http://127.0.0.1/profile)
 echo "> $CURRENT_PROFILE"
 
 if [ $CURRENT_PROFILE == prod1 ]
@@ -38,7 +38,7 @@ sleep 10
 
 for retry_count in {1..10}
 do
-  response=$(curl -s http://localhost:$IDLE_PORT/actuator/health)
+  response=$(curl -s http://127.0.0.1:$IDLE_PORT/actuator/health)
   up_count=$(echo $response | grep 'UP' | wc -l)
 
   if [ $up_count -ge 1 ]
