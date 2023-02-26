@@ -1,9 +1,8 @@
 package com.example.to_do_list.common.security.filter;
 
-import com.example.to_do_list.common.redis.RefreshTokenRepository;
+import com.example.to_do_list.common.redis.redisTemplateRepository;
 import com.example.to_do_list.common.security.jwt.JwtTokenizer;
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
-import com.example.to_do_list.common.security.userdetails.CustomUserDetailsService;
 import com.example.to_do_list.common.security.utils.CustomAuthorityUtils;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.repository.UsersRepository;
@@ -28,7 +27,7 @@ import java.util.*;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final UsersRepository usersRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final redisTemplateRepository redisTemplateRepository;
     private final CustomAuthorityUtils authorityUtils;
 
     @Override
@@ -79,7 +78,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
                     System.out.println(users.getEmail());
 
                     Long usersId = users.getUsersId();
-                    Long usersId2 = refreshTokenRepository.findById(refreshToken)
+                    Long usersId2 = redisTemplateRepository.findById(refreshToken)
                             .orElseThrow(() -> new NoSuchElementException("잘못된 토큰"))
                             .getUsersId();
 

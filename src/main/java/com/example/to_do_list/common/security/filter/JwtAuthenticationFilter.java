@@ -1,6 +1,6 @@
 package com.example.to_do_list.common.security.filter;
 
-import com.example.to_do_list.common.redis.RefreshTokenRepository;
+import com.example.to_do_list.common.redis.redisTemplateRepository;
 import com.example.to_do_list.common.security.dto.LoginDto;
 import com.example.to_do_list.common.security.jwt.JwtTokenizer;
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
@@ -14,7 +14,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -26,13 +25,12 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final UsersRepository usersRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final redisTemplateRepository redisTemplateRepository;
     private final JwtTokenizer jwtTokenizer;
 
     private final PasswordEncoder passwordEncoder;
@@ -74,7 +72,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization","Bearer "+ accessToken);
         response.setHeader("Refresh", "Bearer "+ refreshToken);
 
-        refreshTokenRepository.save(new RefreshToken("Bearer" + refreshToken, customUserDetails.getUsersId()));
+        redisTemplateRepository.save(new RefreshToken("Bearer" + refreshToken, customUserDetails.getUsersId()));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }

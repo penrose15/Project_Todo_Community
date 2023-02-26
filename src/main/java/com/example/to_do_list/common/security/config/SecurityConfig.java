@@ -1,6 +1,6 @@
 package com.example.to_do_list.common.security.config;
 
-import com.example.to_do_list.common.redis.RefreshTokenRepository;
+import com.example.to_do_list.common.redis.redisTemplateRepository;
 import com.example.to_do_list.common.security.filter.JwtAuthenticationFilter;
 import com.example.to_do_list.common.security.filter.JwtVerificationFilter;
 import com.example.to_do_list.common.security.filter.UsersAuthenticationFailureHandler;
@@ -15,7 +15,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,14 +24,13 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
-import static org.springframework.security.config.Customizer.withDefaults;
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final UsersRepository usersRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final redisTemplateRepository redisTemplateRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,6 +46,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/todo/**").hasAnyRole("ROLE_USER","ROLE_ADMIN")
+                .antMatchers("/api/password/email/**").permitAll()
                 .antMatchers("/api/login").permitAll()
                 .antMatchers("/*/user/account").permitAll()
                 .antMatchers("/api/**").hasAnyRole("ROLE_USER","ROLE_ADMIN")
@@ -79,12 +78,12 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, usersRepository,refreshTokenRepository,jwtTokenizer, passwordEncoder());
+            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, usersRepository, redisTemplateRepository,jwtTokenizer, passwordEncoder());
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new UsersAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer,usersRepository, refreshTokenRepository,authorityUtils );
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer,usersRepository, redisTemplateRepository,authorityUtils );
 
             builder
                     .addFilter(jwtAuthenticationFilter)

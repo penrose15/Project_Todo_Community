@@ -20,7 +20,7 @@ public class EmailConfiguration {
     @Value("${spring.mail.username}")
     private String username;
 
-    @Value("spring.mail.password")
+    @Value("{spring.mail.password}")
     private String password;
 
     @Value("${spring.mail.properties.mail.smtp.auth}")
@@ -28,6 +28,11 @@ public class EmailConfiguration {
 
     @Value("${spring.mail.properties.mail.smtp.ssl.enable}")
     private String sslEnable;
+
+
+    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+    private String sslStarttls;
+
 
     @Primary
     @Bean
@@ -46,6 +51,8 @@ public class EmailConfiguration {
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.smtp.auth",auth);
         props.put("mail.smtp.ssl.enable",sslEnable);
+        props.put("mail.smtp.ssl.protocols", "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3");
+        props.put("mail.smtp.starttls.enable", sslStarttls);
 
         return mailSender;
     }

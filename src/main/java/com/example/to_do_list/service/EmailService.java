@@ -1,13 +1,14 @@
 package com.example.to_do_list.service;
 
+import com.example.to_do_list.common.redis.redisTemplateRepository;
 import com.example.to_do_list.dto.email.EmailMessageDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
+    private final redisTemplateRepository redisTemplateRepository;
 
     public String getTmpPassword() {
         char[] charset = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -32,6 +33,22 @@ public class EmailService {
         return emailMessageDto;
     }
 
+    public void saveAuthCode(String email, String authCode) {
+        redisTemplateRepository.saveAuthCode(email, authCode);
+    }
+
+    public boolean verifyAuthCode(String email, String authCode) {
+        String code;
+        try {
+            code = redisTemplateRepository.findByEmail(email);
+        } catch (Exception e) {
+            return false;
+        }
+        if(!code.equals(authCode)) {
+            return false;
+        }
+        return true;
+    }
 
 
 }

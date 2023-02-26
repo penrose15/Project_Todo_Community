@@ -1,6 +1,6 @@
 package com.example.to_do_list.common.security.jwt;
 
-import com.example.to_do_list.common.redis.RefreshTokenRepository;
+import com.example.to_do_list.common.redis.redisTemplateRepository;
 import com.example.to_do_list.domain.RefreshToken;
 import com.example.to_do_list.repository.UsersRepository;
 import io.jsonwebtoken.Claims;
@@ -10,7 +10,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,11 +38,11 @@ public class JwtTokenizer {
     private String refreshTokenExpirationMinutes;
 
     private final UsersRepository usersRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final redisTemplateRepository redisTemplateRepository;
 
-    public JwtTokenizer(UsersRepository usersRepository, RefreshTokenRepository refreshTokenRepository) {
+    public JwtTokenizer(UsersRepository usersRepository, redisTemplateRepository redisTemplateRepository) {
         this.usersRepository = usersRepository;
-        this.refreshTokenRepository = refreshTokenRepository;
+        this.redisTemplateRepository = redisTemplateRepository;
     }
 
     public String encodeBase64SecretKey(String secretKey) {
@@ -77,7 +76,7 @@ public class JwtTokenizer {
                 .signWith(key)
                 .compact();
         RefreshToken refreshToken = new RefreshToken(jwts, usersId);
-        refreshTokenRepository.save(refreshToken);
+        redisTemplateRepository.save(refreshToken);
 
         return jwts;
     }
