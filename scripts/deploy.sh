@@ -31,10 +31,8 @@ TAG_ID=$(docker images | sort -r -k2 -h | grep "${IMAGE_NAME}" | awk 'BEGIN{tag 
 sudo chmod 755 .test.sh.swp
 
 echo "> 도커 build 실행 : docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} ."
-docker build -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} --build-arg IDLE_PROFILE=${IDLE_PROFILE} .
+docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t  ${ADMIN}/${IMAGE_NAME}:${TAG_ID} .
 
-echo "> 도커 pull"
-sudo docker pull admin1125/hsj:1
 
 echo "> $IDLE_PROFILE 배포"
 echo "> 도커 run 실행 :  sudo docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}"
@@ -52,7 +50,7 @@ sleep 10
 
 for retry_count in {1..10}
 do
-  response=$(curl -s http://localhost:$IDLE_PORT/actuator/health)
+  response=$(curl -s http://127.0.0.1:$IDLE_PORT/actuator/health)
   up_count=$(echo $response | grep 'UP' | wc -l)
 
   echo "> this is ${response}"
