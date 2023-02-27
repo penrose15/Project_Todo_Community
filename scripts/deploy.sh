@@ -30,6 +30,8 @@ TAG_ID=$(docker images | sort -r -k2 -h | grep "${IMAGE_NAME}" | awk 'BEGIN{tag 
 
 sudo chmod 755 .test.sh.swp
 
+echo "> 도커 build 실행 : docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} ."
+docker build -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} --build-arg IDLE_PROFILE=${IDLE_PROFILE} .
 
 echo "> 도커 pull"
 sudo docker pull admin1125/hsj:1
