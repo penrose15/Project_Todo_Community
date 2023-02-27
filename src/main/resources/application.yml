@@ -69,6 +69,8 @@ management:
       base-path: /actuator
       path-mapping:
         health: health
+      exposure:
+        include: "*"
 
 server:
   port: 8080
@@ -145,6 +147,8 @@ management:
       base-path: /actuator
       path-mapping:
         health: health
+      exposure:
+        include: "*"
 
 server:
   port: 8081
