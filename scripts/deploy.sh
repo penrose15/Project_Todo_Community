@@ -19,6 +19,10 @@ else
   IDLE_PORT=8080
 fi
 
+sudo docker ps -a -q --filter "name=hsj" | grep -q . && docker stop hsj && docker rm hsj | true
+
+sudo docker rmi admin1125/hsj:1
+
 ADMIN=admin1125
 
 IMAGE_NAME=hsj
@@ -26,9 +30,9 @@ TAG_ID=$(docker images | sort -r -k2 -h | grep "${IMAGE_NAME}" | awk 'BEGIN{tag 
 
 sudo chmod 755 .test.sh.swp
 
-echo "> 도커 build 실행 : docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} ."
-docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} /home/ec2-user
 
+echo "> 도커 pull"
+sudo docker pull admin1125/hsj:1
 
 echo "> $IDLE_PROFILE 배포"
 echo "> 도커 run 실행 :  sudo docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}"
