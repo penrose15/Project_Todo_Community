@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .antMatchers("/api/todo/**").hasAnyRole("ROLE_USER","ROLE_ADMIN")
                 .antMatchers("/api/password/email/**").permitAll()
                 .antMatchers("/api/login").permitAll()
+                .antMatchers("/actuator/health").permitAll()
                 .antMatchers("/*/user/account").permitAll()
                 .antMatchers("/api/**").hasAnyRole("ROLE_USER","ROLE_ADMIN")
                 .anyRequest().permitAll();
