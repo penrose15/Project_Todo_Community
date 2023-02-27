@@ -24,6 +24,8 @@ ADMIN=admin1125
 IMAGE_NAME=hsj
 TAG_ID=$(docker images | sort -r -k2 -h | grep "${IMAGE_NAME}" | awk 'BEGIN{tag = 1} NR==1{tag += $2} END{print tag}')
 
+sudo chmod 755 .test.sh.swp
+
 echo "> 도커 build 실행 : docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} ."
 docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} /home/ec2-user
 
