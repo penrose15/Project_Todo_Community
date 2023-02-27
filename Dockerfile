@@ -6,4 +6,4 @@ ENV ENV_IDLE_PROFILE=$IDLE_PROFILE
 
 COPY ${JAR_FILE} app.jar
 RUN echo $ENV_IDLE_PROFILE
-ENTRYPOINT ["java","-jar", "--spring.config.location=file:src/main/resources/application.yml","--spring.profiles.active=${ENV_IDLE_PROFILE}","/app.jar" ]
+ENTRYPOINT ["java","-jar","--spring.profiles.active=${ENV_IDLE_PROFILE}","/app.jar" ]
