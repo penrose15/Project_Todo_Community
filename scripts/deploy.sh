@@ -49,7 +49,7 @@ do
   response=$(curl -s http://localhost:$IDLE_PORT/actuator/health)
   up_count=$(echo $response | grep 'UP' | wc -l)
 
-  echo "> this is ${respoonse}"
+  echo "> this is ${response}"
 
   if [ $up_count -ge 1 ]
   then
