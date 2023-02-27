@@ -4,7 +4,6 @@ ARG JAR_FILE=build/libs/*.jar
 COPY ${JAR_FILE} app.jar
 
 ARG IDLE_PROFILE
-#ENV ENV_IDLE_PROFILE=$IDLE_PROFILE
-
-RUN mkdir -p /config
-ENTRYPOINT ["java","-jar","/app.jar" , "-Dspring.profiles.active=${SERVER_MODE}"]
+ENV ENV_IDLE_PROFILE=$IDLE_PROFILE
+RUN echo $ENV_IDLE_PROFILE
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=${ENV_IDLE_PROFILE}","/app.jar" ]
