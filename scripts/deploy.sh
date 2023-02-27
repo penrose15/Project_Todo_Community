@@ -31,12 +31,12 @@ TAG_ID=$(docker images | sort -r -k2 -h | grep "${IMAGE_NAME}" | awk 'BEGIN{tag 
 sudo chmod 755 .test.sh.swp
 
 echo "> 도커 build 실행 : docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t ${ADMIN}/${IMAGE_NAME}:${TAG_ID} ."
-docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t  ${ADMIN}/${IMAGE_NAME}:${TAG_ID} .
+sudo docker build --build-arg IDLE_PROFILE=${IDLE_PROFILE} -t  ${ADMIN}/${IMAGE_NAME}:${TAG_ID} .
 
 
 echo "> $IDLE_PROFILE 배포"
 echo "> 도커 run 실행 :  sudo docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}"
-docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
+sudo docker run --name ${IDLE_PROFILE} -d --rm -p $IDLE_PORT:${IDLE_PORT} ${ADMIN}/${IMAGE_NAME}:${TAG_ID}
 
 
 # 사용하지 않는 불필요한 이미지 삭제 -> 현재 컨테이너가 물고 있는 이미지는 삭제되지 않습니다.
