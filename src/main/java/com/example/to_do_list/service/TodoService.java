@@ -97,6 +97,11 @@ public class TodoService {
         return todo.getId();
     }
     //todo : 정렬 기능 만들기
+    public Page<TodoResponsesDto> findByStatusIsDone(int page, int size, String email) {
+        Users users = usersRepository.findByEmail(email).orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
+        return todoRepository.findByUsersIdAndStatusIsTrue(users.getUsersId(), pageRequest);
+    }
 
     public Page<TodoResponsesDto> findStatusIsFalse(int page, int size, Long usersId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");

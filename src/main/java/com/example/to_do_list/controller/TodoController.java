@@ -74,10 +74,21 @@ public class TodoController {
                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long usersId = usersService.findByEmail(userDetails.getEmail()); //verify
 
-        Page<TodoResponsesDto> request = todoService.findByDate(page-1, size, LocalDate.now(), usersId);
-        List<TodoResponsesDto> list = request.getContent();
+        Page<TodoResponsesDto> response = todoService.findByDate(page-1, size, LocalDate.now(), usersId);
+        List<TodoResponsesDto> list = response.getContent();
 
-        return new ResponseEntity<>(new MultiResponseDto<>(list, request), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(list, response), HttpStatus.OK);
+    }
+
+    //실행한 todo는 보관함으로 이동
+    @GetMapping("/posts/storage")
+    public ResponseEntity findAlreadyDone(@RequestParam int page,
+                                          @RequestParam int size,
+                                          @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Page<TodoResponsesDto> response = todoService.findByStatusIsDone(page-1, size, userDetails.getEmail());
+        List<TodoResponsesDto> list = response.getContent();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(list, response), HttpStatus.OK);
     }
 
     @GetMapping("/posts/days")
