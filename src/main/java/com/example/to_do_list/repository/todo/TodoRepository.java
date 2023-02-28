@@ -41,23 +41,22 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
     int findByDateAndStatus(Long id,LocalDate date);
 
     @Query("select new com.example.to_do_list.dto.todo.TodoResponsesDto(t.id, t.title, t.status) " +
-            "from Todo t Join Users u On t.users.id = u.id " +
-            "where t.status = True ")
+            "from Todo t " +
+            "where t.users.id = :usersId AND t.status = True ")
     Page<TodoResponsesDto> findByUsersIdAndStatusIsTrue(Long usersId, PageRequest pageRequest);
 
     @Query("select new com.example.to_do_list.dto.todo.TodoResponsesDto(t.id, t.title, t.status) " +
-            "from Todo t Join Users u On t.users.id = u.id " +
-            "where t.status = FALSE ")
+            "from Todo t  " +
+            "where t.users.id = :usersId and t.status = FALSE ")
     Page<TodoResponsesDto> findByUsersIdAndStatusIsFalse(Long usersId, PageRequest pageRequest);
 
     @Query("SELECT new com.example.to_do_list.dto.todo.TodoTitleResponsesDto(t.id, t.title, t.status) " +
-            " FROM Todo t JOIN Users u ON t.users.id = u.id " +
-            " WHERE (:date >= t.date AND :date <= t.endDate) AND t.expose = 'PUBLIC' GROUP BY t.id")
+            " FROM Todo t " +
+            " WHERE t.users.id = :usersId AND (:date >= t.date AND :date <= t.endDate) AND t.expose = 'PUBLIC' GROUP BY t.id")
     List<TodoTitleResponsesDto> findByUsersIdAndIsExposeAndDate(@Param("usersId") Long usersId, LocalDate date);
 
     @Query("select new com.example.to_do_list.dto.todo.TodoResponsesDto(t.id, t.title, t.status)" +
             "from Todo t " +
-            "join Users u on t.users.id = u.id " +
-            " t.status = FALSE and t.category.categoryId = :categoryId")
+            "where t.users.id = :usersId and t.status = FALSE and t.category.categoryId = :categoryId")
     List<TodoResponsesDto> findByUsersIdAndStatusAndCategoryId(long usersId, long categoryId);
 }

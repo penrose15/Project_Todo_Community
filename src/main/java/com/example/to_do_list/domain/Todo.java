@@ -17,6 +17,8 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "todo"
+        , indexes = @Index(name = "idx_title_status", columnList = "id, title, status"))
 public class Todo extends BaseEntity {
 
     @PrePersist
