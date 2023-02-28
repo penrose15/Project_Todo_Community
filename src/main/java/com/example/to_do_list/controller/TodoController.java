@@ -28,8 +28,7 @@ public class TodoController {
     public ResponseEntity<Long> save(@RequestBody TodoSaveDto request,
                      @AuthenticationPrincipal CustomUserDetails user) {
 
-        Long usersId = usersService.findByEmail(user.getUsername());
-        return new ResponseEntity<>(todoService.save(request,usersId), HttpStatus.CREATED);
+        return new ResponseEntity<>(todoService.save(request,user.getUsername()), HttpStatus.CREATED);
     }
 
     @PatchMapping("/posts/{id}")
@@ -37,9 +36,8 @@ public class TodoController {
                        @RequestBody TodoUpdateDto request,
                        @AuthenticationPrincipal CustomUserDetails user) {
         String email = user.getEmail();
-        Long usersId = usersService.findByEmail(email);
 //        Long usersId = 1L;
-        return new ResponseEntity<>(todoService.update(id, request, usersId), HttpStatus.OK);
+        return new ResponseEntity<>(todoService.update(id, request, email), HttpStatus.OK);
     }
 
     @GetMapping("/posts/category")
@@ -63,9 +61,8 @@ public class TodoController {
     public ResponseEntity<Long> todoDone(@PathVariable Long id,
                             @AuthenticationPrincipal CustomUserDetails user) {
 
-        Long usersId = usersService.findByEmail(user.getEmail());
 //        Long usersId = 1L;
-        return new ResponseEntity<>(todoService.changeStatus(id, usersId), HttpStatus.OK);
+        return new ResponseEntity<>(todoService.changeStatus(id, user.getUsername()), HttpStatus.OK);
     }
 
     @GetMapping("/posts/today")
@@ -125,8 +122,7 @@ public class TodoController {
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id,
                                            @AuthenticationPrincipal CustomUserDetails user
     ) {
-        Long usersId = usersService.findByEmail(user.getEmail());
-        todoService.deleteTodo(id, usersId);
+        todoService.deleteTodo(id, user.getUsername());
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -134,8 +130,7 @@ public class TodoController {
     @DeleteMapping("/posts") //삭제가 안된다...? --> 해결!
     public ResponseEntity<Void> deleteTodos(@RequestBody TodoIdsDto ids,
                                             @AuthenticationPrincipal CustomUserDetails user) {
-        Long usersId = usersService.findByEmail(user.getEmail());
-        todoService.deleteTodos(ids.getIds(), usersId);
+        todoService.deleteTodos(ids.getIds(), user.getUsername());
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

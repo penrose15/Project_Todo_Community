@@ -32,10 +32,10 @@ public class TodoService {
     private final TodoRepositoryImpl todoRepositoryImpl;
     private final CategoryRepository categoryRepository;
 
-    public Long save(TodoSaveDto todoSaveDto, Long usersId) {
+    public Long save(TodoSaveDto todoSaveDto, String email) {
         Todo todo = todoSaveDto.toEntity();
 
-        Users users = findUsersById(usersId);
+        Users users = findUsersByEmail(email);
         todo.setUsers(users);
 
         Todo saveTodo = todoRepository.save(todo);
@@ -45,8 +45,8 @@ public class TodoService {
         return saveTodo.getId();
     }
 
-    public Long update(Long id, TodoUpdateDto todoUpdateDto, Long usersId) {
-        Users users = findUsersById(usersId);
+    public Long update(Long id, TodoUpdateDto todoUpdateDto, String email) {
+        Users users = findUsersByEmail(email);
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
 
@@ -81,8 +81,8 @@ public class TodoService {
                 .endDate(todo.getEndDate().format(formatter))
                 .build();
     }
-    public Long changeStatus(Long id, Long usersId) {
-        Users users = findUsersById(usersId);
+    public Long changeStatus(Long id, String email) {
+        Users users = findUsersByEmail(email);
         List<Todo> list = users.getTodoList();
 
         Todo todo = todoRepository.findById(id)
@@ -127,8 +127,8 @@ public class TodoService {
         return todos;
     }
 
-    public void deleteTodo(Long id, Long usersId) {
-        Users users = findUsersById(usersId);
+    public void deleteTodo(Long id, String email) {
+        Users users = findUsersByEmail(email);
         List<Todo> list = users.getTodoList();
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
@@ -138,8 +138,8 @@ public class TodoService {
         todoRepository.delete(todo);
     }
 
-    public void deleteTodos(List<Long> ids, Long usersId) {
-        Users users = findUsersById(usersId);
+    public void deleteTodos(List<Long> ids, String email) {
+        Users users = findUsersByEmail(email);
         List<Long> list = new ArrayList<>();
         List<Todo> todoList = users.getTodoList();
         for (Todo todo : todoList) {
@@ -157,6 +157,11 @@ public class TodoService {
 
     public Users findUsersById(Long usersId) {
         return usersRepository.findById(usersId)
+                .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
+    }
+
+    public Users findUsersByEmail(String email) {
+        return usersRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessLogicException(USER_NOT_FOUND));
     }
 }
