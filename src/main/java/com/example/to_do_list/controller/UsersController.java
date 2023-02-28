@@ -5,7 +5,6 @@ package com.example.to_do_list.controller;
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
 import com.example.to_do_list.domain.Users;
 import com.example.to_do_list.dto.ChangePasswordDto;
-import com.example.to_do_list.dto.user.UsersJoinDto;
 import com.example.to_do_list.dto.user.UsersSaveDto;
 import com.example.to_do_list.service.ChangePasswordService;
 import com.example.to_do_list.service.UsersService;

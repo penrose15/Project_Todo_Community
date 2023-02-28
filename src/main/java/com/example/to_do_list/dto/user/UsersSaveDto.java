@@ -10,10 +10,12 @@ public class UsersSaveDto {
     private String email;
     private String password;
     private List<String> roles;
+    private Boolean checkedAuthCode;
 
-    public UsersSaveDto(String email, String password) {
+    public UsersSaveDto(String email, String password, Boolean checkedAuthCode) {
         this.email = email;
         this.password = password;
+        this.checkedAuthCode = checkedAuthCode;
     }
 
     public Users toEntity() {

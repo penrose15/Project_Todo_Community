@@ -42,6 +42,9 @@ public class UsersService {
 
     public String createUsers(UsersSaveDto users) {
         verifyEmail(users.getEmail());
+        if(!users.getCheckedAuthCode()) {
+            throw new BusinessLogicException(NOT_VERIFIED_EMAIL);
+        }
 
         String encryptedPassword = passwordEncoder.encode(users.getPassword());
         users.setPassword(encryptedPassword);

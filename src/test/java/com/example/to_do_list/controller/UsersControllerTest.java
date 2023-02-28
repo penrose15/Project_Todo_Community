@@ -64,7 +64,7 @@ public class UsersControllerTest {
         private Gson gson;
         @Test
         void joinUser() throws Exception {
-                UsersSaveDto usersSaveDto = new UsersSaveDto("abc@gmail.com", "abcd1234!");
+                UsersSaveDto usersSaveDto = new UsersSaveDto("abc@gmail.com", "abcd1234!", true);
 
 
                 doReturn("abc@gmail.com")

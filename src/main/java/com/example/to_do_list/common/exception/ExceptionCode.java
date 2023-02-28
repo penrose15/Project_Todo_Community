@@ -18,7 +18,8 @@ public enum ExceptionCode {
     INVALID_EMAIL(404,"존재하지 않는 이메일"),
     EMAIL_ALREADY_EXIST(405, "이메일이 존재합니다."),
     PASSWORD_NOt_MATCH(405, "패스워드가 위와 일치해야 합니다."),
-    AUTHCODE_NOT_FOUND(404, "인증번호가 존재하지 않습니다.");
+    AUTHCODE_NOT_FOUND(404, "인증번호가 존재하지 않습니다."),
+    NOT_VERIFIED_EMAIL(405, "인증되지 않은 이메일입니다.");
 
     @Getter
     private int status;
