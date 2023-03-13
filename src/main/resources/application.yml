@@ -16,19 +16,7 @@ spring:
     properties:
       hibernate:
         format_sql: true  # (3) SQL pretty print
-  mail:
-    host: smtp.naver.com
-    port: 465
-    username:
-    password:
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true
-      mail.smtp.auth.connectiontimeout: 5000
-      mail.smtp.auth.timeout: 5000
-      mail.smtp.auth.writetimeout: 5000
-      mail.smtp.starttls.enable: true
-      mail.smtp.starttls.enable.required: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
 
   redis:
     host: localhost
@@ -50,6 +38,17 @@ jwt:
   refresh-token-expiration-minutes: 720
 
 mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    username: hsj99215@gmail.com
+    password: eohxrphykonyzsyx
+    auth: true
+    starttls:
+      enable: true
+  subject:
+    member:
+      registration: 인증 번호 발송
   address:
     admin:
 

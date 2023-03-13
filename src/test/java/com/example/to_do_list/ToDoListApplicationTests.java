@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@SpringBootTest(properties = "classpath:application-test.yml")
+@SpringBootTest(properties = "classpath:/src/test/resources/application-test.yml")
 @ExtendWith(SpringExtension.class)
 //@ActiveProfiles("prod1")
 class ToDoListApplicationTests {

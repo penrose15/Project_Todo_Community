@@ -13,3 +13,23 @@ spring:
         format_sql: true
 logging.level:
   org.hibernate.SQL: debug
+
+  redis:
+    host: localhost
+    port: 6379
+
+jwt.secret: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
+
+jwt:
+  key: uyioio3ljknklgy2uijhj5klovwg5yujah2khui3kjhui
+  access-token-expiration-minutes: 30
+  refresh-token-expiration-minutes: 720
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      path-mapping:
+        health: health
+      exposure:
+        include: "*"
