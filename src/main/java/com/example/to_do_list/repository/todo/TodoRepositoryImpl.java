@@ -1,10 +1,12 @@
 package com.example.to_do_list.repository.todo;
 
-import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.dto.todo.TodoCalendarDTO;
 import com.example.to_do_list.dto.todo.TodoResponsesDto;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +16,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.to_do_list.domain.QTodo.todo;
 import static com.example.to_do_list.domain.QUsers.users;
@@ -57,6 +57,32 @@ public class TodoRepositoryImpl implements TodoRepositoryCustom{
                         .and(isPriorityEqual(priority))
                         .and(isExposeEqual(expose))
                         .and(todo.status.isFalse()))
+                .groupBy(todo.id);
+        return PageableExecutionUtils.getPage(todoList, pageable, count::fetchCount);
+
+    }
+
+    @Override
+    public Page<TodoResponsesDto> search(String search, long usersId, Pageable pageable) {
+        BooleanBuilder builder = new BooleanBuilder();
+        NumberTemplate<Integer> booleanTemplate = Expressions.numberTemplate(Integer.class,
+                "function('match',{0},{1},{2})", todo.title, todo.content, search);
+        builder.and(booleanTemplate.eq(1));
+
+        List<TodoResponsesDto> todoList = queryFactory
+                .select(Projections.constructor(TodoResponsesDto.class, todo.id, todo.title, todo.status))
+                .from(todo)
+                .where(todo.users.usersId.eq(usersId)
+                        .and(builder))
+                .groupBy(todo.id)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        JPQLQuery<TodoResponsesDto> count = queryFactory
+                .select(Projections.constructor(TodoResponsesDto.class, todo.id, todo.title, todo.status))
+                .from(todo)
+                .where(todo.users.usersId.eq(usersId)
+                        .and(builder))
                 .groupBy(todo.id);
         return PageableExecutionUtils.getPage(todoList, pageable, count::fetchCount);
 

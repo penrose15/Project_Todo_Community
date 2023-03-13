@@ -64,11 +64,11 @@ public class TodoServiceTest {
         doReturn(users)
                 .when(usersRepository).save(any(Users.class));
         doReturn(Optional.ofNullable(users))
-                .when(usersRepository).findById(anyLong());
+                .when(usersRepository).findByEmail(anyString());
         doReturn(todo)
                 .when(todoRepository).save(any(Todo.class));
 
-        Long newTodoId = todoService.save(todoSaveDto, fakeUsersId);
+        Long newTodoId = todoService.save(todoSaveDto, "name@gmail.com");
 
         assertThat(newTodoId).isEqualTo(fakeTodoId);
         assertThat(todo.getTitle()).isEqualTo("title");
@@ -100,7 +100,7 @@ public class TodoServiceTest {
 
 
         doReturn(Optional.ofNullable(users))
-                .when(usersRepository).findById(anyLong());
+                .when(usersRepository).findByEmail(anyString());
 
         doReturn(Optional.ofNullable(todo))
                 .when(todoRepository).findById(anyLong());
@@ -108,7 +108,7 @@ public class TodoServiceTest {
                 .when(todoRepository).save(any(Todo.class));
 
 
-        Long newTodoId = todoService.update(fakeTodoId, dto, fakeUsersId);
+        Long newTodoId = todoService.update(fakeTodoId, dto, "name@gmail.com");
 
         assertThat(newTodoId).isEqualTo(fakeTodoId);
 

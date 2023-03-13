@@ -87,7 +87,8 @@ public class UsersControllerTest {
                                 requestFields(
                                         List.of(
                                                 fieldWithPath("email").type(JsonFieldType.STRING).description("회원 이메일"),
-                                                fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비번")
+                                                fieldWithPath("password").type(JsonFieldType.STRING).description("회원 비번"),
+                                                fieldWithPath("checkedAuthCode").type(JsonFieldType.BOOLEAN).description("이메일 인증 확인 여부")
                                         )
                                 )
                                 ));

@@ -6,19 +6,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "todo"
-        , indexes = @Index(name = "idx_title_status", columnList = "id, title, status"))
 public class Todo extends BaseEntity {
 
     @PrePersist
@@ -37,12 +33,13 @@ public class Todo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
+//    @FullTextField
     @Column(nullable = false)
     private String title;
 
+//    @FullTextField
     @Length(max = 1000)
-    @Column(length = 1000)
+    @Column
     private String content;
 
     @Column

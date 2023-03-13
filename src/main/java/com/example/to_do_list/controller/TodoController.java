@@ -118,6 +118,21 @@ public class TodoController {
         return new ResponseEntity(new MultiResponseDto<>(list, request), HttpStatus.OK);
     }
 
+    @GetMapping("/keyword") //todorepositoryImpl eqExpose 에러 --> 해결
+    public ResponseEntity search(@RequestParam int page,
+                                     @RequestParam int size,
+                                     @RequestParam(required = false) String keyword,
+                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long usersId = usersService.findByEmail(userDetails.getEmail());
+
+        Page<TodoResponsesDto> request = todoService.search(page, size, keyword, usersId);
+        List<TodoResponsesDto> list = request.getContent();
+
+        return new ResponseEntity(new MultiResponseDto<>(list, request), HttpStatus.OK);
+    }
+
+
+
     @DeleteMapping("/posts/{id}") //삭제가 안되는데....? --> 수정함 테스트 ㄱㄱ --> 해결!
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id,
                                            @AuthenticationPrincipal CustomUserDetails user

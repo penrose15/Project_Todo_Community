@@ -92,7 +92,7 @@ public class TodoControllerTest {
 
         given(usersService.findByEmail(Mockito.anyString()))
                 .willReturn(1L);
-        given(todoService.save(Mockito.any(TodoSaveDto.class),anyLong()))
+        given(todoService.save(Mockito.any(TodoSaveDto.class),anyString()))
                 .willReturn(1L);
 
         ResultActions actions = mockMvc.perform(
@@ -193,7 +193,7 @@ public class TodoControllerTest {
         String content = gson.toJson(todoUpdateDto);
         given(usersService.findByEmail(Mockito.anyString()))
                 .willReturn(1L);
-        given(todoService.update(Mockito.anyLong(), Mockito.any(TodoUpdateDto.class), Mockito.anyLong()))
+        given(todoService.update(Mockito.anyLong(), Mockito.any(TodoUpdateDto.class), Mockito.anyString()))
                 .willReturn(1L);
 
         ResultActions actions = mockMvc.perform(
@@ -236,7 +236,7 @@ public class TodoControllerTest {
         Long usersId = 1L;
         given(usersService.findByEmail(Mockito.anyString()))
                 .willReturn(usersId);
-        given(todoService.changeStatus(Mockito.anyLong(), Mockito.anyLong()))
+        given(todoService.changeStatus(Mockito.anyLong(), Mockito.anyString()))
                 .willReturn(1L);
 
         ResultActions actions = mockMvc.perform(
@@ -348,14 +348,14 @@ public class TodoControllerTest {
                 .endDate("2023-02-15")
                 .expose("PUBLIC")
                 .build();
-        todoService.save(todoSaveDto1, 1L);
+        todoService.save(todoSaveDto1, "abc@gmail.com");
         TodoSaveDto todoSaveDto2 = TodoSaveDto.builder()
                 .title("title2")
                 .content("content2")
                 .endDate("2023-02-15")
                 .expose("PUBLIC")
                 .build();
-        todoService.save(todoSaveDto2, 1L);
+        todoService.save(todoSaveDto2, "abcd@gmail.com");
 
         TodoResponsesDto todoResponsesDto1 = new TodoResponsesDto(1L, "title1",true);
         TodoResponsesDto todoResponsesDto2 = new TodoResponsesDto(2L, "title2",false);
@@ -423,7 +423,7 @@ public class TodoControllerTest {
         doReturn(1L)
                 .when(usersService).findByEmail(anyString());
         doNothing()
-                .when(todoService).deleteTodo(anyLong(), anyLong());
+                .when(todoService).deleteTodo(anyLong(), anyString());
 
         ResultActions actions = mockMvc.perform(
                 delete("/api/todo/posts/{id}", 1L)
@@ -458,7 +458,7 @@ public class TodoControllerTest {
         doReturn(1L)
                 .when(usersService).findByEmail(anyString());
         doNothing()
-                .when(todoService).deleteTodos(anyList(), anyLong());
+                .when(todoService).deleteTodos(anyList(), anyString());
 
         ResultActions actions = mockMvc.perform(
                 delete("/api/todo/posts")

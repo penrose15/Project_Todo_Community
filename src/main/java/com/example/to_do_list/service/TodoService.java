@@ -113,6 +113,10 @@ public class TodoService {
 
         return todoRepositoryImpl.searchTodo(title, content, priority, expose,usersId,pageRequest);
     }
+    public Page<TodoResponsesDto> search(int page, int size, String keyword, long usersId) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");
+        return todoRepositoryImpl.search(keyword, usersId, pageRequest);
+    }
 
     public Page<TodoResponsesDto> findByDate(int page, int size, LocalDate date, Long usersId) {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "id");

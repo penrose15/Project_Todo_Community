@@ -555,7 +555,7 @@ Host: docs.api.com
 <h4 id="_response_body"><a class="link" href="#_response_body">Response Body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>1</code></pre>
+<pre class="highlight nowrap"><code>0</code></pre>
 </div>
 </div>
 </div>
@@ -660,7 +660,7 @@ Host: docs.api.com
 <h4 id="_response_body_2"><a class="link" href="#_response_body_2">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>1</code></pre>
+<pre class="highlight nowrap"><code>0</code></pre>
 </div>
 </div>
 </div>
@@ -711,7 +711,7 @@ Host: docs.api.com</code></pre>
   "content" : "content",
   "status" : true,
   "expose" : "PUBLIC",
-  "endDate" : "2023-02-27"
+  "endDate" : "2023-03-13"
 }</code></pre>
 </div>
 </div>
@@ -758,7 +758,7 @@ Host: docs.api.com</code></pre>
 <h4 id="_response_body_4"><a class="link" href="#_response_body_4">Response body</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code>1</code></pre>
+<pre class="highlight nowrap"><code>0</code></pre>
 </div>
 </div>
 </div>
@@ -1030,12 +1030,13 @@ Host: docs.api.com
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /api/user/account HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Content-Length: 62
+Content-Length: 91
 Host: docs.api.com
 
 {
   "email" : "abc@gmail.com",
-  "password" : "abcd1234!"
+  "password" : "abcd1234!",
+  "checkedAuthCode" : true
 }</code></pre>
 </div>
 </div>
@@ -1046,7 +1047,8 @@ Host: docs.api.com
 <div class="content">
 <pre class="highlight nowrap"><code>{
   "email" : "abc@gmail.com",
-  "password" : "abcd1234!"
+  "password" : "abcd1234!",
+  "checkedAuthCode" : true
 }</code></pre>
 </div>
 </div>
@@ -1076,6 +1078,11 @@ Host: docs.api.com
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>password</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">회원 비번</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>checkedAuthCode</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이메일 인증 확인 여부</p></td>
 </tr>
 </tbody>
 </table>

@@ -13,6 +13,8 @@ public interface TodoRepositoryCustom {
 
     Page<TodoResponsesDto> searchTodo(String title, String content, Integer priority, String expose, long usersId, Pageable pageable);
 
+    Page<TodoResponsesDto> search(String search, long usersId, Pageable pageable);
+
     TodoResponsesDto findTodoResponses(LocalDate date, long usersId);
 
     List<TodoCalendarDTO> findTodoByMonth(LocalDate startDate, LocalDate endDate, long usersId);
