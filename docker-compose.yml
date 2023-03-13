@@ -2,11 +2,15 @@ version: "3"
 services:
   nginx:
     image: springboot-nginx:0.1
+    container_name: nginx
     ports:
       - 80:80
+    volumes:
+      # nginx 설정파일을 로컬의 ./nginx 폴더에 넣어준 후 연결
+      - ./nginx:/etc/nginx/conf.d
     depends_on:
-      - admin1125/hsj:1.0
-  admin1125/hsj:1.0:
+      - hsj1
+  hsj1:
     build: .
     expose:
       - 8080
