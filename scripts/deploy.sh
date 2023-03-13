@@ -14,6 +14,9 @@ echo "> hello"
 
 #여기에 nginx 실행하고 포트 나누면 될 듯하다
 #sudo sh /home/ec2-user/test.sh
+docker stop hsj1
+
+docker rm hsj1
 
 # 도커 run
 docker run -d -p 8080:8080 --name hsj1 admin1125/hsj:1.0
