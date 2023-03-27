@@ -120,7 +120,7 @@ public class UsersService {
 
     public void changePassword(String email,String tmpPassword) {
         Users users = getUser(email);
-        users.setPassword(passwordEncoder.encode(tmpPassword));
+        users.changePassword(passwordEncoder.encode(tmpPassword));
 
         usersRepository.save(users);
     }

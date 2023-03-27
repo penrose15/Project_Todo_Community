@@ -1,7 +1,6 @@
 package com.example.to_do_list.service;
 
 import com.example.to_do_list.common.exception.BusinessLogicException;
-import com.example.to_do_list.common.exception.ExceptionCode;
 import com.example.to_do_list.domain.Category;
 import com.example.to_do_list.domain.Todo;
 import com.example.to_do_list.domain.Users;
@@ -19,7 +18,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static com.example.to_do_list.common.exception.ExceptionCode.*;
 
@@ -36,7 +34,7 @@ public class TodoService {
         Todo todo = todoSaveDto.toEntity();
 
         Users users = findUsersByEmail(email);
-        todo.setUsers(users);
+        todo.addUsers(users);
 
         Todo saveTodo = todoRepository.save(todo);
         users.addTodoList(todo);
@@ -61,7 +59,7 @@ public class TodoService {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new BusinessLogicException(TODO_NOT_FOUND));
 
-        todo.setCategory(category);
+        todo.addCategory(category);
         category.addTodo(todo);
 
         todoRepository.save(todo);

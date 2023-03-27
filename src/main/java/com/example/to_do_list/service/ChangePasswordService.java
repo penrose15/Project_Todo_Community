@@ -29,7 +29,7 @@ public class ChangePasswordService {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_NOt_MATCH);
         }
 
-        users.setPassword(passwordEncoder.encode(dto.getNewPassword2()));
+        users.changePassword(passwordEncoder.encode(dto.getNewPassword2()));
 
         usersRepository.save(users);
         return true;

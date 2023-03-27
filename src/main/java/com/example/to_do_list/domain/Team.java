@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,15 +26,18 @@ public class Team extends BaseEntity {
     @Column
     private long hostUserId;
 
+    @NotBlank
     @Column
     private String title;
 
     @Column(length = 500)
     private String explanation;
 
+    @Min(0)
     @Column
     private int limits;
 
+    @Min(0)
     @Column
     private int criteria;
 

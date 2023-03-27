@@ -5,14 +5,11 @@ import com.example.to_do_list.domain.role.Role;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@Setter
 @Entity
 @Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "email")
@@ -23,14 +20,16 @@ public class Users extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long usersId;
 
+    @NotBlank
     @Column
     private String username;
 
-    @Email
+    @Email(regexp = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
     @Column(unique = true, nullable = false)
     private String email;
 
-//    @NotNull
+    @NotBlank
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}")
     @Column
     private String password;
 
@@ -58,6 +57,13 @@ public class Users extends BaseEntity {
     public Users update(String username, String picture) {
         this.username = username;
         return this;
+    }
+    public void changeTeam(Team team) {
+        this.team = team;
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
     }
 
     @Builder

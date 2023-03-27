@@ -80,7 +80,7 @@ public class TeamService {
             log.info(e.getMessage());
         }
         usersList.remove(users);
-        users.setTeam(null);
+        users.changeTeam(null);
         team.setUsersList(usersList);
 
         teamRepository.save(team);
@@ -174,7 +174,7 @@ public class TeamService {
         verifyingHosts(team.getHostUserId(), team.getUsersList().get(0).getUsersId());
 
         team.setUsersList(new ArrayList<>());
-        users.setTeam(null);
+        users.changeTeam(null);
         teamRepository.save(team);
 
         teamRepository.delete(team);

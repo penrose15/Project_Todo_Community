@@ -21,10 +21,6 @@ import javax.validation.Valid;
 public class UsersController {
     private final UsersService usersService;
     private final ChangePasswordService changePasswordService;
-    @PostMapping("/tmp")
-    public Long tmpUser() {
-        return usersService.save();
-    }
 
     @PostMapping("/account")
     public ResponseEntity<String> joinUser(@RequestBody @Valid UsersSaveDto usersSaveDto) {

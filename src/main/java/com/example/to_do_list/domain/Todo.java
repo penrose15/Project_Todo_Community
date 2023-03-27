@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Getter
@@ -33,11 +34,10 @@ public class Todo extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @FullTextField
+    @NotBlank
     @Column(nullable = false)
     private String title;
 
-//    @FullTextField
     @Length(max = 1000)
     @Column
     private String content;
@@ -78,7 +78,7 @@ public class Todo extends BaseEntity {
         this.endDate = endDate;
     }
 
-    public void setUsers(Users users) {
+    public void addUsers(Users users) {
         this.users = users;
     }
 
@@ -111,7 +111,7 @@ public class Todo extends BaseEntity {
         return todo;
     }
 
-    public void setCategory(Category category) {
+    public void addCategory(Category category) {
         if(this.category != category) {
             this.category = category;
         }

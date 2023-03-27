@@ -19,7 +19,7 @@ public class TeamSaveDto {
     @NotBlank
     private String title;
     private String explanation;
-    @Min(1)
+    @Min(0)
     @Max(30)
     private int limit;
     @Min(0)

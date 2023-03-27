@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Transactional
 @RequiredArgsConstructor
@@ -59,10 +58,10 @@ public class CategoryService {
         Todo todo = request.toEntity();
         Category category = verifyById(categoryId);
 
-        todo.setUsers(users);
+        todo.addUsers(users);
 
 
-        todo.setCategory(category);
+        todo.addCategory(category);
 
         Todo savedTodo = todoRepository.save(todo);
         category.addTodo(savedTodo);

@@ -18,7 +18,7 @@ public class UsersSaveDto {
     @NotBlank
     private String password;
     private List<String> roles;
-    private boolean checkedAuthCode;
+    private Boolean checkedAuthCode;
 
     public UsersSaveDto(String email, String password, Boolean checkedAuthCode) {
         this.email = email;

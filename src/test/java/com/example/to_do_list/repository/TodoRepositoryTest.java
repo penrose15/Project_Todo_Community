@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
@@ -101,10 +100,10 @@ public class TodoRepositoryTest {
                 .endDate(endDate.plusDays(3L))
                 .build();
 
-        todo1.setUsers(users1);
-        todo2.setUsers(users1);
-        todo3.setUsers(users2);
-        todo4.setUsers(users2);
+        todo1.addUsers(users1);
+        todo2.addUsers(users1);
+        todo3.addUsers(users2);
+        todo4.addUsers(users2);
 
         todoRepository.save(todo1);
         todoRepository.save(todo2);

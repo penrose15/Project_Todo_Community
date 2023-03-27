@@ -81,9 +81,9 @@ public class AttendServiceTest {
                 .build();
 
         usersRepository.save(users);
-        todo.setUsers(users);
-        todo1.setUsers(users);
-        todo2.setUsers(users);
+        todo.addUsers(users);
+        todo1.addUsers(users);
+        todo2.addUsers(users);
 
         todoRepository.save(todo);
         todoRepository.save(todo1);
