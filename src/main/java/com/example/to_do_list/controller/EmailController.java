@@ -1,16 +1,14 @@
 package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.email.EmailSender;
-import com.example.to_do_list.dto.AuthCodeDto;
+import com.example.to_do_list.dto.auth.AuthCodeDto;
 import com.example.to_do_list.dto.email.EmailDTO;
 import com.example.to_do_list.dto.email.EmailMessageDto;
 import com.example.to_do_list.service.EmailService;
 import com.example.to_do_list.service.UsersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

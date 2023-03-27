@@ -3,10 +3,16 @@ package com.example.to_do_list.dto.category;
 import com.example.to_do_list.domain.Category;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
+
+@Validated
 @Getter
 public class CategorySaveDto {
+    @NotBlank
     private Long usersId;
+    @NotBlank
     private String name;
     private String explanation;
 

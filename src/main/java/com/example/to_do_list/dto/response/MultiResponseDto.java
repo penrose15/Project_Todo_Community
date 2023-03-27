@@ -1,4 +1,4 @@
-package com.example.to_do_list.dto;
+package com.example.to_do_list.dto.response;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

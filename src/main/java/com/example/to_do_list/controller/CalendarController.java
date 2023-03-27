@@ -1,11 +1,10 @@
 package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
-import com.example.to_do_list.dto.CalendarDto;
-import com.example.to_do_list.dto.SingleResponseDto;
+import com.example.to_do_list.dto.calendar.CalendarDto;
+import com.example.to_do_list.dto.response.SingleResponseDto;
 import com.example.to_do_list.service.CalendarService;
 import com.example.to_do_list.service.UsersService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

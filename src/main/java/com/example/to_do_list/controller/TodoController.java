@@ -1,7 +1,7 @@
 package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
-import com.example.to_do_list.dto.MultiResponseDto;
+import com.example.to_do_list.dto.response.MultiResponseDto;
 import com.example.to_do_list.dto.todo.*;
 import com.example.to_do_list.service.TodoService;
 import com.example.to_do_list.service.UsersService;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -25,7 +26,7 @@ public class TodoController {
     private final UsersService usersService;
 
     @PostMapping("/posts")
-    public ResponseEntity<Long> save(@RequestBody TodoSaveDto request,
+    public ResponseEntity<Long> save(@RequestBody @Valid TodoSaveDto request,
                      @AuthenticationPrincipal CustomUserDetails user) {
 
         return new ResponseEntity<>(todoService.save(request,user.getUsername()), HttpStatus.CREATED);

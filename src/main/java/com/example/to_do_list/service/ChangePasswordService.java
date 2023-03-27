@@ -3,7 +3,7 @@ package com.example.to_do_list.service;
 import com.example.to_do_list.common.exception.BusinessLogicException;
 import com.example.to_do_list.common.exception.ExceptionCode;
 import com.example.to_do_list.domain.Users;
-import com.example.to_do_list.dto.ChangePasswordDto;
+import com.example.to_do_list.dto.password.ChangePasswordDto;
 import com.example.to_do_list.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

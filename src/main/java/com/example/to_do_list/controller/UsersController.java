@@ -3,8 +3,7 @@ package com.example.to_do_list.controller;
 //import com.example.to_do_list.config.security.CustomUserDetails;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
-import com.example.to_do_list.domain.Users;
-import com.example.to_do_list.dto.ChangePasswordDto;
+import com.example.to_do_list.dto.password.ChangePasswordDto;
 import com.example.to_do_list.dto.user.UsersSaveDto;
 import com.example.to_do_list.service.ChangePasswordService;
 import com.example.to_do_list.service.UsersService;
@@ -13,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
@@ -26,7 +27,7 @@ public class UsersController {
     }
 
     @PostMapping("/account")
-    public ResponseEntity<String> joinUser(@RequestBody UsersSaveDto usersSaveDto) {
+    public ResponseEntity<String> joinUser(@RequestBody @Valid UsersSaveDto usersSaveDto) {
         String email = usersService.createUsers(usersSaveDto);
 
         return new ResponseEntity<>(email, HttpStatus.CREATED);

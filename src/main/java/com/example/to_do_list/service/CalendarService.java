@@ -1,6 +1,6 @@
 package com.example.to_do_list.service;
 
-import com.example.to_do_list.dto.CalendarDto;
+import com.example.to_do_list.dto.calendar.CalendarDto;
 import com.example.to_do_list.dto.todo.TodoCalendarDTO;
 import com.example.to_do_list.repository.todo.TodoRepositoryImpl;
 import lombok.RequiredArgsConstructor;

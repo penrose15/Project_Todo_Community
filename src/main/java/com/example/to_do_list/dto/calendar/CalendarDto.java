@@ -1,4 +1,4 @@
-package com.example.to_do_list.dto;
+package com.example.to_do_list.dto.calendar;
 
 import com.example.to_do_list.dto.todo.TodoCalendarDTO;
 import lombok.Builder;

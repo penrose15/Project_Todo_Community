@@ -1,8 +1,7 @@
 package com.example.to_do_list.controller;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
-import com.example.to_do_list.domain.Users;
-import com.example.to_do_list.dto.SingleResponseDto;
+import com.example.to_do_list.dto.response.SingleResponseDto;
 import com.example.to_do_list.dto.category.CategoriesResponseDto;
 import com.example.to_do_list.dto.category.CategorySaveDto;
 import com.example.to_do_list.dto.category.CategoryUpdateDto;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -25,7 +25,7 @@ public class CategoryController {
     private final UsersService usersService;
 
     @PostMapping("/")
-    public ResponseEntity saveCategory(@RequestBody CategorySaveDto categorySaveDto,
+    public ResponseEntity saveCategory(@RequestBody @Valid CategorySaveDto categorySaveDto,
                                        @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long usersId = usersService.findByEmail(userDetails.getUsername());
 
@@ -46,7 +46,7 @@ public class CategoryController {
 
     @PostMapping("/{categoryId}/todo")
     public ResponseEntity addTodoListToCategory(@PathVariable(name = "categoryId") Long categoryId,
-                                                @RequestBody TodoSaveDto todoSaveDto,
+                                                @RequestBody @Valid TodoSaveDto todoSaveDto,
                                                 @AuthenticationPrincipal CustomUserDetails userDetails) {
 
         String todo = categoryService.addTodoList(todoSaveDto, categoryId, userDetails.getUsername());

@@ -4,15 +4,20 @@ import com.example.to_do_list.domain.Todo;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Getter
+@Validated
 @NoArgsConstructor
 public class TodoSaveDto {
+    @NotBlank
     private String title;
     private String content;
+    @NotBlank
     private String expose;
 
     private int priority;

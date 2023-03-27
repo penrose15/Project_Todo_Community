@@ -1,4 +1,4 @@
-package com.example.to_do_list.dto;
+package com.example.to_do_list.dto.password;
 
 import lombok.Getter;
 

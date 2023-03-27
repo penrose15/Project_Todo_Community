@@ -2,7 +2,7 @@ package com.example.to_do_list.controller;
 
 import com.example.to_do_list.WithAuthUser;
 import com.example.to_do_list.common.security.config.SecurityConfig;
-import com.example.to_do_list.dto.CalendarDto;
+import com.example.to_do_list.dto.calendar.CalendarDto;
 import com.example.to_do_list.dto.todo.TodoCalendarDTO;
 import com.example.to_do_list.service.CalendarService;
 import com.example.to_do_list.service.UsersService;

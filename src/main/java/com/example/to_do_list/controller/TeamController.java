@@ -3,22 +3,20 @@ package com.example.to_do_list.controller;
 //import com.example.to_do_list.config.security.CustomUserDetails;
 
 import com.example.to_do_list.common.security.userdetails.CustomUserDetails;
-import com.example.to_do_list.domain.Team;
-import com.example.to_do_list.domain.Users;
-import com.example.to_do_list.dto.MultiResponseDto;
-import com.example.to_do_list.dto.SingleResponseDto;
+import com.example.to_do_list.dto.response.MultiResponseDto;
+import com.example.to_do_list.dto.response.SingleResponseDto;
 import com.example.to_do_list.dto.team.*;
 import com.example.to_do_list.dto.user.UsersMandateDto;
 import com.example.to_do_list.service.TeamService;
 import com.example.to_do_list.service.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,7 +28,7 @@ public class TeamController {
     private final UsersService usersService;
 
     @PostMapping
-    public ResponseEntity<Long> createTeam(@RequestBody TeamSaveDto request,
+    public ResponseEntity<Long> createTeam(@RequestBody @Valid TeamSaveDto request,
                                            @AuthenticationPrincipal CustomUserDetails user) {
         String email = user.getEmail();
         Long userId = usersService.findByEmail(email);
