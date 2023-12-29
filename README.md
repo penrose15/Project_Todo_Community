@@ -63,16 +63,5 @@
 ### 3. JWT 토큰을 활용하여 인증/인가 구현
 
 - accessToken, refreshToken 구현
-- refreshToken은 Redis에 저장 후 accessToken 만료할 때 마다 refreshToken 확인 후 accessToken 재발급 (redis는 Docker위에 실행)
-
-### 4. Junit5를 활용한 단위 테스트 작성 및 RestDocs를 활용한 API 문서 작성
-
-- Repository, Service, Controller 단위 테스트구현
-- RestDocs를 활용한 API 문서 작성
-- LocalDate를 단위 테스트에서 적용할 수 없는 문제를이는 Clock을 Bean으로 등록한 후 Mock데이터로 만들어 해결.
-
-### 5. 온 프레미스환경 인프라 구축 및 CI/CD 구축
-
-- AWS EC2(Linux2)에서 서버를 구축하고 RDS와 연결하여 데이터를 저장 및 관리
-- Docker에 Jenkins를 띄워 github push/merge시 Jenkins로 CI/CD 구축
+- refreshToken은 Red현
     - Jenkins를 Docker로 띄울 때, 내부에 Docker를 사용하지 않는 문제를 필요한 디렉토리를 mount하여 문제 해결
