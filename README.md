@@ -52,8 +52,7 @@
 - TodoList 작성/수정/조회/삭제 API 개발
 - Team 추가/조회/가입/탈퇴 API 개발
 - User 회원가입/팀 가입/탈퇴/방장 위임 기능 구현 및 API 제작
-- 검색기능 구현
-    - QueryDSL을 이용하여 구현
+- QueryDSL + JPA
 
 ### 2. @Scheduled를 활용한 일괄 삭제 기능 구현
 
