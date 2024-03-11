@@ -58,7 +58,7 @@
 ### 2. @Scheduled를 활용한 일괄 삭제 기능 구현
 
 - n일 연속으로 참여율이 저조한 팀원 대상으로 특정 시간(23:59)에 일괄 강퇴 시키는 기능 구현
-- ThreadPoolTaskScheduler와 Async 활용하여 비동기 스레드 풀 추가
+- ThreadPoolTaskScheduler와 Async 활용하여 비동기로 활동하도록 분리
 
 ### 3. JWT 토큰을 활용하여 인증/인가 구현
 - accessToken, refreshToken 구현
