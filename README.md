@@ -18,7 +18,7 @@
 ## 🛠️ 사용 기술& 라이브러리
 - Java
 - Spring Boot, Spring Security, JPA, Junit5, RestDocs, QueryDSL, JWT
-- MySQL, Redis, AWS(EC2, RDS, S3), Jenkins, Docker
+- MySQL, Redis, AWS(EC2, RDS, S3), Jenkins, Docker, Nginx
 - Github, Postman
 
 
@@ -73,6 +73,6 @@
 ### 5. 온 프레미스환경 인프라 구축 및 CI/CD 구축
 
 - AWS EC2(Linux2)에서 서버를 구축하고 RDS와 연결하여 데이터를 저장 및 관리
-- Docker에 Jenkins를 띄워 github push/merge시 Jenkins로 CI/CD 구축
-    - Blue/Green 배포로 무중단 배포 구현
+- Docker에 Jenkins를 띄워 github push시 Jenkins로 CI/CD 구축
+    - Blue/Green 배포로 무중단 배포 구현(Nginx)
     - Jenkins를 Docker로 띄울 때, 내부에 Docker를 사용하지 않는 문제를 필요한 디렉토리를 mount하여 문제 해결
