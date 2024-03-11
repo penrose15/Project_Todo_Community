@@ -61,7 +61,7 @@
 
 ### 3. JWT 토큰을 활용하여 인증/인가 구현
 - accessToken, refreshToken 구현
-- refreshToken은 Redis에 저장 후 accessToken 만료할 때 마다 refreshToken 확인 후 accessToken 재발급 (redis는 Docker위에 실행)
+- refreshToken은 Redis에 저장 후 accessToken 만료할 때 마다 refreshToken 확인 후 accessToken 재발급
 
 ### 4. Junit5를 활용한 단위 테스트 작성 및 RestDocs를 활용한 API 문서 작성
 
